@@ -1,0 +1,526 @@
+openapi: 3.1.0
+info:
+  title: OpenSearch Forecast API
+  description: APIs for configuring and running time-series forecasters.
+  version: 1.0.0
+paths:
+  /_plugins/_forecast/forecasters:
+    post:
+      operationId: forecast.create_forecaster.0
+      x-operation-group: forecast.create_forecaster
+      description: Creates a forecaster.
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.create_forecaster'
+      responses:
+        '201':
+          $ref: '#/components/responses/forecast.create_forecaster@201'
+  /_plugins/_forecast/forecasters/{forecaster_id}:
+    get:
+      operationId: forecast.get_forecaster.0
+      x-operation-group: forecast.get_forecaster
+      description: Retrieves a forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.get_forecaster::path.forecaster_id'
+        - $ref: '#/components/parameters/forecast.get_forecaster::query._all'
+        - $ref: '#/components/parameters/forecast.get_forecaster::query.job'
+        - $ref: '#/components/parameters/forecast.get_forecaster::query.task'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.get_forecaster@200'
+    put:
+      operationId: forecast.update_forecaster.0
+      x-operation-group: forecast.update_forecaster
+      description: Updates a forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.update_forecaster::path.forecaster_id'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.update_forecaster'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.update_forecaster@200'
+    delete:
+      operationId: forecast.delete_forecaster.0
+      x-operation-group: forecast.delete_forecaster
+      description: Deletes a forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.delete_forecaster::path.forecaster_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.delete_forecaster@200'
+  /_plugins/_forecast/forecasters/_search:
+    get:
+      operationId: forecast.search_forecasters.0
+      x-operation-group: forecast.search_forecasters
+      description: Searches forecasters.
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.search_forecasters'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.search_forecasters@200'
+    post:
+      operationId: forecast.search_forecasters.1
+      x-operation-group: forecast.search_forecasters
+      description: Searches forecasters.
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.search_forecasters'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.search_forecasters@200'
+  /_plugins/_forecast/forecasters/tasks/_search:
+    get:
+      operationId: forecast.search_tasks.0
+      x-operation-group: forecast.search_tasks
+      description: Searches forecast tasks.
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.search_tasks'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.search_tasks@200'
+    post:
+      operationId: forecast.search_tasks.1
+      x-operation-group: forecast.search_tasks
+      description: Searches forecast tasks.
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.search_tasks'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.search_tasks@200'
+  /_plugins/_forecast/forecasters/{forecaster_id}/_profile:
+    get:
+      operationId: forecast.get_profile.0
+      x-operation-group: forecast.get_profile
+      description: Retrieves profile information for a forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.get_profile::path.forecaster_id'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.get_profile'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.get_profile@200'
+    post:
+      operationId: forecast.get_profile.1
+      x-operation-group: forecast.get_profile
+      description: Retrieves profile information for a forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.get_profile::path.forecaster_id'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.get_profile'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.get_profile@200'
+  /_plugins/_forecast/forecasters/{forecaster_id}/_profile/{type}:
+    get:
+      operationId: forecast.get_profile.2
+      x-operation-group: forecast.get_profile
+      description: Retrieves profile information for a forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.get_profile::path.forecaster_id'
+        - $ref: '#/components/parameters/forecast.get_profile::path.type'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.get_profile'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.get_profile@200'
+    post:
+      operationId: forecast.get_profile.3
+      x-operation-group: forecast.get_profile
+      description: Retrieves profile information for a forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.get_profile::path.forecaster_id'
+        - $ref: '#/components/parameters/forecast.get_profile::path.type'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.get_profile'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.get_profile@200'
+  /_plugins/_forecast/forecasters/{forecaster_id}/results/_topForecasts:
+    get:
+      operationId: forecast.search_top_forecasts.0
+      x-operation-group: forecast.search_top_forecasts
+      description: Retrieves top forecast result buckets for a high-cardinality forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.search_top_forecasts::path.forecaster_id'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.search_top_forecasts'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.search_top_forecasts@200'
+    post:
+      operationId: forecast.search_top_forecasts.1
+      x-operation-group: forecast.search_top_forecasts
+      description: Retrieves top forecast result buckets for a high-cardinality forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.search_top_forecasts::path.forecaster_id'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.search_top_forecasts'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.search_top_forecasts@200'
+  /_plugins/_forecast/forecasters/count:
+    get:
+      operationId: forecast.count_forecasters.0
+      x-operation-group: forecast.count_forecasters
+      description: Retrieves the number of forecasters.
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.count_forecasters@200'
+  /_plugins/_forecast/forecasters/match:
+    get:
+      operationId: forecast.match_forecasters.0
+      x-operation-group: forecast.match_forecasters
+      description: Checks for forecasters matching a name.
+      parameters:
+        - $ref: '#/components/parameters/forecast.match_forecasters::query.name'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.match_forecasters@200'
+  /_plugins/_forecast/forecasters/_suggest/{type}:
+    post:
+      operationId: forecast.suggest_forecaster.0
+      x-operation-group: forecast.suggest_forecaster
+      description: Suggests a forecaster configuration value.
+      parameters:
+        - $ref: '#/components/parameters/forecast.suggest_forecaster::path.type'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.suggest_forecaster'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.suggest_forecaster@200'
+  /_plugins/_forecast/forecasters/_validate:
+    post:
+      operationId: forecast.validate_forecaster.0
+      x-operation-group: forecast.validate_forecaster
+      description: Validates a forecaster configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.validate_forecaster'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.validate_forecaster@200'
+  /_plugins/_forecast/forecasters/_validate/{type}:
+    post:
+      operationId: forecast.validate_forecaster.1
+      x-operation-group: forecast.validate_forecaster
+      description: Validates a forecaster configuration.
+      parameters:
+        - $ref: '#/components/parameters/forecast.validate_forecaster::path.type'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.validate_forecaster'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.validate_forecaster@200'
+  /_plugins/_forecast/forecasters/{forecaster_id}/_run_once:
+    post:
+      operationId: forecast.run_once.0
+      x-operation-group: forecast.run_once
+      description: Runs a forecaster once.
+      parameters:
+        - $ref: '#/components/parameters/forecast.run_once::path.forecaster_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.run_once@200'
+  /_plugins/_forecast/forecasters/{forecaster_id}/_start:
+    post:
+      operationId: forecast.start_forecaster.0
+      x-operation-group: forecast.start_forecaster
+      description: Starts a forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.start_forecaster::path.forecaster_id'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.start_forecaster'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.start_forecaster@200'
+  /_plugins/_forecast/forecasters/{forecaster_id}/_stop:
+    post:
+      operationId: forecast.stop_forecaster.0
+      x-operation-group: forecast.stop_forecaster
+      description: Stops a forecaster.
+      parameters:
+        - $ref: '#/components/parameters/forecast.stop_forecaster::path.forecaster_id'
+      requestBody:
+        $ref: '#/components/requestBodies/forecast.stop_forecaster'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.stop_forecaster@200'
+  /_plugins/_forecast/{node_id}/stats/:
+    get:
+      operationId: forecast.stats.0
+      x-operation-group: forecast.stats
+      description: Retrieves forecast statistics.
+      parameters:
+        - $ref: '#/components/parameters/forecast.stats::path.node_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.stats@200'
+  /_plugins/_forecast/{node_id}/stats/{stat}:
+    get:
+      operationId: forecast.stats.1
+      x-operation-group: forecast.stats
+      description: Retrieves forecast statistics.
+      parameters:
+        - $ref: '#/components/parameters/forecast.stats::path.node_id'
+        - $ref: '#/components/parameters/forecast.stats::path.stat'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.stats@200'
+  /_plugins/_forecast/stats/:
+    get:
+      operationId: forecast.stats.2
+      x-operation-group: forecast.stats
+      description: Retrieves forecast statistics.
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.stats@200'
+  /_plugins/_forecast/stats/{stat}:
+    get:
+      operationId: forecast.stats.3
+      x-operation-group: forecast.stats
+      description: Retrieves forecast statistics.
+      parameters:
+        - $ref: '#/components/parameters/forecast.stats::path.stat'
+      responses:
+        '200':
+          $ref: '#/components/responses/forecast.stats@200'
+components:
+  parameters:
+    forecast.get_forecaster::path.forecaster_id:
+      name: forecaster_id
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.update_forecaster::path.forecaster_id:
+      name: forecaster_id
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.delete_forecaster::path.forecaster_id:
+      name: forecaster_id
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.get_profile::path.forecaster_id:
+      name: forecaster_id
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.get_profile::path.type:
+      name: type
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.search_top_forecasts::path.forecaster_id:
+      name: forecaster_id
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.suggest_forecaster::path.type:
+      name: type
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.validate_forecaster::path.type:
+      name: type
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.run_once::path.forecaster_id:
+      name: forecaster_id
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.start_forecaster::path.forecaster_id:
+      name: forecaster_id
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.stop_forecaster::path.forecaster_id:
+      name: forecaster_id
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.stats::path.node_id:
+      name: node_id
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.stats::path.stat:
+      name: stat
+      in: path
+      required: true
+      schema:
+        type: string
+    forecast.get_forecaster::query.job:
+      name: job
+      in: query
+      schema:
+        type: boolean
+        default: false
+    forecast.get_forecaster::query.task:
+      name: task
+      in: query
+      schema:
+        type: boolean
+        default: false
+    forecast.get_forecaster::query._all:
+      name: _all
+      in: query
+      schema:
+        type: boolean
+        default: false
+    forecast.match_forecasters::query.name:
+      name: name
+      in: query
+      schema:
+        type: string
+  requestBodies:
+    forecast.create_forecaster:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/Forecaster'
+    forecast.update_forecaster:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/Forecaster'
+    forecast.search_forecasters:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/SearchRequest'
+    forecast.search_tasks:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/SearchRequest'
+    forecast.get_profile:
+      required: false
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/ProfileRequest'
+    forecast.search_top_forecasts:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/SearchTopForecastsRequest'
+    forecast.suggest_forecaster:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/Forecaster'
+    forecast.validate_forecaster:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/Forecaster'
+    forecast.start_forecaster:
+      required: false
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/JobRequest'
+    forecast.stop_forecaster:
+      required: false
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/JobRequest'
+  responses:
+    forecast.create_forecaster@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/IndexForecasterResponse'
+    forecast.update_forecaster@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/IndexForecasterResponse'
+    forecast.delete_forecaster@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/DeleteForecasterResponse'
+    forecast.get_forecaster@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/GetForecasterResponse'
+    forecast.search_forecasters@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/SearchResponse'
+    forecast.search_tasks@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/SearchResponse'
+    forecast.get_profile@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/ProfileResponse'
+    forecast.search_top_forecasts@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/SearchTopForecastsResponse'
+    forecast.count_forecasters@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/InfoResponse'
+    forecast.match_forecasters@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/InfoResponse'
+    forecast.suggest_forecaster@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/SuggestResponse'
+    forecast.validate_forecaster@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/ValidationResponse'
+    forecast.stats@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/StatsResponse'
+    forecast.run_once@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/RunOnceResponse'
+    forecast.start_forecaster@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/JobResponse'
+    forecast.stop_forecaster@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/forecast._common.yaml#/components/schemas/JobResponse'

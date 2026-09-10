@@ -1,0 +1,416 @@
+openapi: 3.1.0
+info:
+  title: OpenSearch Forecast API schemas
+  description: Request and response schemas for the Forecast API.
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    Forecaster:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        time_field:
+          type: string
+        indices:
+          type: array
+          items:
+            type: string
+        filter_query:
+          $ref: '_common.query_dsl.yaml#/components/schemas/QueryContainer'
+        forecast_interval:
+          $ref: '#/components/schemas/TimeConfiguration'
+        window_delay:
+          $ref: '#/components/schemas/TimeConfiguration'
+        frequency:
+          $ref: '#/components/schemas/TimeConfiguration'
+        shingle_size:
+          type: integer
+          format: int32
+          minimum: 4
+          maximum: 128
+        horizon:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 384
+        feature_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feature'
+        category_field:
+          type: array
+          items:
+            type: string
+        ui_metadata:
+          type: object
+          additionalProperties: true
+        schema_version:
+          type: integer
+          format: int32
+        last_update_time:
+          type: integer
+          format: int64
+        user:
+          type: object
+          additionalProperties: true
+        result_index:
+          type: string
+        imputation_option:
+          type: object
+          additionalProperties: true
+        recency_emphasis:
+          type: integer
+          format: int32
+        suggested_seasonality:
+          type:
+            - integer
+            - 'null'
+          format: int32
+        history:
+          type: integer
+          format: int32
+        result_index_min_size:
+          type: integer
+          format: int32
+        result_index_min_age:
+          type: integer
+          format: int32
+        result_index_ttl:
+          type: integer
+          format: int32
+        flatten_custom_result_index:
+          type: boolean
+        last_ui_breaking_change_time:
+          type: integer
+          format: int64
+        auto_created:
+          type: boolean
+    TimeConfiguration:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/TimeConfigurationPeriod'
+      required:
+        - period
+    TimeConfigurationPeriod:
+      type: object
+      properties:
+        interval:
+          type: integer
+          format: int64
+          minimum: 0
+        unit:
+          type: string
+      required:
+        - interval
+        - unit
+    Feature:
+      type: object
+      properties:
+        feature_id:
+          type: string
+        feature_name:
+          type: string
+        feature_enabled:
+          type: boolean
+        aggregation_query:
+          type: object
+          additionalProperties: true
+      required:
+        - aggregation_query
+        - feature_name
+    SearchRequest:
+      type: object
+      properties:
+        query:
+          $ref: '_common.query_dsl.yaml#/components/schemas/QueryContainer'
+        from:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        sort:
+          $ref: '_common.yaml#/components/schemas/Sort'
+        _source:
+          $ref: '_core.search.yaml#/components/schemas/SourceConfig'
+      additionalProperties: true
+    ProfileRequest:
+      type: object
+      description: An optional entity selection used for high-cardinality forecaster profiles.
+      additionalProperties: true
+    SearchTopForecastsRequest:
+      type: object
+      properties:
+        task_id:
+          type: string
+        run_once:
+          type: boolean
+          default: false
+        size:
+          type: integer
+          format: int32
+        split_by:
+          type: string
+          description: A comma-separated list of fields used to split result buckets.
+        filter_by:
+          $ref: '#/components/schemas/FilterBy'
+        build_in_query:
+          $ref: '#/components/schemas/BuildInQuery'
+        threshold:
+          type: number
+          format: float
+        relation_to_threshold:
+          $ref: '#/components/schemas/RelationToThreshold'
+        filter_query:
+          $ref: '_common.query_dsl.yaml#/components/schemas/QueryContainer'
+        subaggregations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Subaggregation'
+        forecast_from:
+          oneOf:
+            - type: integer
+              format: int64
+            - type: string
+              format: date-time
+      required:
+        - filter_by
+        - forecast_from
+    FilterBy:
+      type: string
+      enum:
+        - BUILD_IN_QUERY
+        - CUSTOM_QUERY
+    BuildInQuery:
+      type: string
+      enum:
+        - DISTANCE_TO_THRESHOLD_VALUE
+        - MAX_CONFIDENCE_INTERVAL_WIDTH
+        - MAX_VALUE_WITHIN_THE_HORIZON
+        - MIN_CONFIDENCE_INTERVAL_WIDTH
+        - MIN_VALUE_WITHIN_THE_HORIZON
+    RelationToThreshold:
+      type: string
+      enum:
+        - GREATER_THAN
+        - GREATER_THAN_OR_EQUAL_TO
+        - LESS_THAN
+        - LESS_THAN_OR_EQUAL_TO
+    Subaggregation:
+      type: object
+      properties:
+        aggregation_query:
+          type: object
+          additionalProperties: true
+        order:
+          $ref: '#/components/schemas/SubaggregationOrder'
+      required:
+        - aggregation_query
+    SubaggregationOrder:
+      type: string
+      enum:
+        - ASC
+        - DESC
+      default: ASC
+    JobRequest:
+      type: object
+      properties:
+        start_time:
+          type: integer
+          format: int64
+        end_time:
+          type: integer
+          format: int64
+      required:
+        - end_time
+        - start_time
+    IndexForecasterResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        _seq_no:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+        forecaster:
+          $ref: '#/components/schemas/Forecaster'
+      required:
+        - _id
+        - _primary_term
+        - _seq_no
+        - _version
+        - forecaster
+    GetForecasterResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+        _seq_no:
+          type: integer
+          format: int64
+        rest_status:
+          type: string
+        forecaster:
+          $ref: '#/components/schemas/Forecaster'
+        forecaster_job:
+          type: object
+          additionalProperties: true
+        realtime_task:
+          type: object
+          additionalProperties: true
+        run_once_task:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+    SearchResponse:
+      type: object
+      properties:
+        took:
+          type: integer
+          format: int64
+        timed_out:
+          type: boolean
+        _shards:
+          type: object
+          additionalProperties: true
+        hits:
+          type: object
+          additionalProperties: true
+      additionalProperties: true
+    ProfileResponse:
+      type: object
+      description: Profile sections vary according to the selected profile type and entity.
+      additionalProperties: true
+    SearchTopForecastsResponse:
+      type: object
+      properties:
+        buckets:
+          type: array
+          items:
+            $ref: '#/components/schemas/ForecastResultBucket'
+      required:
+        - buckets
+    ForecastResultBucket:
+      type: object
+      properties:
+        key:
+          type: object
+          additionalProperties: true
+        doc_count:
+          type: integer
+          format: int32
+        bucket_index:
+          type: integer
+          format: int32
+      additionalProperties:
+        type: number
+      required:
+        - bucket_index
+        - doc_count
+        - key
+    InfoResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+        match:
+          type: boolean
+      required:
+        - count
+        - match
+    SuggestResponse:
+      type: object
+      properties:
+        history:
+          type: integer
+          format: int32
+        horizon:
+          type: integer
+          format: int32
+        interval:
+          $ref: '#/components/schemas/TimeConfiguration'
+        windowDelay:
+          $ref: '#/components/schemas/TimeConfiguration'
+    ValidationResponse:
+      type: object
+      additionalProperties:
+        type: object
+        additionalProperties:
+          $ref: '#/components/schemas/ValidationIssue'
+    ValidationIssue:
+      type: object
+      properties:
+        message:
+          type: string
+        sub_issues:
+          type: object
+          additionalProperties:
+            type: string
+        suggested_value:
+          $ref: '#/components/schemas/TimeConfiguration'
+      required:
+        - message
+    StatsResponse:
+      type: object
+      additionalProperties: true
+    DeleteForecasterResponse:
+      type: object
+      additionalProperties: true
+    JobResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+      required:
+        - _id
+    RunOnceResponse:
+      type: object
+      properties:
+        dataQuality:
+          type: number
+          format: double
+        error:
+          type: string
+        features:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        forecastLowers:
+          type: array
+          items:
+            type: number
+            format: float
+        forecastUppers:
+          type: array
+          items:
+            type: number
+            format: float
+        forecastValues:
+          type: array
+          items:
+            type: number
+            format: float
+        rcfTotalUpdates:
+          type: integer
+          format: int64
+        task_id:
+          type: string

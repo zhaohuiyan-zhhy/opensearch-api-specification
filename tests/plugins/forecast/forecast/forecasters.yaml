@@ -1,0 +1,369 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test the OpenSearch Forecast API.
+version: '>= 3.8'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+
+prologues:
+  - path: /forecast-spec-test-data
+    method: PUT
+    request:
+      payload:
+        mappings:
+          properties:
+            timestamp:
+              type: date
+            value:
+              type: double
+            city:
+              type: keyword
+  - path: /forecast-spec-test-data/_doc
+    method: POST
+    parameters:
+      refresh: true
+    request:
+      payload:
+        timestamp: '2026-09-10T00:00:00Z'
+        value: 10
+        city: shanghai
+  - path: /_cat/nodes
+    id: node
+    method: GET
+    parameters:
+      full_id: true
+      size: 1
+      format: json
+      h: id
+    output:
+      id: payload[0].id
+
+chapters:
+  - synopsis: Validate a forecaster.
+    path: /_plugins/_forecast/forecasters/_validate
+    method: POST
+    request:
+      payload:
+        name: forecast-spec-test
+        time_field: timestamp
+        indices:
+          - forecast-spec-test-data
+        feature_attributes:
+          - feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        shingle_size: 4
+        horizon: 4
+        forecast_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+    response:
+      status: 200
+  - synopsis: Validate a forecaster model.
+    path: /_plugins/_forecast/forecasters/_validate/{type}
+    method: POST
+    parameters:
+      type: model
+    request:
+      payload:
+        name: forecast-spec-test
+        time_field: timestamp
+        indices:
+          - forecast-spec-test-data
+        feature_attributes:
+          - feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        shingle_size: 4
+        horizon: 4
+        forecast_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+    response:
+      status: 200
+  - synopsis: Suggest a forecast horizon.
+    path: /_plugins/_forecast/forecasters/_suggest/{type}
+    method: POST
+    parameters:
+      type: horizon
+    request:
+      payload:
+        name: forecast-spec-test
+        time_field: timestamp
+        indices:
+          - forecast-spec-test-data
+        feature_attributes:
+          - feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        shingle_size: 4
+        horizon: 4
+        forecast_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+    response:
+      status: 200
+  - synopsis: Create a forecaster.
+    id: create_forecaster
+    path: /_plugins/_forecast/forecasters
+    method: POST
+    request:
+      payload:
+        name: forecast-spec-test
+        description: Forecast spec test
+        time_field: timestamp
+        indices:
+          - forecast-spec-test-data
+        filter_query:
+          match_all: {}
+        feature_attributes:
+          - feature_id: value_sum
+            feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        category_field:
+          - city
+        window_delay:
+          period:
+            interval: 1
+            unit: MINUTES
+        schema_version: 2
+        shingle_size: 4
+        horizon: 4
+        forecast_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+    response:
+      status: 201
+    output:
+      forecaster_id: payload._id
+  - synopsis: Get a forecaster.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}
+    method: GET
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+    response:
+      status: 200
+  - synopsis: Update a forecaster.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}
+    method: PUT
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+    request:
+      payload:
+        name: forecast-spec-test
+        description: Updated Forecast spec test
+        time_field: timestamp
+        indices:
+          - forecast-spec-test-data
+        filter_query:
+          match_all: {}
+        feature_attributes:
+          - feature_id: value_sum
+            feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        category_field:
+          - city
+        window_delay:
+          period:
+            interval: 1
+            unit: MINUTES
+        schema_version: 2
+        shingle_size: 4
+        horizon: 4
+        forecast_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+    response:
+      status: 200
+  - synopsis: Search forecasters with GET.
+    path: /_plugins/_forecast/forecasters/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search forecasters with POST.
+    path: /_plugins/_forecast/forecasters/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Get the forecaster profile.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}/_profile
+    method: GET
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+    response:
+      status: 200
+  - synopsis: Get the forecaster profile with POST.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}/_profile
+    method: POST
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+    request:
+      payload: {}
+    response:
+      status: 200
+  - synopsis: Get a typed forecaster profile.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}/_profile/{type}
+    method: GET
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+      type: state
+    response:
+      status: 200
+  - synopsis: Get a typed forecaster profile with POST.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}/_profile/{type}
+    method: POST
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+      type: state
+    request:
+      payload: {}
+    response:
+      status: 200
+  - synopsis: Search top forecast results with GET.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}/results/_topForecasts
+    method: GET
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+    request:
+      payload:
+        filter_by: BUILD_IN_QUERY
+        build_in_query: MAX_VALUE_WITHIN_THE_HORIZON
+        forecast_from: 0
+    response:
+      status: 200
+  - synopsis: Search top forecast results with POST.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}/results/_topForecasts
+    method: POST
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+    request:
+      payload:
+        filter_by: BUILD_IN_QUERY
+        build_in_query: MAX_VALUE_WITHIN_THE_HORIZON
+        forecast_from: 0
+    response:
+      status: 200
+  - synopsis: Count forecasters.
+    path: /_plugins/_forecast/forecasters/count
+    method: GET
+    response:
+      status: 200
+  - synopsis: Match forecasters by name.
+    path: /_plugins/_forecast/forecasters/match
+    method: GET
+    parameters:
+      name: forecast-spec-test
+    response:
+      status: 200
+  - synopsis: Run a forecaster once.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}/_run_once
+    method: POST
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+    response:
+      status: 200
+  - synopsis: Start a forecaster.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}/_start
+    method: POST
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+    response:
+      status: 200
+  - synopsis: Stop a forecaster.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}/_stop
+    method: POST
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+    response:
+      status: 200
+  - synopsis: Search forecast tasks with GET.
+    path: /_plugins/_forecast/forecasters/tasks/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search forecast tasks with POST.
+    path: /_plugins/_forecast/forecasters/tasks/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Get all forecast statistics.
+    path: /_plugins/_forecast/stats/
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get one forecast statistic.
+    path: /_plugins/_forecast/stats/{stat}
+    method: GET
+    parameters:
+      stat: forecaster_count
+    response:
+      status: 200
+  - synopsis: Get forecast statistics for one node.
+    path: /_plugins/_forecast/{node_id}/stats/
+    method: GET
+    parameters:
+      node_id: ${node.id}
+    response:
+      status: 200
+  - synopsis: Get one forecast statistic for one node.
+    path: /_plugins/_forecast/{node_id}/stats/{stat}
+    method: GET
+    parameters:
+      node_id: ${node.id}
+      stat: model_count
+    response:
+      status: 200
+  - synopsis: Delete a forecaster.
+    path: /_plugins/_forecast/forecasters/{forecaster_id}
+    method: DELETE
+    parameters:
+      forecaster_id: ${create_forecaster.forecaster_id}
+    response:
+      status: 200
+
+epilogues:
+  - path: /_plugins/_forecast/forecasters/${create_forecaster.forecaster_id}
+    method: DELETE
+    status: [200, 404]
+  - path: /forecast-spec-test-data
+    method: DELETE
+    status: [200, 404]

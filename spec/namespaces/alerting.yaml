@@ -1,0 +1,2135 @@
+openapi: 3.1.0
+info:
+  title: OpenSearch Alerting API
+  description: OpenSearch Alerting API.
+  version: 1.0.0
+paths:
+  /_opendistro/_alerting/{node_id}/stats/:
+    get:
+      operationId: alerting.node_stats.1
+      x-operation-group: alerting.node_stats
+      description: Retrieves Alerting scheduler statistics from the specified nodes.
+      parameters:
+        - $ref: '#/components/parameters/alerting.node_stats::path.node_id'
+        - $ref: '#/components/parameters/alerting.node_stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.node_stats@200'
+        '400':
+          $ref: '#/components/responses/alerting.node_stats@400'
+  /_opendistro/_alerting/{node_id}/stats/{metric}:
+    get:
+      operationId: alerting.node_stats_metric.1
+      x-operation-group: alerting.node_stats_metric
+      description: Retrieves selected Alerting scheduler metrics from the specified nodes.
+      parameters:
+        - $ref: '#/components/parameters/alerting.node_stats_metric::path.metric'
+        - $ref: '#/components/parameters/alerting.node_stats_metric::path.node_id'
+        - $ref: '#/components/parameters/alerting.node_stats_metric::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.node_stats_metric@200'
+        '400':
+          $ref: '#/components/responses/alerting.node_stats_metric@400'
+  /_opendistro/_alerting/destinations:
+    get:
+      operationId: alerting.get_destinations.1
+      x-operation-group: alerting.get_destinations
+      description: Retrieves Alerting destinations.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_destinations::query.destinationType'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.missing'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.searchString'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.size'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.sortOrder'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.sortString'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.startIndex'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_destinations@200'
+        '400':
+          $ref: '#/components/responses/alerting.get_destinations@400'
+        '500':
+          $ref: '#/components/responses/alerting.get_destinations@500'
+  /_opendistro/_alerting/destinations/{destination_id}:
+    get:
+      operationId: alerting.get_destination.1
+      x-operation-group: alerting.get_destination
+      description: Retrieves an Alerting destination.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_destination::path.destination_id'
+        - $ref: '#/components/parameters/alerting.get_destination::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_destination@200'
+        '404':
+          $ref: '#/components/responses/alerting.get_destination@404'
+        '500':
+          $ref: '#/components/responses/alerting.get_destination@500'
+  /_opendistro/_alerting/destinations/email_accounts/_search:
+    get:
+      operationId: alerting.search_email_accounts.2
+      x-operation-group: alerting.search_email_accounts
+      description: Searches Alerting email accounts.
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_email_accounts'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_email_accounts@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_email_accounts@408'
+    post:
+      operationId: alerting.search_email_accounts.3
+      x-operation-group: alerting.search_email_accounts
+      description: Searches Alerting email accounts.
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_email_accounts'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_email_accounts@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_email_accounts@408'
+  /_opendistro/_alerting/destinations/email_accounts/{email_account_id}:
+    get:
+      operationId: alerting.get_email_account.1
+      x-operation-group: alerting.get_email_account
+      description: Retrieves an Alerting email account.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_email_account::path.email_account_id'
+        - $ref: '#/components/parameters/alerting.get_email_account::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_email_account@200'
+        '404':
+          $ref: '#/components/responses/alerting.get_email_account@404'
+        '500':
+          $ref: '#/components/responses/alerting.get_email_account@500'
+    head:
+      operationId: alerting.email_account_exists.1
+      x-operation-group: alerting.email_account_exists
+      description: Checks whether an Alerting email account exists.
+      parameters:
+        - $ref: '#/components/parameters/alerting.email_account_exists::path.email_account_id'
+        - $ref: '#/components/parameters/alerting.email_account_exists::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.email_account_exists@200'
+        '404':
+          $ref: '#/components/responses/alerting.email_account_exists@404'
+  /_opendistro/_alerting/destinations/email_groups/_search:
+    get:
+      operationId: alerting.search_email_groups.2
+      x-operation-group: alerting.search_email_groups
+      description: Searches Alerting email groups.
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_email_groups'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_email_groups@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_email_groups@408'
+    post:
+      operationId: alerting.search_email_groups.3
+      x-operation-group: alerting.search_email_groups
+      description: Searches Alerting email groups.
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_email_groups'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_email_groups@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_email_groups@408'
+  /_opendistro/_alerting/destinations/email_groups/{email_group_id}:
+    get:
+      operationId: alerting.get_email_group.1
+      x-operation-group: alerting.get_email_group
+      description: Retrieves an Alerting email group.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_email_group::path.email_group_id'
+        - $ref: '#/components/parameters/alerting.get_email_group::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_email_group@200'
+        '404':
+          $ref: '#/components/responses/alerting.get_email_group@404'
+        '500':
+          $ref: '#/components/responses/alerting.get_email_group@500'
+    head:
+      operationId: alerting.email_group_exists.1
+      x-operation-group: alerting.email_group_exists
+      description: Checks whether an Alerting email group exists.
+      parameters:
+        - $ref: '#/components/parameters/alerting.email_group_exists::path.email_group_id'
+        - $ref: '#/components/parameters/alerting.email_group_exists::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.email_group_exists@200'
+        '404':
+          $ref: '#/components/responses/alerting.email_group_exists@404'
+  /_opendistro/_alerting/monitors:
+    post:
+      operationId: alerting.create_monitor.1
+      x-operation-group: alerting.create_monitor
+      description: Creates an Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.create_monitor::query.if_primary_term'
+        - $ref: '#/components/parameters/alerting.create_monitor::query.if_seq_no'
+        - $ref: '#/components/parameters/alerting.create_monitor::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.create_monitor'
+      responses:
+        '201':
+          $ref: '#/components/responses/alerting.create_monitor@201'
+        '400':
+          $ref: '#/components/responses/alerting.create_monitor@400'
+  /_opendistro/_alerting/monitors/_execute:
+    post:
+      operationId: alerting.execute_monitor_inline.1
+      x-operation-group: alerting.execute_monitor_inline
+      description: Executes an inline Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.execute_monitor_inline::query.dryrun'
+        - $ref: '#/components/parameters/alerting.execute_monitor_inline::query.period_end'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.execute_monitor_inline'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.execute_monitor_inline@200'
+        '400':
+          $ref: '#/components/responses/alerting.execute_monitor_inline@400'
+  /_opendistro/_alerting/monitors/_search:
+    get:
+      operationId: alerting.search_monitors.2
+      x-operation-group: alerting.search_monitors
+      description: Searches Alerting monitors.
+      parameters:
+        - $ref: '#/components/parameters/alerting.search_monitors::query.index'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_monitors'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_monitors@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_monitors@408'
+    post:
+      operationId: alerting.search_monitors.3
+      x-operation-group: alerting.search_monitors
+      description: Searches Alerting monitors.
+      parameters:
+        - $ref: '#/components/parameters/alerting.search_monitors::query.index'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_monitors'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_monitors@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_monitors@408'
+  /_opendistro/_alerting/monitors/{monitor_id}:
+    get:
+      operationId: alerting.get_monitor.1
+      x-operation-group: alerting.get_monitor
+      description: Retrieves an Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_monitor::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.get_monitor::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_monitor@200'
+        '404':
+          $ref: '#/components/responses/alerting.get_monitor@404'
+    head:
+      operationId: alerting.monitor_exists.1
+      x-operation-group: alerting.monitor_exists
+      description: Checks whether an Alerting monitor exists.
+      parameters:
+        - $ref: '#/components/parameters/alerting.monitor_exists::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.monitor_exists::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.monitor_exists@200'
+        '404':
+          $ref: '#/components/responses/alerting.monitor_exists@404'
+    put:
+      operationId: alerting.update_monitor.1
+      x-operation-group: alerting.update_monitor
+      description: Updates an Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.update_monitor::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.update_monitor::query.if_primary_term'
+        - $ref: '#/components/parameters/alerting.update_monitor::query.if_seq_no'
+        - $ref: '#/components/parameters/alerting.update_monitor::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.update_monitor'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.update_monitor@200'
+        '400':
+          $ref: '#/components/responses/alerting.update_monitor@400'
+        '404':
+          $ref: '#/components/responses/alerting.update_monitor@404'
+    delete:
+      operationId: alerting.delete_monitor.1
+      x-operation-group: alerting.delete_monitor
+      description: Deletes an Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.delete_monitor::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.delete_monitor::query.refresh'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.delete_monitor@200'
+        '404':
+          $ref: '#/components/responses/alerting.delete_monitor@404'
+  /_opendistro/_alerting/monitors/{monitor_id}/_acknowledge/alerts:
+    post:
+      operationId: alerting.acknowledge_monitor_alerts.1
+      x-operation-group: alerting.acknowledge_monitor_alerts
+      description: Acknowledges alerts generated by a monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.acknowledge_monitor_alerts::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.acknowledge_monitor_alerts::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.acknowledge_monitor_alerts'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.acknowledge_monitor_alerts@200'
+        '400':
+          $ref: '#/components/responses/alerting.acknowledge_monitor_alerts@400'
+  /_opendistro/_alerting/monitors/{monitor_id}/_execute:
+    post:
+      operationId: alerting.execute_monitor.1
+      x-operation-group: alerting.execute_monitor
+      description: Executes an Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.execute_monitor::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.execute_monitor::query.dryrun'
+        - $ref: '#/components/parameters/alerting.execute_monitor::query.period_end'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.execute_monitor@200'
+        '400':
+          $ref: '#/components/responses/alerting.execute_monitor@400'
+  /_opendistro/_alerting/monitors/alerts:
+    get:
+      operationId: alerting.get_monitor_alerts.1
+      x-operation-group: alerting.get_monitor_alerts
+      description: Retrieves alerts generated by monitors.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.alertState'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.missing'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.monitorId'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.searchString'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.severityLevel'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.size'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.sortOrder'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.sortString'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.startIndex'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.workflowIds'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_monitor_alerts@200'
+        '400':
+          $ref: '#/components/responses/alerting.get_monitor_alerts@400'
+        '500':
+          $ref: '#/components/responses/alerting.get_monitor_alerts@500'
+  /_opendistro/_alerting/stats/:
+    get:
+      operationId: alerting.stats.1
+      x-operation-group: alerting.stats
+      description: Retrieves Alerting scheduler statistics from all nodes.
+      parameters:
+        - $ref: '#/components/parameters/alerting.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.stats@200'
+        '400':
+          $ref: '#/components/responses/alerting.stats@400'
+  /_opendistro/_alerting/stats/{metric}:
+    get:
+      operationId: alerting.stats_metric.1
+      x-operation-group: alerting.stats_metric
+      description: Retrieves selected Alerting scheduler metrics from all nodes.
+      parameters:
+        - $ref: '#/components/parameters/alerting.stats_metric::path.metric'
+        - $ref: '#/components/parameters/alerting.stats_metric::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.stats_metric@200'
+        '400':
+          $ref: '#/components/responses/alerting.stats_metric@400'
+  /_plugins/_alerting/{node_id}/stats/:
+    get:
+      operationId: alerting.node_stats.0
+      x-operation-group: alerting.node_stats
+      description: Retrieves Alerting scheduler statistics from the specified nodes.
+      parameters:
+        - $ref: '#/components/parameters/alerting.node_stats::path.node_id'
+        - $ref: '#/components/parameters/alerting.node_stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.node_stats@200'
+        '400':
+          $ref: '#/components/responses/alerting.node_stats@400'
+  /_plugins/_alerting/{node_id}/stats/{metric}:
+    get:
+      operationId: alerting.node_stats_metric.0
+      x-operation-group: alerting.node_stats_metric
+      description: Retrieves selected Alerting scheduler metrics from the specified nodes.
+      parameters:
+        - $ref: '#/components/parameters/alerting.node_stats_metric::path.metric'
+        - $ref: '#/components/parameters/alerting.node_stats_metric::path.node_id'
+        - $ref: '#/components/parameters/alerting.node_stats_metric::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.node_stats_metric@200'
+        '400':
+          $ref: '#/components/responses/alerting.node_stats_metric@400'
+  /_plugins/_alerting/comments/_search:
+    get:
+      operationId: alerting.search_comments.0
+      x-operation-group: alerting.search_comments
+      description: Searches Alerting comments.
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_comments'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_comments@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_comments@408'
+    post:
+      operationId: alerting.search_comments.1
+      x-operation-group: alerting.search_comments
+      description: Searches Alerting comments.
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_comments'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_comments@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_comments@408'
+  /_plugins/_alerting/comments/{id}:
+    post:
+      operationId: alerting.create_comment.0
+      x-operation-group: alerting.create_comment
+      description: Creates a comment for an Alerting alert.
+      parameters:
+        - $ref: '#/components/parameters/alerting.create_comment::path.id'
+        - $ref: '#/components/parameters/alerting.create_comment::query.if_primary_term'
+        - $ref: '#/components/parameters/alerting.create_comment::query.if_seq_no'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.create_comment'
+      responses:
+        '201':
+          $ref: '#/components/responses/alerting.create_comment@201'
+        '400':
+          $ref: '#/components/responses/alerting.create_comment@400'
+        '404':
+          $ref: '#/components/responses/alerting.create_comment@404'
+    put:
+      operationId: alerting.update_comment.0
+      x-operation-group: alerting.update_comment
+      description: Updates an Alerting comment.
+      parameters:
+        - $ref: '#/components/parameters/alerting.update_comment::path.id'
+        - $ref: '#/components/parameters/alerting.update_comment::query.if_primary_term'
+        - $ref: '#/components/parameters/alerting.update_comment::query.if_seq_no'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.update_comment'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.update_comment@200'
+        '400':
+          $ref: '#/components/responses/alerting.update_comment@400'
+        '404':
+          $ref: '#/components/responses/alerting.update_comment@404'
+    delete:
+      operationId: alerting.delete_comment.0
+      x-operation-group: alerting.delete_comment
+      description: Deletes an Alerting comment.
+      parameters:
+        - $ref: '#/components/parameters/alerting.delete_comment::path.id'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.delete_comment@200'
+        '404':
+          $ref: '#/components/responses/alerting.delete_comment@404'
+  /_plugins/_alerting/destinations:
+    get:
+      operationId: alerting.get_destinations.0
+      x-operation-group: alerting.get_destinations
+      description: Retrieves Alerting destinations.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_destinations::query.destinationType'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.missing'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.searchString'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.size'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.sortOrder'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.sortString'
+        - $ref: '#/components/parameters/alerting.get_destinations::query.startIndex'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_destinations@200'
+        '400':
+          $ref: '#/components/responses/alerting.get_destinations@400'
+        '500':
+          $ref: '#/components/responses/alerting.get_destinations@500'
+  /_plugins/_alerting/destinations/{destination_id}:
+    get:
+      operationId: alerting.get_destination.0
+      x-operation-group: alerting.get_destination
+      description: Retrieves an Alerting destination.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_destination::path.destination_id'
+        - $ref: '#/components/parameters/alerting.get_destination::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_destination@200'
+        '404':
+          $ref: '#/components/responses/alerting.get_destination@404'
+        '500':
+          $ref: '#/components/responses/alerting.get_destination@500'
+  /_plugins/_alerting/destinations/email_accounts/_search:
+    get:
+      operationId: alerting.search_email_accounts.0
+      x-operation-group: alerting.search_email_accounts
+      description: Searches Alerting email accounts.
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_email_accounts'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_email_accounts@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_email_accounts@408'
+    post:
+      operationId: alerting.search_email_accounts.1
+      x-operation-group: alerting.search_email_accounts
+      description: Searches Alerting email accounts.
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_email_accounts'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_email_accounts@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_email_accounts@408'
+  /_plugins/_alerting/destinations/email_accounts/{email_account_id}:
+    get:
+      operationId: alerting.get_email_account.0
+      x-operation-group: alerting.get_email_account
+      description: Retrieves an Alerting email account.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_email_account::path.email_account_id'
+        - $ref: '#/components/parameters/alerting.get_email_account::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_email_account@200'
+        '404':
+          $ref: '#/components/responses/alerting.get_email_account@404'
+        '500':
+          $ref: '#/components/responses/alerting.get_email_account@500'
+    head:
+      operationId: alerting.email_account_exists.0
+      x-operation-group: alerting.email_account_exists
+      description: Checks whether an Alerting email account exists.
+      parameters:
+        - $ref: '#/components/parameters/alerting.email_account_exists::path.email_account_id'
+        - $ref: '#/components/parameters/alerting.email_account_exists::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.email_account_exists@200'
+        '404':
+          $ref: '#/components/responses/alerting.email_account_exists@404'
+  /_plugins/_alerting/destinations/email_groups/_search:
+    get:
+      operationId: alerting.search_email_groups.0
+      x-operation-group: alerting.search_email_groups
+      description: Searches Alerting email groups.
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_email_groups'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_email_groups@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_email_groups@408'
+    post:
+      operationId: alerting.search_email_groups.1
+      x-operation-group: alerting.search_email_groups
+      description: Searches Alerting email groups.
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_email_groups'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_email_groups@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_email_groups@408'
+  /_plugins/_alerting/destinations/email_groups/{email_group_id}:
+    get:
+      operationId: alerting.get_email_group.0
+      x-operation-group: alerting.get_email_group
+      description: Retrieves an Alerting email group.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_email_group::path.email_group_id'
+        - $ref: '#/components/parameters/alerting.get_email_group::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_email_group@200'
+        '404':
+          $ref: '#/components/responses/alerting.get_email_group@404'
+        '500':
+          $ref: '#/components/responses/alerting.get_email_group@500'
+    head:
+      operationId: alerting.email_group_exists.0
+      x-operation-group: alerting.email_group_exists
+      description: Checks whether an Alerting email group exists.
+      parameters:
+        - $ref: '#/components/parameters/alerting.email_group_exists::path.email_group_id'
+        - $ref: '#/components/parameters/alerting.email_group_exists::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.email_group_exists@200'
+        '404':
+          $ref: '#/components/responses/alerting.email_group_exists@404'
+  /_plugins/_alerting/findings/_search:
+    get:
+      operationId: alerting.get_findings.0
+      x-operation-group: alerting.get_findings
+      description: Retrieves findings generated by document-level monitors.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_findings::query.findingId'
+        - $ref: '#/components/parameters/alerting.get_findings::query.missing'
+        - $ref: '#/components/parameters/alerting.get_findings::query.searchString'
+        - $ref: '#/components/parameters/alerting.get_findings::query.size'
+        - $ref: '#/components/parameters/alerting.get_findings::query.sortOrder'
+        - $ref: '#/components/parameters/alerting.get_findings::query.sortString'
+        - $ref: '#/components/parameters/alerting.get_findings::query.startIndex'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_findings@200'
+        '400':
+          $ref: '#/components/responses/alerting.get_findings@400'
+        '500':
+          $ref: '#/components/responses/alerting.get_findings@500'
+  /_plugins/_alerting/monitors:
+    post:
+      operationId: alerting.create_monitor.0
+      x-operation-group: alerting.create_monitor
+      description: Creates an Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.create_monitor::query.if_primary_term'
+        - $ref: '#/components/parameters/alerting.create_monitor::query.if_seq_no'
+        - $ref: '#/components/parameters/alerting.create_monitor::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.create_monitor'
+      responses:
+        '201':
+          $ref: '#/components/responses/alerting.create_monitor@201'
+        '400':
+          $ref: '#/components/responses/alerting.create_monitor@400'
+  /_plugins/_alerting/monitors/_execute:
+    post:
+      operationId: alerting.execute_monitor_inline.0
+      x-operation-group: alerting.execute_monitor_inline
+      description: Executes an inline Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.execute_monitor_inline::query.dryrun'
+        - $ref: '#/components/parameters/alerting.execute_monitor_inline::query.period_end'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.execute_monitor_inline'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.execute_monitor_inline@200'
+        '400':
+          $ref: '#/components/responses/alerting.execute_monitor_inline@400'
+  /_plugins/_alerting/monitors/_search:
+    get:
+      operationId: alerting.search_monitors.0
+      x-operation-group: alerting.search_monitors
+      description: Searches Alerting monitors.
+      parameters:
+        - $ref: '#/components/parameters/alerting.search_monitors::query.index'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_monitors'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_monitors@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_monitors@408'
+    post:
+      operationId: alerting.search_monitors.1
+      x-operation-group: alerting.search_monitors
+      description: Searches Alerting monitors.
+      parameters:
+        - $ref: '#/components/parameters/alerting.search_monitors::query.index'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.search_monitors'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.search_monitors@200'
+        '408':
+          $ref: '#/components/responses/alerting.search_monitors@408'
+  /_plugins/_alerting/monitors/{monitor_id}:
+    get:
+      operationId: alerting.get_monitor.0
+      x-operation-group: alerting.get_monitor
+      description: Retrieves an Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_monitor::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.get_monitor::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_monitor@200'
+        '404':
+          $ref: '#/components/responses/alerting.get_monitor@404'
+    head:
+      operationId: alerting.monitor_exists.0
+      x-operation-group: alerting.monitor_exists
+      description: Checks whether an Alerting monitor exists.
+      parameters:
+        - $ref: '#/components/parameters/alerting.monitor_exists::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.monitor_exists::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.monitor_exists@200'
+        '404':
+          $ref: '#/components/responses/alerting.monitor_exists@404'
+    put:
+      operationId: alerting.update_monitor.0
+      x-operation-group: alerting.update_monitor
+      description: Updates an Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.update_monitor::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.update_monitor::query.if_primary_term'
+        - $ref: '#/components/parameters/alerting.update_monitor::query.if_seq_no'
+        - $ref: '#/components/parameters/alerting.update_monitor::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.update_monitor'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.update_monitor@200'
+        '400':
+          $ref: '#/components/responses/alerting.update_monitor@400'
+        '404':
+          $ref: '#/components/responses/alerting.update_monitor@404'
+    delete:
+      operationId: alerting.delete_monitor.0
+      x-operation-group: alerting.delete_monitor
+      description: Deletes an Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.delete_monitor::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.delete_monitor::query.refresh'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.delete_monitor@200'
+        '404':
+          $ref: '#/components/responses/alerting.delete_monitor@404'
+  /_plugins/_alerting/monitors/{monitor_id}/_acknowledge/alerts:
+    post:
+      operationId: alerting.acknowledge_monitor_alerts.0
+      x-operation-group: alerting.acknowledge_monitor_alerts
+      description: Acknowledges alerts generated by a monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.acknowledge_monitor_alerts::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.acknowledge_monitor_alerts::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.acknowledge_monitor_alerts'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.acknowledge_monitor_alerts@200'
+        '400':
+          $ref: '#/components/responses/alerting.acknowledge_monitor_alerts@400'
+  /_plugins/_alerting/monitors/{monitor_id}/_execute:
+    post:
+      operationId: alerting.execute_monitor.0
+      x-operation-group: alerting.execute_monitor
+      description: Executes an Alerting monitor.
+      parameters:
+        - $ref: '#/components/parameters/alerting.execute_monitor::path.monitor_id'
+        - $ref: '#/components/parameters/alerting.execute_monitor::query.dryrun'
+        - $ref: '#/components/parameters/alerting.execute_monitor::query.period_end'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.execute_monitor@200'
+        '400':
+          $ref: '#/components/responses/alerting.execute_monitor@400'
+  /_plugins/_alerting/monitors/alerts:
+    get:
+      operationId: alerting.get_monitor_alerts.0
+      x-operation-group: alerting.get_monitor_alerts
+      description: Retrieves alerts generated by monitors.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.alertState'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.missing'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.monitorId'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.searchString'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.severityLevel'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.size'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.sortOrder'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.sortString'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.startIndex'
+        - $ref: '#/components/parameters/alerting.get_monitor_alerts::query.workflowIds'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_monitor_alerts@200'
+        '400':
+          $ref: '#/components/responses/alerting.get_monitor_alerts@400'
+        '500':
+          $ref: '#/components/responses/alerting.get_monitor_alerts@500'
+  /_plugins/_alerting/remote/indexes:
+    get:
+      operationId: alerting.get_remote_indexes.0
+      x-operation-group: alerting.get_remote_indexes
+      description: Retrieves indexes from the local and configured remote clusters.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_remote_indexes::query.include_mappings'
+        - $ref: '#/components/parameters/alerting.get_remote_indexes::query.indexes'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_remote_indexes@200'
+        '500':
+          $ref: '#/components/responses/alerting.get_remote_indexes@500'
+  /_plugins/_alerting/stats/:
+    get:
+      operationId: alerting.stats.0
+      x-operation-group: alerting.stats
+      description: Retrieves Alerting scheduler statistics from all nodes.
+      parameters:
+        - $ref: '#/components/parameters/alerting.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.stats@200'
+        '400':
+          $ref: '#/components/responses/alerting.stats@400'
+  /_plugins/_alerting/stats/{metric}:
+    get:
+      operationId: alerting.stats_metric.0
+      x-operation-group: alerting.stats_metric
+      description: Retrieves selected Alerting scheduler metrics from all nodes.
+      parameters:
+        - $ref: '#/components/parameters/alerting.stats_metric::path.metric'
+        - $ref: '#/components/parameters/alerting.stats_metric::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.stats_metric@200'
+        '400':
+          $ref: '#/components/responses/alerting.stats_metric@400'
+  /_plugins/_alerting/workflows:
+    post:
+      operationId: alerting.create_workflow.0
+      x-operation-group: alerting.create_workflow
+      description: Creates an Alerting workflow.
+      parameters:
+        - $ref: '#/components/parameters/alerting.create_workflow::query.if_primary_term'
+        - $ref: '#/components/parameters/alerting.create_workflow::query.if_seq_no'
+        - $ref: '#/components/parameters/alerting.create_workflow::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.create_workflow'
+      responses:
+        '201':
+          $ref: '#/components/responses/alerting.create_workflow@201'
+        '400':
+          $ref: '#/components/responses/alerting.create_workflow@400'
+  /_plugins/_alerting/workflows/{workflow_id}:
+    get:
+      operationId: alerting.get_workflow.0
+      x-operation-group: alerting.get_workflow
+      description: Retrieves an Alerting workflow.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_workflow::path.workflow_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_workflow@200'
+        '404':
+          $ref: '#/components/responses/alerting.get_workflow@404'
+    put:
+      operationId: alerting.update_workflow.0
+      x-operation-group: alerting.update_workflow
+      description: Updates an Alerting workflow.
+      parameters:
+        - $ref: '#/components/parameters/alerting.update_workflow::path.workflow_id'
+        - $ref: '#/components/parameters/alerting.update_workflow::query.if_primary_term'
+        - $ref: '#/components/parameters/alerting.update_workflow::query.if_seq_no'
+        - $ref: '#/components/parameters/alerting.update_workflow::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.update_workflow'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.update_workflow@200'
+        '400':
+          $ref: '#/components/responses/alerting.update_workflow@400'
+        '404':
+          $ref: '#/components/responses/alerting.update_workflow@404'
+    delete:
+      operationId: alerting.delete_workflow.0
+      x-operation-group: alerting.delete_workflow
+      description: Deletes an Alerting workflow.
+      parameters:
+        - $ref: '#/components/parameters/alerting.delete_workflow::path.workflow_id'
+        - $ref: '#/components/parameters/alerting.delete_workflow::query.deleteDelegateMonitors'
+        - $ref: '#/components/parameters/alerting.delete_workflow::query.refresh'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.delete_workflow@200'
+        '404':
+          $ref: '#/components/responses/alerting.delete_workflow@404'
+  /_plugins/_alerting/workflows/{workflow_id}/_acknowledge/alerts:
+    post:
+      operationId: alerting.acknowledge_workflow_alerts.0
+      x-operation-group: alerting.acknowledge_workflow_alerts
+      description: Acknowledges alerts generated by a workflow.
+      parameters:
+        - $ref: '#/components/parameters/alerting.acknowledge_workflow_alerts::path.workflow_id'
+      requestBody:
+        $ref: '#/components/requestBodies/alerting.acknowledge_workflow_alerts'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.acknowledge_workflow_alerts@200'
+        '400':
+          $ref: '#/components/responses/alerting.acknowledge_workflow_alerts@400'
+  /_plugins/_alerting/workflows/{workflow_id}/_execute:
+    post:
+      operationId: alerting.execute_workflow.0
+      x-operation-group: alerting.execute_workflow
+      description: Executes an Alerting workflow.
+      parameters:
+        - $ref: '#/components/parameters/alerting.execute_workflow::path.workflow_id'
+        - $ref: '#/components/parameters/alerting.execute_workflow::query.dryrun'
+        - $ref: '#/components/parameters/alerting.execute_workflow::query.period_end'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.execute_workflow@200'
+        '400':
+          $ref: '#/components/responses/alerting.execute_workflow@400'
+  /_plugins/_alerting/workflows/alerts:
+    get:
+      operationId: alerting.get_workflow_alerts.0
+      x-operation-group: alerting.get_workflow_alerts
+      description: Retrieves alerts generated by workflows.
+      parameters:
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.alertIds'
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.alertState'
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.getAssociatedAlerts'
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.missing'
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.searchString'
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.severityLevel'
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.size'
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.sortOrder'
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.sortString'
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.startIndex'
+        - $ref: '#/components/parameters/alerting.get_workflow_alerts::query.workflowIds'
+      responses:
+        '200':
+          $ref: '#/components/responses/alerting.get_workflow_alerts@200'
+        '400':
+          $ref: '#/components/responses/alerting.get_workflow_alerts@400'
+        '500':
+          $ref: '#/components/responses/alerting.get_workflow_alerts@500'
+components:
+  responses:
+    alerting.acknowledge_monitor_alerts@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AcknowledgeAlertsResponse'
+    alerting.acknowledge_monitor_alerts@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.acknowledge_workflow_alerts@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AcknowledgeAlertsResponse'
+    alerting.acknowledge_workflow_alerts@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.create_comment@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/IndexCommentResponse'
+    alerting.create_comment@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.create_comment@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.create_monitor@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/IndexMonitorResponse'
+    alerting.create_monitor@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.create_workflow@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/IndexWorkflowResponse'
+    alerting.create_workflow@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.delete_comment@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/DeleteCommentResponse'
+    alerting.delete_comment@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.delete_monitor@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/DeleteMonitorResponse'
+    alerting.delete_monitor@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.delete_workflow@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/DeleteWorkflowResponse'
+    alerting.delete_workflow@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.email_account_exists@200:
+      description: The email account exists.
+    alerting.email_account_exists@404:
+      description: The email account does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.email_group_exists@200:
+      description: The email group exists.
+    alerting.email_group_exists@404:
+      description: The email group does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.execute_monitor@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/MonitorRunResult'
+    alerting.execute_monitor@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.execute_monitor_inline@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/MonitorRunResult'
+    alerting.execute_monitor_inline@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.execute_workflow@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/WorkflowRunResult'
+    alerting.execute_workflow@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_destination@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/GetDestinationsResponse'
+    alerting.get_destination@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_destination@500:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_destinations@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/GetDestinationsResponse'
+    alerting.get_destinations@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_destinations@500:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_email_account@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/GetEmailAccountResponse'
+    alerting.get_email_account@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_email_account@500:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_email_group@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/GetEmailGroupResponse'
+    alerting.get_email_group@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_email_group@500:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_monitor@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/GetMonitorResponse'
+    alerting.get_monitor@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_monitor_alerts@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/GetAlertsResponse'
+    alerting.get_monitor_alerts@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_monitor_alerts@500:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_findings@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/GetFindingsResponse'
+    alerting.get_findings@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_findings@500:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_remote_indexes@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/GetRemoteIndexesResponse'
+    alerting.get_remote_indexes@500:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_workflow@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/GetWorkflowResponse'
+    alerting.get_workflow@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_workflow_alerts@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/GetAlertsResponse'
+    alerting.get_workflow_alerts@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.get_workflow_alerts@500:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.node_stats@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingStatsResponse'
+    alerting.node_stats@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.node_stats_metric@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingStatsResponse'
+    alerting.node_stats_metric@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.monitor_exists@200:
+      description: The monitor exists.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.monitor_exists@404:
+      description: The monitor does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.search_comments@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    alerting.search_comments@408:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.search_email_accounts@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    alerting.search_email_accounts@408:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.search_email_groups@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    alerting.search_email_groups@408:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.search_monitors@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    alerting.search_monitors@408:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.stats@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingStatsResponse'
+    alerting.stats@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.stats_metric@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingStatsResponse'
+    alerting.stats_metric@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.update_comment@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/IndexCommentResponse'
+    alerting.update_comment@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.update_comment@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.update_monitor@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/IndexMonitorResponse'
+    alerting.update_monitor@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.update_monitor@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.update_workflow@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/IndexWorkflowResponse'
+    alerting.update_workflow@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+    alerting.update_workflow@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingError'
+  parameters:
+    alerting.acknowledge_monitor_alerts::path.monitor_id:
+      name: monitor_id
+      in: path
+      description: The monitor ID.
+      schema:
+        type: string
+      required: true
+    alerting.acknowledge_monitor_alerts::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the acknowledged alert changes become visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    alerting.acknowledge_workflow_alerts::path.workflow_id:
+      name: workflow_id
+      in: path
+      description: The workflow ID.
+      schema:
+        type: string
+      required: true
+    alerting.create_comment::path.id:
+      name: id
+      in: path
+      description: The alert ID that receives the comment.
+      schema:
+        type: string
+      required: true
+    alerting.create_comment::query.if_primary_term:
+      name: if_primary_term
+      in: query
+      description: Performs the operation only if the last operation that changed the document has this primary term.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    alerting.create_comment::query.if_seq_no:
+      name: if_seq_no
+      in: query
+      description: Performs the operation only if the document has this sequence number.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SequenceNumber'
+      required: false
+    alerting.create_monitor::query.if_primary_term:
+      name: if_primary_term
+      in: query
+      description: Performs the operation only if the last operation that changed the monitor has this primary term.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    alerting.create_monitor::query.if_seq_no:
+      name: if_seq_no
+      in: query
+      description: Performs the operation only if the monitor has this sequence number.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SequenceNumber'
+      required: false
+    alerting.create_monitor::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the created monitor becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    alerting.create_workflow::query.if_primary_term:
+      name: if_primary_term
+      in: query
+      description: Performs the operation only if the last operation that changed the workflow has this primary term.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    alerting.create_workflow::query.if_seq_no:
+      name: if_seq_no
+      in: query
+      description: Performs the operation only if the workflow has this sequence number.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SequenceNumber'
+      required: false
+    alerting.create_workflow::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the created workflow becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    alerting.delete_comment::path.id:
+      name: id
+      in: path
+      description: The comment ID.
+      schema:
+        type: string
+      required: true
+    alerting.delete_monitor::path.monitor_id:
+      name: monitor_id
+      in: path
+      description: The monitor ID.
+      schema:
+        type: string
+      required: true
+    alerting.delete_monitor::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the deleted monitor becomes invisible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    alerting.delete_workflow::path.workflow_id:
+      name: workflow_id
+      in: path
+      description: The workflow ID.
+      schema:
+        type: string
+      required: true
+    alerting.delete_workflow::query.deleteDelegateMonitors:
+      name: deleteDelegateMonitors
+      in: query
+      description: Whether to also delete the workflow's delegate monitors.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    alerting.delete_workflow::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the deleted workflow becomes invisible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    alerting.execute_monitor::path.monitor_id:
+      name: monitor_id
+      in: path
+      description: The monitor ID.
+      schema:
+        type: string
+      required: true
+    alerting.execute_monitor::query.dryrun:
+      name: dryrun
+      in: query
+      description: Whether to execute without persisting alerts or sending actions.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    alerting.execute_monitor::query.period_end:
+      name: period_end
+      in: query
+      description: The end of the execution period as an epoch-millisecond value or time expression.
+      schema:
+        type: string
+      required: false
+    alerting.execute_monitor_inline::query.dryrun:
+      name: dryrun
+      in: query
+      description: Whether to execute without persisting alerts or sending actions.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    alerting.execute_monitor_inline::query.period_end:
+      name: period_end
+      in: query
+      description: The end of the execution period as an epoch-millisecond value or time expression.
+      schema:
+        type: string
+      required: false
+    alerting.execute_workflow::path.workflow_id:
+      name: workflow_id
+      in: path
+      description: The workflow ID.
+      schema:
+        type: string
+      required: true
+    alerting.execute_workflow::query.dryrun:
+      name: dryrun
+      in: query
+      description: Whether to execute without persisting alerts or sending actions.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    alerting.execute_workflow::query.period_end:
+      name: period_end
+      in: query
+      description: The end of the execution period as an epoch-millisecond value or time expression.
+      schema:
+        type: string
+      required: false
+    alerting.get_monitor::path.monitor_id:
+      name: monitor_id
+      in: path
+      description: The monitor ID.
+      schema:
+        type: string
+      required: true
+    alerting.get_monitor::query.version:
+      name: version
+      in: query
+      description: The monitor version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    alerting.get_workflow::path.workflow_id:
+      name: workflow_id
+      in: path
+      description: The workflow ID.
+      schema:
+        type: string
+      required: true
+    alerting.monitor_exists::path.monitor_id:
+      name: monitor_id
+      in: path
+      description: The monitor ID.
+      schema:
+        type: string
+      required: true
+    alerting.monitor_exists::query.version:
+      name: version
+      in: query
+      description: The monitor version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    alerting.search_monitors::query.index:
+      name: index
+      in: query
+      description: The scheduled-jobs or alert index to search.
+      schema:
+        type: string
+      required: false
+    alerting.update_comment::path.id:
+      name: id
+      in: path
+      description: The comment ID.
+      schema:
+        type: string
+      required: true
+    alerting.update_comment::query.if_primary_term:
+      name: if_primary_term
+      in: query
+      description: Performs the operation only if the last operation that changed the comment has this primary term.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    alerting.update_comment::query.if_seq_no:
+      name: if_seq_no
+      in: query
+      description: Performs the operation only if the comment has this sequence number.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SequenceNumber'
+      required: false
+    alerting.update_monitor::path.monitor_id:
+      name: monitor_id
+      in: path
+      description: The monitor ID.
+      schema:
+        type: string
+      required: true
+    alerting.update_monitor::query.if_primary_term:
+      name: if_primary_term
+      in: query
+      description: Performs the operation only if the last operation that changed the monitor has this primary term.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    alerting.update_monitor::query.if_seq_no:
+      name: if_seq_no
+      in: query
+      description: Performs the operation only if the monitor has this sequence number.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SequenceNumber'
+      required: false
+    alerting.update_monitor::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the updated monitor becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    alerting.update_workflow::path.workflow_id:
+      name: workflow_id
+      in: path
+      description: The workflow ID.
+      schema:
+        type: string
+      required: true
+    alerting.update_workflow::query.if_primary_term:
+      name: if_primary_term
+      in: query
+      description: Performs the operation only if the last operation that changed the workflow has this primary term.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    alerting.update_workflow::query.if_seq_no:
+      name: if_seq_no
+      in: query
+      description: Performs the operation only if the workflow has this sequence number.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SequenceNumber'
+      required: false
+    alerting.update_workflow::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the updated workflow becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    alerting.email_account_exists::path.email_account_id:
+      name: email_account_id
+      in: path
+      description: The email account ID.
+      schema:
+        type: string
+      required: true
+    alerting.email_account_exists::query.version:
+      name: version
+      in: query
+      description: The email account version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    alerting.email_group_exists::path.email_group_id:
+      name: email_group_id
+      in: path
+      description: The email group ID.
+      schema:
+        type: string
+      required: true
+    alerting.email_group_exists::query.version:
+      name: version
+      in: query
+      description: The email group version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    alerting.get_destination::path.destination_id:
+      name: destination_id
+      in: path
+      description: The destination ID.
+      schema:
+        type: string
+      required: true
+    alerting.get_destination::query.version:
+      name: version
+      in: query
+      description: The destination version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    alerting.get_destinations::query.destinationType:
+      name: destinationType
+      in: query
+      description: The destination type to filter by, or `ALL`.
+      schema:
+        type: string
+        default: ALL
+      required: false
+    alerting.get_destinations::query.missing:
+      name: missing
+      in: query
+      description: The value to use when the sort field is missing.
+      schema:
+        type: string
+      required: false
+    alerting.get_destinations::query.searchString:
+      name: searchString
+      in: query
+      description: The text used to filter destinations.
+      schema:
+        type: string
+        default: ''
+      required: false
+    alerting.get_destinations::query.size:
+      name: size
+      in: query
+      description: The maximum number of destinations to return.
+      schema:
+        type: integer
+        default: 20
+        minimum: 0
+      required: false
+    alerting.get_destinations::query.sortOrder:
+      name: sortOrder
+      in: query
+      description: The sort order.
+      schema:
+        $ref: '../schemas/alerting._common.yaml#/components/schemas/SortOrder'
+      required: false
+    alerting.get_destinations::query.sortString:
+      name: sortString
+      in: query
+      description: The destination field to sort by.
+      schema:
+        type: string
+        default: destination.name.keyword
+      required: false
+    alerting.get_destinations::query.startIndex:
+      name: startIndex
+      in: query
+      description: The zero-based result offset.
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+      required: false
+    alerting.get_email_account::path.email_account_id:
+      name: email_account_id
+      in: path
+      description: The email account ID.
+      schema:
+        type: string
+      required: true
+    alerting.get_email_account::query.version:
+      name: version
+      in: query
+      description: The email account version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    alerting.get_email_group::path.email_group_id:
+      name: email_group_id
+      in: path
+      description: The email group ID.
+      schema:
+        type: string
+      required: true
+    alerting.get_email_group::query.version:
+      name: version
+      in: query
+      description: The email group version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    alerting.get_findings::query.findingId:
+      name: findingId
+      in: query
+      description: The finding ID to retrieve.
+      schema:
+        type: string
+      required: false
+    alerting.get_findings::query.missing:
+      name: missing
+      in: query
+      description: The value to use when the sort field is missing.
+      schema:
+        type: string
+      required: false
+    alerting.get_findings::query.searchString:
+      name: searchString
+      in: query
+      description: The text used to filter findings.
+      schema:
+        type: string
+        default: ''
+      required: false
+    alerting.get_findings::query.size:
+      name: size
+      in: query
+      description: The maximum number of findings to return.
+      schema:
+        type: integer
+        default: 20
+        minimum: 0
+      required: false
+    alerting.get_findings::query.sortOrder:
+      name: sortOrder
+      in: query
+      description: The sort order.
+      schema:
+        $ref: '../schemas/alerting._common.yaml#/components/schemas/SortOrder'
+      required: false
+    alerting.get_findings::query.sortString:
+      name: sortString
+      in: query
+      description: The finding field to sort by.
+      schema:
+        type: string
+        default: id
+      required: false
+    alerting.get_findings::query.startIndex:
+      name: startIndex
+      in: query
+      description: The zero-based result offset.
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+      required: false
+    alerting.get_monitor_alerts::query.alertState:
+      name: alertState
+      in: query
+      description: The alert state to filter by, or `ALL`.
+      schema:
+        type: string
+        default: ALL
+      required: false
+    alerting.get_monitor_alerts::query.missing:
+      name: missing
+      in: query
+      description: The value to use when the sort field is missing.
+      schema:
+        type: string
+      required: false
+    alerting.get_monitor_alerts::query.monitorId:
+      name: monitorId
+      in: query
+      description: The monitor ID to filter by.
+      schema:
+        type: string
+      required: false
+    alerting.get_monitor_alerts::query.searchString:
+      name: searchString
+      in: query
+      description: The text used to filter alerts.
+      schema:
+        type: string
+        default: ''
+      required: false
+    alerting.get_monitor_alerts::query.severityLevel:
+      name: severityLevel
+      in: query
+      description: The severity to filter by, or `ALL`.
+      schema:
+        type: string
+        default: ALL
+      required: false
+    alerting.get_monitor_alerts::query.size:
+      name: size
+      in: query
+      description: The maximum number of alerts to return.
+      schema:
+        type: integer
+        default: 20
+        minimum: 0
+      required: false
+    alerting.get_monitor_alerts::query.sortOrder:
+      name: sortOrder
+      in: query
+      description: The sort order.
+      schema:
+        $ref: '../schemas/alerting._common.yaml#/components/schemas/SortOrder'
+      required: false
+    alerting.get_monitor_alerts::query.sortString:
+      name: sortString
+      in: query
+      description: The alert field to sort by.
+      schema:
+        type: string
+        default: monitor_name.keyword
+      required: false
+    alerting.get_monitor_alerts::query.startIndex:
+      name: startIndex
+      in: query
+      description: The zero-based result offset.
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+      required: false
+    alerting.get_monitor_alerts::query.workflowIds:
+      name: workflowIds
+      in: query
+      description: The workflow ID to filter by.
+      schema:
+        type: string
+      required: false
+    alerting.get_remote_indexes::query.include_mappings:
+      name: include_mappings
+      in: query
+      description: Whether to include index mappings.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    alerting.get_remote_indexes::query.indexes:
+      name: indexes
+      in: query
+      description: A comma-separated list of index patterns.
+      schema:
+        type: array
+        items:
+          type: string
+      style: form
+      explode: false
+      required: false
+    alerting.get_workflow_alerts::query.alertIds:
+      name: alertIds
+      in: query
+      description: The alert ID to filter by.
+      schema:
+        type: string
+      required: false
+    alerting.get_workflow_alerts::query.alertState:
+      name: alertState
+      in: query
+      description: The alert state to filter by, or `ALL`.
+      schema:
+        type: string
+        default: ALL
+      required: false
+    alerting.get_workflow_alerts::query.getAssociatedAlerts:
+      name: getAssociatedAlerts
+      in: query
+      description: Whether to include alerts associated with chained workflow alerts.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    alerting.get_workflow_alerts::query.missing:
+      name: missing
+      in: query
+      description: The value to use when the sort field is missing.
+      schema:
+        type: string
+      required: false
+    alerting.get_workflow_alerts::query.searchString:
+      name: searchString
+      in: query
+      description: The text used to filter alerts.
+      schema:
+        type: string
+        default: ''
+      required: false
+    alerting.get_workflow_alerts::query.severityLevel:
+      name: severityLevel
+      in: query
+      description: The severity to filter by, or `ALL`.
+      schema:
+        type: string
+        default: ALL
+      required: false
+    alerting.get_workflow_alerts::query.size:
+      name: size
+      in: query
+      description: The maximum number of alerts to return.
+      schema:
+        type: integer
+        default: 20
+        minimum: 0
+      required: false
+    alerting.get_workflow_alerts::query.sortOrder:
+      name: sortOrder
+      in: query
+      description: The sort order.
+      schema:
+        $ref: '../schemas/alerting._common.yaml#/components/schemas/SortOrder'
+      required: false
+    alerting.get_workflow_alerts::query.sortString:
+      name: sortString
+      in: query
+      description: The alert field to sort by.
+      schema:
+        type: string
+        default: monitor_name.keyword
+      required: false
+    alerting.get_workflow_alerts::query.startIndex:
+      name: startIndex
+      in: query
+      description: The zero-based result offset.
+      schema:
+        type: integer
+        default: 0
+        minimum: 0
+      required: false
+    alerting.get_workflow_alerts::query.workflowIds:
+      name: workflowIds
+      in: query
+      description: The workflow ID to filter by.
+      schema:
+        type: string
+      required: false
+    alerting.node_stats::path.node_id:
+      name: node_id
+      in: path
+      description: A comma-separated list of node IDs.
+      schema:
+        type: string
+      required: true
+    alerting.node_stats::query.timeout:
+      name: timeout
+      in: query
+      description: The maximum time to wait for node statistics.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Duration'
+      required: false
+    alerting.node_stats_metric::path.metric:
+      name: metric
+      in: path
+      description: A comma-separated list containing `_all`, `job_scheduling_metrics`, or `jobs_info`.
+      schema:
+        type: string
+      required: true
+    alerting.node_stats_metric::path.node_id:
+      name: node_id
+      in: path
+      description: A comma-separated list of node IDs.
+      schema:
+        type: string
+      required: true
+    alerting.node_stats_metric::query.timeout:
+      name: timeout
+      in: query
+      description: The maximum time to wait for node statistics.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Duration'
+      required: false
+    alerting.stats::query.timeout:
+      name: timeout
+      in: query
+      description: The maximum time to wait for node statistics.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Duration'
+      required: false
+    alerting.stats_metric::path.metric:
+      name: metric
+      in: path
+      description: A comma-separated list containing `_all`, `job_scheduling_metrics`, or `jobs_info`.
+      schema:
+        type: string
+      required: true
+    alerting.stats_metric::query.timeout:
+      name: timeout
+      in: query
+      description: The maximum time to wait for node statistics.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Duration'
+      required: false
+  requestBodies:
+    alerting.acknowledge_monitor_alerts:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AcknowledgeAlertsRequest'
+      required: true
+    alerting.acknowledge_workflow_alerts:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AcknowledgeAlertsRequest'
+      required: true
+    alerting.create_comment:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/CommentRequest'
+      required: true
+    alerting.create_monitor:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/Monitor'
+      required: true
+    alerting.create_workflow:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/Workflow'
+      required: true
+    alerting.execute_monitor_inline:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/Monitor'
+      required: true
+    alerting.search_comments:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingSearchRequest'
+    alerting.search_email_accounts:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingSearchRequest'
+    alerting.search_email_groups:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingSearchRequest'
+    alerting.search_monitors:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/AlertingSearchRequest'
+    alerting.update_comment:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/CommentRequest'
+      required: true
+    alerting.update_monitor:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/Monitor'
+      required: true
+    alerting.update_workflow:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/alerting._common.yaml#/components/schemas/Workflow'
+      required: true

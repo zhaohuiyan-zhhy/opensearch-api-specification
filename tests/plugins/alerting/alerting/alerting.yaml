@@ -1,0 +1,770 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test the OpenSearch Alerting API.
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+
+prologues:
+  - path: /alerting-spec-data
+    method: PUT
+    request:
+      payload:
+        mappings:
+          properties:
+            message:
+              type: keyword
+  - path: /alerting-spec-data/_doc
+    method: POST
+    parameters:
+      refresh: true
+    request:
+      payload:
+        message: test
+  - path: /_cat/nodes
+    id: node
+    method: GET
+    parameters:
+      format: json
+      full_id: true
+      h: id
+      size: 1
+    output:
+      id: payload[0].id
+
+chapters:
+  - synopsis: Create a monitor.
+    id: create_monitor
+    path: /_plugins/_alerting/monitors
+    method: POST
+    parameters:
+      refresh: true
+    request:
+      payload:
+        type: monitor
+        schema_version: 0
+        name: alerting-spec-current
+        monitor_type: query_level_monitor
+        enabled: false
+        schedule:
+          period:
+            interval: 5
+            unit: MINUTES
+        inputs:
+          - search:
+              indices: [alerting-spec-data]
+              query:
+                size: 0
+                query:
+                  match_all: {}
+        triggers:
+          - query_level_trigger:
+              id: current-trigger
+              name: always
+              severity: '1'
+              condition:
+                script:
+                  source: return true
+                  lang: painless
+              actions: []
+    response:
+      status: 201
+    output:
+      monitor_id: payload._id
+  - synopsis: Create a monitor with the legacy route.
+    id: create_legacy_monitor
+    path: /_opendistro/_alerting/monitors
+    method: POST
+    parameters:
+      refresh: true
+    request:
+      payload:
+        type: monitor
+        schema_version: 0
+        name: alerting-spec-legacy
+        monitor_type: query_level_monitor
+        enabled: false
+        schedule:
+          period:
+            interval: 5
+            unit: MINUTES
+        inputs:
+          - search:
+              indices: [alerting-spec-data]
+              query:
+                size: 0
+                query:
+                  match_all: {}
+        triggers:
+          - query_level_trigger:
+              id: legacy-trigger
+              name: always
+              severity: '1'
+              condition:
+                script:
+                  source: return true
+                  lang: painless
+              actions: []
+    response:
+      status: 201
+    output:
+      monitor_id: payload._id
+  - synopsis: Search monitors. [GET]
+    path: /_plugins/_alerting/monitors/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search monitors. [POST]
+    path: /_plugins/_alerting/monitors/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search monitors with the legacy route. [GET]
+    path: /_opendistro/_alerting/monitors/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search monitors with the legacy route. [POST]
+    path: /_opendistro/_alerting/monitors/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Get a monitor.
+    path: /_plugins/_alerting/monitors/{monitor_id}
+    method: GET
+    parameters:
+      monitor_id: ${create_monitor.monitor_id}
+    response:
+      status: 200
+  - synopsis: Check whether a monitor exists.
+    path: /_plugins/_alerting/monitors/{monitor_id}
+    method: HEAD
+    parameters:
+      monitor_id: ${create_monitor.monitor_id}
+    response:
+      status: 200
+  - synopsis: Update a monitor.
+    path: /_plugins/_alerting/monitors/{monitor_id}
+    method: PUT
+    parameters:
+      monitor_id: ${create_monitor.monitor_id}
+      refresh: true
+    request:
+      payload:
+        type: monitor
+        schema_version: 0
+        name: alerting-spec-current-updated
+        monitor_type: query_level_monitor
+        enabled: false
+        schedule:
+          period:
+            interval: 5
+            unit: MINUTES
+        inputs:
+          - search:
+              indices: [alerting-spec-data]
+              query:
+                size: 0
+                query:
+                  match_all: {}
+        triggers:
+          - query_level_trigger:
+              id: current-trigger
+              name: always
+              severity: '1'
+              condition:
+                script:
+                  source: return true
+                  lang: painless
+              actions: []
+    response:
+      status: 200
+  - synopsis: Get a monitor with the legacy route.
+    path: /_opendistro/_alerting/monitors/{monitor_id}
+    method: GET
+    parameters:
+      monitor_id: ${create_legacy_monitor.monitor_id}
+    response:
+      status: 200
+  - synopsis: Check whether a monitor exists with the legacy route.
+    path: /_opendistro/_alerting/monitors/{monitor_id}
+    method: HEAD
+    parameters:
+      monitor_id: ${create_legacy_monitor.monitor_id}
+    response:
+      status: 200
+  - synopsis: Update a monitor with the legacy route.
+    path: /_opendistro/_alerting/monitors/{monitor_id}
+    method: PUT
+    parameters:
+      monitor_id: ${create_legacy_monitor.monitor_id}
+      refresh: true
+    request:
+      payload:
+        type: monitor
+        schema_version: 0
+        name: alerting-spec-legacy-updated
+        monitor_type: query_level_monitor
+        enabled: false
+        schedule:
+          period:
+            interval: 5
+            unit: MINUTES
+        inputs:
+          - search:
+              indices: [alerting-spec-data]
+              query:
+                size: 0
+                query:
+                  match_all: {}
+        triggers:
+          - query_level_trigger:
+              id: legacy-trigger
+              name: always
+              severity: '1'
+              condition:
+                script:
+                  source: return true
+                  lang: painless
+              actions: []
+    response:
+      status: 200
+  - synopsis: Execute an inline monitor.
+    path: /_plugins/_alerting/monitors/_execute
+    method: POST
+    parameters:
+      dryrun: true
+    request:
+      payload:
+        type: monitor
+        schema_version: 0
+        name: alerting-spec-inline
+        monitor_type: query_level_monitor
+        enabled: false
+        schedule:
+          period:
+            interval: 5
+            unit: MINUTES
+        inputs:
+          - search:
+              indices: [alerting-spec-data]
+              query:
+                size: 0
+                query:
+                  match_all: {}
+        triggers:
+          - query_level_trigger:
+              id: inline-trigger
+              name: always
+              severity: '1'
+              condition:
+                script:
+                  source: return true
+                  lang: painless
+              actions: []
+    response:
+      status: 200
+  - synopsis: Execute an inline monitor with the legacy route.
+    path: /_opendistro/_alerting/monitors/_execute
+    method: POST
+    parameters:
+      dryrun: true
+    request:
+      payload:
+        type: monitor
+        schema_version: 0
+        name: alerting-spec-inline-legacy
+        monitor_type: query_level_monitor
+        enabled: false
+        schedule:
+          period:
+            interval: 5
+            unit: MINUTES
+        inputs:
+          - search:
+              indices: [alerting-spec-data]
+              query:
+                size: 0
+                query:
+                  match_all: {}
+        triggers:
+          - query_level_trigger:
+              id: inline-legacy-trigger
+              name: always
+              severity: '1'
+              condition:
+                script:
+                  source: return true
+                  lang: painless
+              actions: []
+    response:
+      status: 200
+  - synopsis: Execute a stored monitor.
+    path: /_plugins/_alerting/monitors/{monitor_id}/_execute
+    method: POST
+    parameters:
+      monitor_id: ${create_monitor.monitor_id}
+      dryrun: false
+    response:
+      status: 200
+  - synopsis: Execute a stored monitor with the legacy route.
+    path: /_opendistro/_alerting/monitors/{monitor_id}/_execute
+    method: POST
+    parameters:
+      monitor_id: ${create_legacy_monitor.monitor_id}
+      dryrun: false
+    response:
+      status: 200
+  - synopsis: Get monitor alerts.
+    id: current_alerts
+    path: /_plugins/_alerting/monitors/alerts
+    method: GET
+    parameters:
+      monitorId: ${create_monitor.monitor_id}
+      size: 10
+    response:
+      status: 200
+    output:
+      alert_id: payload.alerts[0].id
+  - synopsis: Get monitor alerts with the legacy route.
+    id: legacy_alerts
+    path: /_opendistro/_alerting/monitors/alerts
+    method: GET
+    parameters:
+      monitorId: ${create_legacy_monitor.monitor_id}
+      size: 10
+    response:
+      status: 200
+    output:
+      alert_id: payload.alerts[0].id
+  - synopsis: Create a comment for an alert.
+    id: create_comment
+    path: /_plugins/_alerting/comments/{id}
+    method: POST
+    parameters:
+      id: ${current_alerts.alert_id}
+    request:
+      payload:
+        content: Alerting spec test comment
+    response:
+      status: 201
+    output:
+      comment_id: payload._id
+  - synopsis: Search comments. [GET]
+    path: /_plugins/_alerting/comments/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search comments. [POST]
+    path: /_plugins/_alerting/comments/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Update a comment.
+    path: /_plugins/_alerting/comments/{id}
+    method: PUT
+    parameters:
+      id: ${create_comment.comment_id}
+    request:
+      payload:
+        content: Updated Alerting spec test comment
+    response:
+      status: 200
+  - synopsis: Delete a comment.
+    path: /_plugins/_alerting/comments/{id}
+    method: DELETE
+    parameters:
+      id: ${create_comment.comment_id}
+    response:
+      status: 200
+  - synopsis: Acknowledge a monitor alert.
+    path: /_plugins/_alerting/monitors/{monitor_id}/_acknowledge/alerts
+    method: POST
+    parameters:
+      monitor_id: ${create_monitor.monitor_id}
+      refresh: true
+    request:
+      payload:
+        alerts:
+          - ${current_alerts.alert_id}
+    response:
+      status: 200
+  - synopsis: Acknowledge a monitor alert with the legacy route.
+    path: /_opendistro/_alerting/monitors/{monitor_id}/_acknowledge/alerts
+    method: POST
+    parameters:
+      monitor_id: ${create_legacy_monitor.monitor_id}
+      refresh: true
+    request:
+      payload:
+        alerts:
+          - ${legacy_alerts.alert_id}
+    response:
+      status: 200
+  - synopsis: Get findings.
+    path: /_plugins/_alerting/findings/_search
+    method: GET
+    parameters:
+      size: 10
+    response:
+      status: 200
+  - synopsis: Get Alerting destinations.
+    path: /_plugins/_alerting/destinations
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get an Alerting destination.
+    path: /_plugins/_alerting/destinations/{destination_id}
+    method: GET
+    parameters:
+      destination_id: no-such-destination
+    response:
+      status: 200
+  - synopsis: Get Alerting destinations with the legacy route.
+    path: /_opendistro/_alerting/destinations
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get an Alerting destination with the legacy route.
+    path: /_opendistro/_alerting/destinations/{destination_id}
+    method: GET
+    parameters:
+      destination_id: no-such-destination
+    response:
+      status: 200
+  - synopsis: Search email accounts. [GET]
+    path: /_plugins/_alerting/destinations/email_accounts/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search email accounts. [POST]
+    path: /_plugins/_alerting/destinations/email_accounts/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search email accounts with the legacy route. [GET]
+    path: /_opendistro/_alerting/destinations/email_accounts/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search email accounts with the legacy route. [POST]
+    path: /_opendistro/_alerting/destinations/email_accounts/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Get a missing email account.
+    path: /_plugins/_alerting/destinations/email_accounts/{email_account_id}
+    method: GET
+    parameters:
+      email_account_id: no-such-account
+    response:
+      status: 404
+  - synopsis: Check for a missing email account.
+    path: /_plugins/_alerting/destinations/email_accounts/{email_account_id}
+    method: HEAD
+    parameters:
+      email_account_id: no-such-account
+    response:
+      status: 404
+  - synopsis: Get a missing email account with the legacy route.
+    path: /_opendistro/_alerting/destinations/email_accounts/{email_account_id}
+    method: GET
+    parameters:
+      email_account_id: no-such-account
+    response:
+      status: 404
+  - synopsis: Check for a missing email account with the legacy route.
+    path: /_opendistro/_alerting/destinations/email_accounts/{email_account_id}
+    method: HEAD
+    parameters:
+      email_account_id: no-such-account
+    response:
+      status: 404
+  - synopsis: Search email groups. [GET]
+    path: /_plugins/_alerting/destinations/email_groups/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search email groups. [POST]
+    path: /_plugins/_alerting/destinations/email_groups/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search email groups with the legacy route. [GET]
+    path: /_opendistro/_alerting/destinations/email_groups/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search email groups with the legacy route. [POST]
+    path: /_opendistro/_alerting/destinations/email_groups/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Get a missing email group.
+    path: /_plugins/_alerting/destinations/email_groups/{email_group_id}
+    method: GET
+    parameters:
+      email_group_id: no-such-group
+    response:
+      status: 404
+  - synopsis: Check for a missing email group.
+    path: /_plugins/_alerting/destinations/email_groups/{email_group_id}
+    method: HEAD
+    parameters:
+      email_group_id: no-such-group
+    response:
+      status: 404
+  - synopsis: Get a missing email group with the legacy route.
+    path: /_opendistro/_alerting/destinations/email_groups/{email_group_id}
+    method: GET
+    parameters:
+      email_group_id: no-such-group
+    response:
+      status: 404
+  - synopsis: Check for a missing email group with the legacy route.
+    path: /_opendistro/_alerting/destinations/email_groups/{email_group_id}
+    method: HEAD
+    parameters:
+      email_group_id: no-such-group
+    response:
+      status: 404
+  - synopsis: Get remote indexes.
+    path: /_plugins/_alerting/remote/indexes
+    method: GET
+    parameters:
+      include_mappings: true
+      indexes:
+        - alerting-spec-data
+    response:
+      status: 200
+  - synopsis: Get Alerting statistics.
+    path: /_plugins/_alerting/stats/
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get selected Alerting statistics.
+    path: /_plugins/_alerting/stats/{metric}
+    method: GET
+    parameters:
+      metric: _all
+    response:
+      status: 200
+  - synopsis: Get Alerting node statistics.
+    path: /_plugins/_alerting/{node_id}/stats/
+    method: GET
+    parameters:
+      node_id: ${node.id}
+    response:
+      status: 200
+  - synopsis: Get selected Alerting node statistics.
+    path: /_plugins/_alerting/{node_id}/stats/{metric}
+    method: GET
+    parameters:
+      node_id: ${node.id}
+      metric: _all
+    response:
+      status: 200
+  - synopsis: Get Alerting statistics with the legacy route.
+    path: /_opendistro/_alerting/stats/
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get selected Alerting statistics with the legacy route.
+    path: /_opendistro/_alerting/stats/{metric}
+    method: GET
+    parameters:
+      metric: _all
+    response:
+      status: 200
+  - synopsis: Get Alerting node statistics with the legacy route.
+    path: /_opendistro/_alerting/{node_id}/stats/
+    method: GET
+    parameters:
+      node_id: ${node.id}
+    response:
+      status: 200
+  - synopsis: Get selected Alerting node statistics with the legacy route.
+    path: /_opendistro/_alerting/{node_id}/stats/{metric}
+    method: GET
+    parameters:
+      node_id: ${node.id}
+      metric: _all
+    response:
+      status: 200
+  - synopsis: Create a workflow.
+    id: create_workflow
+    path: /_plugins/_alerting/workflows
+    method: POST
+    parameters:
+      refresh: true
+    request:
+      payload:
+        type: workflow
+        schema_version: 0
+        name: alerting-spec-workflow
+        workflow_type: composite
+        enabled: false
+        schedule:
+          period:
+            interval: 5
+            unit: MINUTES
+        inputs:
+          - composite_input:
+              sequence:
+                delegates:
+                  - order: 1
+                    monitor_id: ${create_monitor.monitor_id}
+        triggers: []
+        audit_delegate_monitor_alerts: true
+    response:
+      status: 201
+    output:
+      workflow_id: payload._id
+  - synopsis: Get a workflow.
+    path: /_plugins/_alerting/workflows/{workflow_id}
+    method: GET
+    parameters:
+      workflow_id: ${create_workflow.workflow_id}
+    response:
+      status: 200
+  - synopsis: Update a workflow.
+    path: /_plugins/_alerting/workflows/{workflow_id}
+    method: PUT
+    parameters:
+      workflow_id: ${create_workflow.workflow_id}
+      refresh: true
+    request:
+      payload:
+        type: workflow
+        schema_version: 0
+        name: alerting-spec-workflow-updated
+        workflow_type: composite
+        enabled: false
+        schedule:
+          period:
+            interval: 5
+            unit: MINUTES
+        inputs:
+          - composite_input:
+              sequence:
+                delegates:
+                  - order: 1
+                    monitor_id: ${create_monitor.monitor_id}
+        triggers: []
+        audit_delegate_monitor_alerts: true
+    response:
+      status: 200
+  - synopsis: Execute a workflow.
+    path: /_plugins/_alerting/workflows/{workflow_id}/_execute
+    method: POST
+    parameters:
+      workflow_id: ${create_workflow.workflow_id}
+      dryrun: false
+    response:
+      status: 200
+  - synopsis: Get workflow alerts.
+    id: workflow_alerts
+    path: /_plugins/_alerting/workflows/alerts
+    method: GET
+    parameters:
+      size: 10
+    response:
+      status: 200
+    output:
+      alert_id: payload.alerts[0].id
+  - synopsis: Acknowledge workflow alerts.
+    path: /_plugins/_alerting/workflows/{workflow_id}/_acknowledge/alerts
+    method: POST
+    parameters:
+      workflow_id: ${create_workflow.workflow_id}
+    request:
+      payload:
+        alerts:
+          - ${workflow_alerts.alert_id}
+    response:
+      status: 200
+  - synopsis: Delete a workflow.
+    path: /_plugins/_alerting/workflows/{workflow_id}
+    method: DELETE
+    parameters:
+      workflow_id: ${create_workflow.workflow_id}
+      refresh: true
+    response:
+      status: 200
+  - synopsis: Delete a monitor.
+    path: /_plugins/_alerting/monitors/{monitor_id}
+    method: DELETE
+    parameters:
+      monitor_id: ${create_monitor.monitor_id}
+      refresh: true
+    response:
+      status: 200
+  - synopsis: Delete a monitor with the legacy route.
+    path: /_opendistro/_alerting/monitors/{monitor_id}
+    method: DELETE
+    parameters:
+      monitor_id: ${create_legacy_monitor.monitor_id}
+      refresh: true
+    response:
+      status: 200
+
+epilogues:
+  - path: /alerting-spec-data
+    method: DELETE
+    status: [200, 404]

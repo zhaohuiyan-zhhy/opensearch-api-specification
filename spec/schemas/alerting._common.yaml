@@ -1,0 +1,1106 @@
+openapi: 3.1.0
+info:
+  title: Schemas of `alerting._common` Category
+  description: Schemas of `alerting._common` category.
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    AcknowledgeAlertFailure:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/AcknowledgeAlertFailureDetail'
+
+    AcknowledgeAlertFailureDetail:
+      type: object
+      properties:
+        failed_reason:
+          type: string
+      required:
+        - failed_reason
+
+    AcknowledgeAlertsRequest:
+      type: object
+      properties:
+        alerts:
+          type: array
+          minItems: 1
+          items:
+            type: string
+      required:
+        - alerts
+
+    AcknowledgeAlertsResponse:
+      type: object
+      properties:
+        success:
+          type: array
+          items:
+            type: string
+        failed:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcknowledgeAlertFailure'
+      required:
+        - failed
+        - success
+
+    Alert:
+      type: object
+      properties:
+        id:
+          type: string
+        version:
+          type: integer
+          format: int64
+        monitor_id:
+          type: string
+        workflow_id:
+          type: string
+        workflow_name:
+          type: string
+        associated_alert_ids:
+          type: array
+          items:
+            type: string
+        schema_version:
+          type: integer
+        monitor_version:
+          type: integer
+          format: int64
+        monitor_name:
+          type: string
+        execution_id:
+          type: ['null', string]
+        trigger_id:
+          type: string
+        trigger_name:
+          type: string
+        finding_ids:
+          type: array
+          items:
+            type: string
+        related_doc_ids:
+          type: array
+          items:
+            type: string
+        state:
+          $ref: '#/components/schemas/AlertState'
+        error_message:
+          type: ['null', string]
+        alert_history:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingObject'
+        severity:
+          type: string
+        action_execution_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingObject'
+        start_time:
+          type: integer
+          format: int64
+        last_notification_time:
+          type: [integer,'null']
+          format: int64
+        end_time:
+          type: [integer,'null']
+          format: int64
+        acknowledged_time:
+          type: [integer,'null']
+          format: int64
+        clusters:
+          type: array
+          items:
+            type: string
+        target:
+          $ref: '#/components/schemas/AlertingObject'
+        query:
+          type: string
+        query_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingObject'
+
+    AlertingError:
+      type: object
+      additionalProperties: true
+
+    AlertingJobInfo:
+      type: object
+      properties:
+        last_execution_time:
+          type: string
+        last_execution_time_in_millis:
+          type: integer
+          format: int64
+        running_on_time:
+          type: boolean
+
+    AlertingJobsInfo:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/AlertingJobInfo'
+
+    AlertingJobSchedulingMetrics:
+      type: object
+      properties:
+        last_full_sweep_time_millis:
+          type: integer
+          format: int64
+        full_sweep_on_time:
+          type: boolean
+
+    AlertingNodeStats:
+      type: object
+      properties:
+        name:
+          type: string
+        schedule_status:
+          $ref: '#/components/schemas/AlertingScheduleStatus'
+        roles:
+          type: array
+          items:
+            type: string
+        job_scheduling_metrics:
+          $ref: '#/components/schemas/AlertingJobSchedulingMetrics'
+        jobs_info:
+          $ref: '#/components/schemas/AlertingJobsInfo'
+
+    AlertingNodes:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/AlertingNodeStats'
+
+    AlertingNodesSummary:
+      type: object
+      properties:
+        total:
+          type: integer
+        successful:
+          type: integer
+        failed:
+          type: integer
+
+    AlertingObject:
+      type: object
+      additionalProperties: true
+
+    AlertingScheduleStatus:
+      type: string
+      enum:
+        - green
+        - red
+
+    AlertingSearchRequest:
+      description: A search body parsed by OpenSearch `SearchSourceBuilder`.
+      type: object
+      properties:
+        _source:
+          $ref: '_core.search.yaml#/components/schemas/SourceConfig'
+        from:
+          type: integer
+          minimum: 0
+        query:
+          $ref: '_common.query_dsl.yaml#/components/schemas/QueryContainer'
+        seq_no_primary_term:
+          type: boolean
+        size:
+          type: integer
+          minimum: 0
+        sort:
+          oneOf:
+            - type: string
+            - type: array
+              items: {}
+        timeout:
+          $ref: '_common.yaml#/components/schemas/Duration'
+        track_scores:
+          type: boolean
+        track_total_hits:
+          oneOf:
+            - type: boolean
+            - type: integer
+              minimum: 0
+        version:
+          type: boolean
+      additionalProperties: true
+
+    AlertingStatsResponse:
+      type: object
+      properties:
+        _nodes:
+          $ref: '#/components/schemas/AlertingNodesSummary'
+        cluster_name:
+          type: string
+        opendistro.scheduled_jobs.enabled:
+          type: boolean
+        plugins.scheduled_jobs.enabled:
+          type: boolean
+        scheduled_job_index_exists:
+          type: [boolean,'null']
+        scheduled_job_index_status:
+          type: ['null', string]
+        nodes_on_schedule:
+          type: integer
+        nodes_not_on_schedule:
+          type: integer
+        nodes:
+          $ref: '#/components/schemas/AlertingNodes'
+
+    AssociatedWorkflow:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+        - id
+        - name
+
+    AlertState:
+      type: string
+      enum:
+        - ACKNOWLEDGED
+        - ACTIVE
+        - AUDIT
+        - COMPLETED
+        - DELETED
+        - ERROR
+
+    ClusterHealth:
+      type: string
+      enum:
+        - GREEN
+        - RED
+        - YELLOW
+
+    Comment:
+      type: object
+      properties:
+        entity_id:
+          type: string
+        entity_type:
+          type: string
+        content:
+          type: string
+        created_time:
+          type: integer
+          format: int64
+        last_updated_time:
+          type: [integer,'null']
+          format: int64
+        user:
+          type: ['null', string]
+      required:
+        - content
+        - created_time
+        - entity_id
+        - entity_type
+
+    CommentRequest:
+      type: object
+      properties:
+        content:
+          type: string
+          minLength: 1
+      required:
+        - content
+
+    CronSchedule:
+      type: object
+      properties:
+        cron:
+          $ref: '#/components/schemas/CronScheduleDefinition'
+      required:
+        - cron
+
+    CronScheduleDefinition:
+      type: object
+      properties:
+        expression:
+          type: string
+        timezone:
+          type: string
+      required:
+        - expression
+        - timezone
+
+    Chime:
+      type: object
+      properties:
+        url:
+          type: string
+      required:
+        - url
+
+    CustomWebhook:
+      type: object
+      properties:
+        url:
+          type: ['null', string]
+        scheme:
+          type: ['null', string]
+        host:
+          type: ['null', string]
+        port:
+          type: integer
+        path:
+          type: ['null', string]
+        method:
+          type: ['null', string]
+        query_params:
+          type: object
+          additionalProperties:
+            type: string
+        header_params:
+          type: object
+          additionalProperties:
+            type: string
+        username:
+          type: ['null', string]
+        password:
+          type: ['null', string]
+
+    Destination:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          $ref: '#/components/schemas/DestinationType'
+        name:
+          type: string
+        schema_version:
+          type: integer
+        seq_no:
+          type: integer
+        primary_term:
+          type: integer
+        last_update_time:
+          type: integer
+          format: int64
+        chime:
+          $ref: '#/components/schemas/Chime'
+        slack:
+          $ref: '#/components/schemas/Slack'
+        custom_webhook:
+          $ref: '#/components/schemas/CustomWebhook'
+        email:
+          $ref: '#/components/schemas/EmailDestination'
+      required:
+        - id
+        - last_update_time
+        - name
+        - primary_term
+        - schema_version
+        - seq_no
+        - type
+
+    DestinationType:
+      type: string
+      enum:
+        - chime
+        - custom_webhook
+        - email
+        - slack
+        - test_action
+
+    DataSources:
+      type: object
+      properties:
+        query_index:
+          type: string
+        findings_index:
+          type: string
+        findings_index_pattern:
+          type: ['null', string]
+        alerts_index:
+          type: string
+        alerts_history_index:
+          type: ['null', string]
+        alerts_history_index_pattern:
+          type: ['null', string]
+        comments_index:
+          type: ['null', string]
+        comments_index_pattern:
+          type: ['null', string]
+        query_index_mappings_by_type:
+          type: object
+          additionalProperties:
+            type: object
+            additionalProperties:
+              type: string
+        findings_enabled:
+          type: [boolean,'null']
+
+    DeleteCommentResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+      required:
+        - _id
+
+    DeleteMonitorResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+      required:
+        - _id
+        - _version
+
+    DeleteWorkflowResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        NON_DELETED_MONITORS:
+          type: [array,'null']
+          items:
+            type: string
+      required:
+        - _id
+        - _version
+
+    DocLevelQuery:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        fields:
+          type: array
+          items:
+            type: string
+        query:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        query_field_names:
+          type: array
+          items:
+            type: string
+
+    EmailAccount:
+      type: object
+      properties:
+        schema_version:
+          type: integer
+        name:
+          type: string
+          pattern: '^[A-Za-z0-9_]+$'
+        email:
+          type: string
+        host:
+          type: string
+        port:
+          type: integer
+        method:
+          $ref: '#/components/schemas/EmailAccountMethod'
+      required:
+        - email
+        - host
+        - method
+        - name
+        - port
+        - schema_version
+
+    EmailAccountMethod:
+      type: string
+      enum:
+        - none
+        - ssl
+        - starttls
+
+    EmailDestination:
+      type: object
+      properties:
+        email_account_id:
+          type: string
+        recipients:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/EmailRecipient'
+      required:
+        - email_account_id
+        - recipients
+
+    EmailEntry:
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+        - email
+
+    EmailGroup:
+      type: object
+      properties:
+        schema_version:
+          type: integer
+        name:
+          type: string
+          pattern: '^[A-Za-z0-9_-]+$'
+        emails:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailEntry'
+      required:
+        - emails
+        - name
+        - schema_version
+
+    EmailRecipient:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/EmailRecipientType'
+        email_group_id:
+          type: ['null', string]
+        email:
+          type: ['null', string]
+      required:
+        - type
+
+    EmailRecipientType:
+      type: string
+      enum:
+        - email
+        - email_group
+
+    Finding:
+      type: object
+      properties:
+        id:
+          type: string
+        related_doc_ids:
+          type: array
+          items:
+            type: string
+        correlated_doc_ids:
+          type: array
+          items:
+            type: string
+        monitor_id:
+          type: string
+        monitor_name:
+          type: string
+        index:
+          type: string
+        queries:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocLevelQuery'
+        timestamp:
+          type: integer
+          format: int64
+        execution_id:
+          type: ['null', string]
+
+    FindingDocument:
+      type: object
+      properties:
+        index:
+          type: string
+        id:
+          type: string
+        found:
+          type: boolean
+        document:
+          type: string
+
+    FindingWithDocs:
+      type: object
+      properties:
+        finding:
+          $ref: '#/components/schemas/Finding'
+        document_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/FindingDocument'
+
+    GetAlertsResponse:
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+        associatedAlerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+        totalAlerts:
+          type: [integer,'null']
+
+    GetDestinationsResponse:
+      type: object
+      properties:
+        totalDestinations:
+          type: [integer,'null']
+        destinations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Destination'
+      required:
+        - destinations
+        - totalDestinations
+
+    GetEmailAccountResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        _seq_no:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+        email_account:
+          $ref: '#/components/schemas/EmailAccount'
+      required:
+        - _id
+        - _primary_term
+        - _seq_no
+        - _version
+
+    GetEmailGroupResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        _seq_no:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+        email_group:
+          $ref: '#/components/schemas/EmailGroup'
+      required:
+        - _id
+        - _primary_term
+        - _seq_no
+        - _version
+
+    GetMonitorResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        _seq_no:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+        monitor:
+          $ref: '#/components/schemas/Monitor'
+        associated_workflows:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssociatedWorkflow'
+      required:
+        - _id
+        - _primary_term
+        - _seq_no
+        - _version
+
+    GetWorkflowResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        _seq_no:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+        workflow:
+          $ref: '#/components/schemas/Workflow'
+      required:
+        - _id
+        - _primary_term
+        - _seq_no
+        - _version
+
+    GetFindingsResponse:
+      type: object
+      properties:
+        total_findings:
+          type: [integer,'null']
+        findings:
+          type: array
+          items:
+            $ref: '#/components/schemas/FindingWithDocs'
+
+    GetRemoteIndexesResponse:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/RemoteClusterIndexes'
+
+    IndexCommentResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _seq_no:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+        comment:
+          $ref: '#/components/schemas/Comment'
+      required:
+        - _id
+        - _primary_term
+        - _seq_no
+        - comment
+
+    IndexMonitorResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        _seq_no:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+        monitor:
+          $ref: '#/components/schemas/Monitor'
+      required:
+        - _id
+        - _primary_term
+        - _seq_no
+        - _version
+        - monitor
+
+    IndexWorkflowResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        _seq_no:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+        workflow:
+          $ref: '#/components/schemas/Workflow'
+      required:
+        - _id
+        - _primary_term
+        - _seq_no
+        - _version
+        - workflow
+
+    InputRunResults:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingObject'
+        ppl_query_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingObject'
+        ppl_num_results:
+          type: [integer,'null']
+          format: int64
+        error:
+          type: ['null', string]
+
+    IntervalSchedule:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/IntervalScheduleDefinition'
+      required:
+        - period
+
+    IntervalScheduleDefinition:
+      type: object
+      properties:
+        interval:
+          type: integer
+          minimum: 1
+        unit:
+          type: string
+      required:
+        - interval
+        - unit
+
+    Monitor:
+      type: object
+      properties:
+        type:
+          type: string
+          const: monitor
+        schema_version:
+          type: integer
+        name:
+          type: string
+        monitor_type:
+          $ref: '#/components/schemas/MonitorType'
+        enabled:
+          type: boolean
+        enabled_time:
+          type: [integer,'null']
+          format: int64
+        schedule:
+          $ref: '#/components/schemas/Schedule'
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingObject'
+        triggers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingObject'
+        last_update_time:
+          type: integer
+          format: int64
+        ui_metadata:
+          $ref: '#/components/schemas/AlertingObject'
+        data_sources:
+          $ref: '#/components/schemas/DataSources'
+        delete_query_index_in_every_run:
+          type: [boolean,'null']
+        should_create_single_alert_for_findings:
+          type: [boolean,'null']
+        owner:
+          type: ['null', string]
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+        target:
+          $ref: '#/components/schemas/Target'
+        rbac_roles:
+          type: array
+          items:
+            type: string
+      required:
+        - enabled
+        - inputs
+        - monitor_type
+        - name
+        - schedule
+        - triggers
+
+    MonitorRunResult:
+      type: object
+      properties:
+        monitor_name:
+          type: string
+        period_start:
+          type: integer
+          format: int64
+        period_end:
+          type: integer
+          format: int64
+        error:
+          type: ['null', string]
+        input_results:
+          $ref: '#/components/schemas/InputRunResults'
+        trigger_results:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AlertingObject'
+      required:
+        - input_results
+        - monitor_name
+        - period_end
+        - period_start
+        - trigger_results
+
+    MonitorType:
+      type: string
+      enum:
+        - bucket_level_monitor
+        - cluster_metrics_monitor
+        - doc_level_monitor
+        - ppl_monitor
+        - query_level_monitor
+
+    RemoteClusterIndexes:
+      type: object
+      properties:
+        cluster:
+          type: string
+        health:
+          $ref: '#/components/schemas/ClusterHealth'
+        hub_cluster:
+          type: boolean
+        latency:
+          type: integer
+          format: int64
+        indexes:
+          $ref: '#/components/schemas/RemoteIndexes'
+
+    RemoteIndex:
+      type: object
+      properties:
+        name:
+          type: string
+        health:
+          $ref: '#/components/schemas/ClusterHealth'
+        mappings:
+          $ref: '#/components/schemas/AlertingObject'
+
+    RemoteIndexes:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/RemoteIndex'
+
+    Schedule:
+      oneOf:
+        - $ref: '#/components/schemas/CronSchedule'
+        - $ref: '#/components/schemas/IntervalSchedule'
+
+    Slack:
+      type: object
+      properties:
+        url:
+          type: string
+      required:
+        - url
+
+    SortOrder:
+      type: string
+      enum:
+        - asc
+        - desc
+      default: asc
+
+    Target:
+      type: object
+      properties:
+        type:
+          type: string
+          default: local
+        endpoint:
+          type: string
+        arn:
+          type: string
+      required:
+        - type
+
+    Workflow:
+      type: object
+      properties:
+        type:
+          type: string
+          const: workflow
+        schema_version:
+          type: integer
+        name:
+          type: string
+        workflow_type:
+          type: string
+          const: composite
+        enabled:
+          type: boolean
+        enabled_time:
+          type: [integer,'null']
+          format: int64
+        schedule:
+          $ref: '#/components/schemas/Schedule'
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingObject'
+        triggers:
+          type: array
+          items:
+            $ref: '#/components/schemas/AlertingObject'
+        last_update_time:
+          type: integer
+          format: int64
+        owner:
+          type: ['null', string]
+        audit_delegate_monitor_alerts:
+          type: [boolean,'null']
+        rbac_roles:
+          type: array
+          items:
+            type: string
+      required:
+        - enabled
+        - inputs
+        - name
+        - schedule
+        - triggers
+        - workflow_type
+
+    WorkflowRunResult:
+      type: object
+      properties:
+        execution_id:
+          type: string
+        workflow_name:
+          type: string
+        workflow_id:
+          type: string
+        trigger_results:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AlertingObject'
+        monitor_run_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/MonitorRunResult'
+        execution_start_time:
+          type: string
+          format: date-time
+        execution_end_time:
+          type: ['null', string]
+          format: date-time
+        error:
+          type: ['null', string]
+      required:
+        - execution_id
+        - execution_start_time
+        - monitor_run_results
+        - trigger_results
+        - workflow_id
+        - workflow_name

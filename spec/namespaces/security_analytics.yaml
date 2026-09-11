@@ -72,6 +72,551 @@ paths:
         '200':
           $ref: '#/components/responses/security_analytics.search_finding_correlations@200'
 
+  /_plugins/_security_analytics/_acknowledge/correlationAlerts:
+    post:
+      operationId: security_analytics.acknowledge_correlation_alerts.0
+      x-operation-group: security_analytics.acknowledge_correlation_alerts
+      description: Acknowledges correlation alerts.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.acknowledge_correlation_alerts'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.acknowledge_correlation_alerts@200'
+
+  /_plugins/_security_analytics/connections/s3/test:
+    post:
+      operationId: security_analytics.test_s3_connection.0
+      x-operation-group: security_analytics.test_s3_connection
+      description: Tests access to an Amazon S3 threat intelligence source.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.test_s3_connection'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.test_s3_connection@200'
+        '400':
+          $ref: '#/components/responses/security_analytics.test_s3_connection@400'
+
+  /_plugins/_security_analytics/correlation/rules:
+    post:
+      operationId: security_analytics.create_correlation_rule.0
+      x-operation-group: security_analytics.create_correlation_rule
+      description: Creates a correlation rule.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.create_correlation_rule'
+      responses:
+        '201':
+          $ref: '#/components/responses/security_analytics.create_correlation_rule@201'
+
+  /_plugins/_security_analytics/correlation/rules/_search:
+    post:
+      operationId: security_analytics.search_correlation_rules.0
+      x-operation-group: security_analytics.search_correlation_rules
+      description: Searches correlation rules.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.search_correlation_rules'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.search_correlation_rules@200'
+
+  /_plugins/_security_analytics/correlation/rules/{correlation_rule_id}:
+    put:
+      operationId: security_analytics.update_correlation_rule.0
+      x-operation-group: security_analytics.update_correlation_rule
+      description: Updates a correlation rule.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.update_correlation_rule::path.correlation_rule_id'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.update_correlation_rule'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.update_correlation_rule@200'
+    delete:
+      operationId: security_analytics.delete_correlation_rule.0
+      x-operation-group: security_analytics.delete_correlation_rule
+      description: Deletes a correlation rule.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.delete_correlation_rule::path.correlation_rule_id'
+        - $ref: '#/components/parameters/security_analytics.delete_correlation_rule::query.refresh'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.delete_correlation_rule@200'
+
+  /_plugins/_security_analytics/correlationAlerts:
+    get:
+      operationId: security_analytics.get_correlation_alerts.0
+      x-operation-group: security_analytics.get_correlation_alerts
+      description: Retrieves correlation alerts.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.alertState'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.correlation_rule_id'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.correlation_rule_name'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.endTime'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.missing'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.searchString'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.severityLevel'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.size'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.sortOrder'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.sortString'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.startIndex'
+        - $ref: '#/components/parameters/security_analytics.get_correlation_alerts::query.startTime'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.get_correlation_alerts@200'
+
+  /_plugins/_security_analytics/correlations:
+    get:
+      operationId: security_analytics.list_correlations.0
+      x-operation-group: security_analytics.list_correlations
+      description: Lists finding correlations in a time range.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.list_correlations::query.end_timestamp'
+        - $ref: '#/components/parameters/security_analytics.list_correlations::query.start_timestamp'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.list_correlations@200'
+
+  /_plugins/_security_analytics/detectors:
+    post:
+      operationId: security_analytics.create_detector.0
+      x-operation-group: security_analytics.create_detector
+      description: Creates a Security Analytics detector.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.create_detector::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.create_detector'
+      responses:
+        '201':
+          $ref: '#/components/responses/security_analytics.create_detector@201'
+
+  /_plugins/_security_analytics/detectors/_search:
+    post:
+      operationId: security_analytics.search_detectors.0
+      x-operation-group: security_analytics.search_detectors
+      description: Searches Security Analytics detectors.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.search_detectors'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.search_detectors@200'
+
+  /_plugins/_security_analytics/detectors/{detector_id}:
+    get:
+      operationId: security_analytics.get_detector.0
+      x-operation-group: security_analytics.get_detector
+      description: Retrieves a Security Analytics detector.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.get_detector::path.detector_id'
+        - $ref: '#/components/parameters/security_analytics.get_detector::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.get_detector@200'
+        '404':
+          $ref: '#/components/responses/security_analytics.get_detector@404'
+    put:
+      operationId: security_analytics.update_detector.0
+      x-operation-group: security_analytics.update_detector
+      description: Updates a Security Analytics detector.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.update_detector::path.detector_id'
+        - $ref: '#/components/parameters/security_analytics.update_detector::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.update_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.update_detector@200'
+    delete:
+      operationId: security_analytics.delete_detector.0
+      x-operation-group: security_analytics.delete_detector
+      description: Deletes a Security Analytics detector.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.delete_detector::path.detector_id'
+        - $ref: '#/components/parameters/security_analytics.delete_detector::query.refresh'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.delete_detector@200'
+
+  /_plugins/_security_analytics/detectors/{detector_id}/_acknowledge/alerts:
+    post:
+      operationId: security_analytics.acknowledge_alerts.0
+      x-operation-group: security_analytics.acknowledge_alerts
+      description: Acknowledges alerts generated by a detector.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.acknowledge_alerts::path.detector_id'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.acknowledge_alerts'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.acknowledge_alerts@200'
+
+  /_plugins/_security_analytics/logtype:
+    post:
+      operationId: security_analytics.create_log_type.0
+      x-operation-group: security_analytics.create_log_type
+      description: Creates a custom log type.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.create_log_type::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.create_log_type'
+      responses:
+        '201':
+          $ref: '#/components/responses/security_analytics.create_log_type@201'
+
+  /_plugins/_security_analytics/logtype/_search:
+    get:
+      operationId: security_analytics.search_log_types.0
+      x-operation-group: security_analytics.search_log_types
+      description: Searches custom log types.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.search_log_types'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.search_log_types@200'
+    post:
+      operationId: security_analytics.search_log_types.1
+      x-operation-group: security_analytics.search_log_types
+      description: Searches custom log types.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.search_log_types'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.search_log_types@200'
+
+  /_plugins/_security_analytics/logtype/{custom_logtype_id}:
+    put:
+      operationId: security_analytics.update_log_type.0
+      x-operation-group: security_analytics.update_log_type
+      description: Updates a custom log type.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.update_log_type::path.custom_logtype_id'
+        - $ref: '#/components/parameters/security_analytics.update_log_type::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.update_log_type'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.update_log_type@200'
+    delete:
+      operationId: security_analytics.delete_log_type.0
+      x-operation-group: security_analytics.delete_log_type
+      description: Deletes a custom log type.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.delete_log_type::path.custom_logtype_id'
+        - $ref: '#/components/parameters/security_analytics.delete_log_type::query.refresh'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.delete_log_type@200'
+
+  /_plugins/_security_analytics/mappings:
+    get:
+      operationId: security_analytics.get_index_mappings.0
+      x-operation-group: security_analytics.get_index_mappings
+      description: Retrieves index mappings.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.get_index_mappings::query.index_name'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.get_index_mappings'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.get_index_mappings@200'
+    post:
+      operationId: security_analytics.create_index_mappings.0
+      x-operation-group: security_analytics.create_index_mappings
+      description: Creates Security Analytics aliases in an index mapping.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.create_index_mappings::query.alias_mappings'
+        - $ref: '#/components/parameters/security_analytics.create_index_mappings::query.index_name'
+        - $ref: '#/components/parameters/security_analytics.create_index_mappings::query.partial'
+        - $ref: '#/components/parameters/security_analytics.create_index_mappings::query.rule_topic'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.create_index_mappings'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.create_index_mappings@200'
+    put:
+      operationId: security_analytics.update_index_mappings.0
+      x-operation-group: security_analytics.update_index_mappings
+      description: Adds or updates an alias in an index mapping.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.update_index_mappings::query.alias'
+        - $ref: '#/components/parameters/security_analytics.update_index_mappings::query.field'
+        - $ref: '#/components/parameters/security_analytics.update_index_mappings::query.index_name'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.update_index_mappings'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.update_index_mappings@200'
+
+  /_plugins/_security_analytics/mappings/view:
+    get:
+      operationId: security_analytics.get_mappings_view.0
+      x-operation-group: security_analytics.get_mappings_view
+      description: Retrieves the mapping view for an index and rule topic.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.get_mappings_view::query.index_name'
+        - $ref: '#/components/parameters/security_analytics.get_mappings_view::query.rule_topic'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.get_mappings_view'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.get_mappings_view@200'
+
+  /_plugins/_security_analytics/rules:
+    post:
+      operationId: security_analytics.create_rule.0
+      x-operation-group: security_analytics.create_rule
+      description: Creates a custom Sigma rule.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.create_rule::query.category'
+        - $ref: '#/components/parameters/security_analytics.create_rule::query.forced'
+        - $ref: '#/components/parameters/security_analytics.create_rule::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.create_rule'
+      responses:
+        '201':
+          $ref: '#/components/responses/security_analytics.create_rule@201'
+
+  /_plugins/_security_analytics/rules/_search:
+    post:
+      operationId: security_analytics.search_rules.0
+      x-operation-group: security_analytics.search_rules
+      description: Searches prepackaged or custom rules.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.search_rules::query.pre_packaged'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.search_rules'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.search_rules@200'
+        '408':
+          $ref: '#/components/responses/security_analytics.search_rules@408'
+
+  /_plugins/_security_analytics/rules/categories:
+    get:
+      operationId: security_analytics.get_rule_categories.0
+      x-operation-group: security_analytics.get_rule_categories
+      description: Retrieves all supported rule categories.
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.get_rule_categories@200'
+
+  /_plugins/_security_analytics/rules/validate:
+    post:
+      operationId: security_analytics.validate_rules.0
+      x-operation-group: security_analytics.validate_rules
+      description: Validates rules against fields available in an index.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.validate_rules'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.validate_rules@200'
+
+  /_plugins/_security_analytics/rules/{rule_id}:
+    put:
+      operationId: security_analytics.update_rule.0
+      x-operation-group: security_analytics.update_rule
+      description: Updates a custom Sigma rule.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.update_rule::path.rule_id'
+        - $ref: '#/components/parameters/security_analytics.update_rule::query.category'
+        - $ref: '#/components/parameters/security_analytics.update_rule::query.forced'
+        - $ref: '#/components/parameters/security_analytics.update_rule::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.update_rule'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.update_rule@200'
+    delete:
+      operationId: security_analytics.delete_rule.0
+      x-operation-group: security_analytics.delete_rule
+      description: Deletes a custom Sigma rule.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.delete_rule::path.rule_id'
+        - $ref: '#/components/parameters/security_analytics.delete_rule::query.forced'
+        - $ref: '#/components/parameters/security_analytics.delete_rule::query.refresh'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.delete_rule@200'
+
+  /_plugins/_security_analytics/threat_intel/alerts:
+    get:
+      operationId: security_analytics.get_threat_intel_alerts.0
+      x-operation-group: security_analytics.get_threat_intel_alerts
+      description: Retrieves threat intelligence alerts.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_alerts::query.alertState'
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_alerts::query.endTime'
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_alerts::query.missing'
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_alerts::query.searchString'
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_alerts::query.severityLevel'
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_alerts::query.size'
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_alerts::query.sortOrder'
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_alerts::query.sortString'
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_alerts::query.startIndex'
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_alerts::query.startTime'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.get_threat_intel_alerts@200'
+
+  /_plugins/_security_analytics/threat_intel/alerts/status:
+    put:
+      operationId: security_analytics.update_threat_intel_alerts_status.0
+      x-operation-group: security_analytics.update_threat_intel_alerts_status
+      description: Updates the state of threat intelligence alerts.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.update_threat_intel_alerts_status::query.alert_ids'
+        - $ref: '#/components/parameters/security_analytics.update_threat_intel_alerts_status::query.state'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.update_threat_intel_alerts_status@200'
+
+  /_plugins/_security_analytics/threat_intel/findings/_search:
+    get:
+      operationId: security_analytics.get_ioc_findings.0
+      x-operation-group: security_analytics.get_ioc_findings
+      description: Retrieves threat intelligence IOC findings.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.get_ioc_findings::query.endTime'
+        - $ref: '#/components/parameters/security_analytics.get_ioc_findings::query.findingIds'
+        - $ref: '#/components/parameters/security_analytics.get_ioc_findings::query.iocIds'
+        - $ref: '#/components/parameters/security_analytics.get_ioc_findings::query.missing'
+        - $ref: '#/components/parameters/security_analytics.get_ioc_findings::query.searchString'
+        - $ref: '#/components/parameters/security_analytics.get_ioc_findings::query.size'
+        - $ref: '#/components/parameters/security_analytics.get_ioc_findings::query.sortOrder'
+        - $ref: '#/components/parameters/security_analytics.get_ioc_findings::query.sortString'
+        - $ref: '#/components/parameters/security_analytics.get_ioc_findings::query.startIndex'
+        - $ref: '#/components/parameters/security_analytics.get_ioc_findings::query.startTime'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.get_ioc_findings@200'
+
+  /_plugins/_security_analytics/threat_intel/iocs:
+    get:
+      operationId: security_analytics.list_iocs.0
+      x-operation-group: security_analytics.list_iocs
+      description: Lists indicators of compromise.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.list_iocs::query.feed_ids'
+        - $ref: '#/components/parameters/security_analytics.list_iocs::query.missing'
+        - $ref: '#/components/parameters/security_analytics.list_iocs::query.searchString'
+        - $ref: '#/components/parameters/security_analytics.list_iocs::query.size'
+        - $ref: '#/components/parameters/security_analytics.list_iocs::query.sortOrder'
+        - $ref: '#/components/parameters/security_analytics.list_iocs::query.sortString'
+        - $ref: '#/components/parameters/security_analytics.list_iocs::query.startIndex'
+        - $ref: '#/components/parameters/security_analytics.list_iocs::query.type'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.list_iocs@200'
+
+  /_plugins/_security_analytics/threat_intel/monitors:
+    post:
+      operationId: security_analytics.create_threat_intel_monitor.0
+      x-operation-group: security_analytics.create_threat_intel_monitor
+      description: Creates a threat intelligence monitor.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.create_threat_intel_monitor'
+      responses:
+        '201':
+          $ref: '#/components/responses/security_analytics.create_threat_intel_monitor@201'
+
+  /_plugins/_security_analytics/threat_intel/monitors/_search:
+    post:
+      operationId: security_analytics.search_threat_intel_monitors.0
+      x-operation-group: security_analytics.search_threat_intel_monitors
+      description: Searches threat intelligence monitors.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.search_threat_intel_monitors'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.search_threat_intel_monitors@200'
+
+  /_plugins/_security_analytics/threat_intel/monitors/{threat_intel_monitor_id}:
+    put:
+      operationId: security_analytics.update_threat_intel_monitor.0
+      x-operation-group: security_analytics.update_threat_intel_monitor
+      description: Updates a threat intelligence monitor.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.update_threat_intel_monitor::path.threat_intel_monitor_id'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.update_threat_intel_monitor'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.update_threat_intel_monitor@200'
+    delete:
+      operationId: security_analytics.delete_threat_intel_monitor.0
+      x-operation-group: security_analytics.delete_threat_intel_monitor
+      description: Deletes a threat intelligence monitor.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.delete_threat_intel_monitor::path.threat_intel_monitor_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.delete_threat_intel_monitor@200'
+
+  /_plugins/_security_analytics/threat_intel/sources:
+    post:
+      operationId: security_analytics.create_threat_intel_source.0
+      x-operation-group: security_analytics.create_threat_intel_source
+      description: Creates a threat intelligence source configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.create_threat_intel_source'
+      responses:
+        '201':
+          $ref: '#/components/responses/security_analytics.create_threat_intel_source@201'
+        '400':
+          $ref: '#/components/responses/security_analytics.create_threat_intel_source@400'
+
+  /_plugins/_security_analytics/threat_intel/sources/_search:
+    post:
+      operationId: security_analytics.search_threat_intel_sources.0
+      x-operation-group: security_analytics.search_threat_intel_sources
+      description: Searches threat intelligence source configurations.
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.search_threat_intel_sources'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.search_threat_intel_sources@200'
+
+  /_plugins/_security_analytics/threat_intel/sources/{threat_intel_source_config_id}:
+    get:
+      operationId: security_analytics.get_threat_intel_source.0
+      x-operation-group: security_analytics.get_threat_intel_source
+      description: Retrieves a threat intelligence source configuration.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_source::path.threat_intel_source_config_id'
+        - $ref: '#/components/parameters/security_analytics.get_threat_intel_source::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.get_threat_intel_source@200'
+    put:
+      operationId: security_analytics.update_threat_intel_source.0
+      x-operation-group: security_analytics.update_threat_intel_source
+      description: Updates a threat intelligence source configuration.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.update_threat_intel_source::path.threat_intel_source_config_id'
+      requestBody:
+        $ref: '#/components/requestBodies/security_analytics.update_threat_intel_source'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.update_threat_intel_source@200'
+    delete:
+      operationId: security_analytics.delete_threat_intel_source.0
+      x-operation-group: security_analytics.delete_threat_intel_source
+      description: Deletes a threat intelligence source configuration.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.delete_threat_intel_source::path.threat_intel_source_config_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.delete_threat_intel_source@200'
+
+  /_plugins/_security_analytics/threat_intel/sources/{threat_intel_source_config_id}/_refresh:
+    post:
+      operationId: security_analytics.refresh_threat_intel_source.0
+      x-operation-group: security_analytics.refresh_threat_intel_source
+      description: Refreshes a threat intelligence source.
+      parameters:
+        - $ref: '#/components/parameters/security_analytics.refresh_threat_intel_source::path.threat_intel_source_config_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/security_analytics.refresh_threat_intel_source@200'
+
 components:
   responses:
     security_analytics.get_alerts@200:
@@ -89,6 +634,390 @@ components:
         application/json:
           schema:
             $ref: '../schemas/security_analytics.findings.yaml#/components/schemas/SearchFindingCorrelationsResponse'
+    security_analytics.acknowledge_alerts@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/AcknowledgeAlertsResponse'
+    security_analytics.acknowledge_correlation_alerts@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/AcknowledgeCorrelationAlertsResponse'
+    security_analytics.create_correlation_rule@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/IndexCorrelationRuleResponse'
+    security_analytics.create_detector@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/DetectorResponse'
+    security_analytics.create_index_mappings@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/AcknowledgedResponseBase'
+    security_analytics.create_log_type@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/IndexCustomLogTypeResponse'
+    security_analytics.create_rule@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/IndexRuleResponse'
+    security_analytics.delete_correlation_rule@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/AcknowledgedResponseBase'
+    security_analytics.delete_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/DeleteResponse'
+    security_analytics.delete_log_type@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/DeleteResponse'
+    security_analytics.delete_rule@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/DeleteResponse'
+    security_analytics.get_correlation_alerts@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/GetCorrelationAlertsResponse'
+    security_analytics.get_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/DetectorResponse'
+    security_analytics.get_detector@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    security_analytics.get_index_mappings@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/GetIndexMappingsResponse'
+    security_analytics.get_mappings_view@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/GetMappingsViewResponse'
+    security_analytics.get_rule_categories@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/GetRuleCategoriesResponse'
+    security_analytics.list_correlations@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ListCorrelationsResponse'
+    security_analytics.search_correlation_rules@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    security_analytics.search_detectors@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    security_analytics.search_log_types@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    security_analytics.search_rules@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    security_analytics.search_rules@408:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    security_analytics.test_s3_connection@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/TestS3ConnectionResponse'
+    security_analytics.test_s3_connection@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/TestS3ConnectionResponse'
+    security_analytics.update_correlation_rule@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/IndexCorrelationRuleResponse'
+    security_analytics.update_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/DetectorResponse'
+    security_analytics.update_index_mappings@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/AcknowledgedResponseBase'
+    security_analytics.update_log_type@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/IndexCustomLogTypeResponse'
+    security_analytics.update_rule@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/IndexRuleResponse'
+    security_analytics.validate_rules@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ValidateRulesResponse'
+    security_analytics.create_threat_intel_monitor@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/IndexThreatIntelMonitorResponse'
+    security_analytics.create_threat_intel_source@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ThreatIntelSourceResponse'
+    security_analytics.create_threat_intel_source@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    security_analytics.delete_threat_intel_monitor@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/DeleteMonitorResponse'
+    security_analytics.delete_threat_intel_source@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/DeleteThreatIntelSourceResponse'
+    security_analytics.get_ioc_findings@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/GetIocFindingsResponse'
+    security_analytics.get_threat_intel_alerts@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/GetThreatIntelAlertsResponse'
+    security_analytics.get_threat_intel_source@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ThreatIntelSourceResponse'
+    security_analytics.list_iocs@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ListIocsResponse'
+    security_analytics.refresh_threat_intel_source@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/AcknowledgedResponseBase'
+    security_analytics.search_threat_intel_monitors@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    security_analytics.search_threat_intel_sources@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    security_analytics.update_threat_intel_alerts_status@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/UpdateThreatIntelAlertsStatusResponse'
+    security_analytics.update_threat_intel_monitor@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/IndexThreatIntelMonitorResponse'
+    security_analytics.update_threat_intel_source@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ThreatIntelSourceResponse'
+
+  requestBodies:
+    security_analytics.acknowledge_alerts:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/AcknowledgeAlertsRequest'
+    security_analytics.acknowledge_correlation_alerts:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/AcknowledgeCorrelationAlertsRequest'
+    security_analytics.create_correlation_rule:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/CorrelationRule'
+    security_analytics.create_detector:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/Detector'
+    security_analytics.create_index_mappings:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/CreateIndexMappingsRequest'
+    security_analytics.create_log_type:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/CustomLogType'
+    security_analytics.create_rule:
+      required: true
+      content:
+        text/plain:
+          schema:
+            type: string
+        application/yaml:
+          schema:
+            type: string
+    security_analytics.get_index_mappings:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/GetIndexMappingsRequest'
+    security_analytics.get_mappings_view:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/GetMappingsViewRequest'
+    security_analytics.search_correlation_rules:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/SearchRequest'
+    security_analytics.search_detectors:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/SearchRequest'
+    security_analytics.search_log_types:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/SearchRequest'
+    security_analytics.search_rules:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/SearchRequest'
+    security_analytics.test_s3_connection:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/TestS3ConnectionRequest'
+    security_analytics.update_correlation_rule:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/CorrelationRule'
+    security_analytics.update_detector:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/Detector'
+    security_analytics.update_index_mappings:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/UpdateIndexMappingsRequest'
+    security_analytics.update_log_type:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/CustomLogType'
+    security_analytics.update_rule:
+      required: true
+      content:
+        text/plain:
+          schema:
+            type: string
+        application/yaml:
+          schema:
+            type: string
+    security_analytics.validate_rules:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ValidateRulesRequest'
+    security_analytics.create_threat_intel_monitor:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ThreatIntelMonitor'
+    security_analytics.create_threat_intel_source:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ThreatIntelSourceRequest'
+    security_analytics.search_threat_intel_monitors:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/SearchRequest'
+    security_analytics.search_threat_intel_sources:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/SearchRequest'
+    security_analytics.update_threat_intel_monitor:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ThreatIntelMonitor'
+    security_analytics.update_threat_intel_source:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/security_analytics._common.yaml#/components/schemas/ThreatIntelSourceRequest'
 
   parameters:
     security_analytics.get_alerts::query.detector_id:
@@ -310,3 +1239,660 @@ components:
         format: int64
         default: 300000
       required: false
+    security_analytics.acknowledge_alerts::path.detector_id:
+      name: detector_id
+      in: path
+      description: The detector ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.create_detector::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the created detector becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    security_analytics.create_index_mappings::query.alias_mappings:
+      name: alias_mappings
+      in: query
+      description: Alias mappings encoded as a JSON string.
+      schema:
+        type: string
+      required: false
+    security_analytics.create_index_mappings::query.index_name:
+      name: index_name
+      in: query
+      description: The index whose mappings are created.
+      schema:
+        type: string
+      required: false
+    security_analytics.create_index_mappings::query.partial:
+      name: partial
+      in: query
+      description: Whether partial mappings are allowed.
+      schema:
+        type: boolean
+        default: true
+      required: false
+    security_analytics.create_index_mappings::query.rule_topic:
+      name: rule_topic
+      in: query
+      description: The rule topic used to derive aliases.
+      schema:
+        type: string
+      required: false
+    security_analytics.create_log_type::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the created log type becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    security_analytics.create_rule::query.category:
+      name: category
+      in: query
+      description: The rule category or custom log type.
+      schema:
+        type: string
+      required: true
+    security_analytics.create_rule::query.forced:
+      name: forced
+      in: query
+      description: Forces the operation when dependent resources exist.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    security_analytics.create_rule::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the created rule becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    security_analytics.delete_correlation_rule::path.correlation_rule_id:
+      name: correlation_rule_id
+      in: path
+      description: The correlation rule ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.delete_correlation_rule::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the deletion becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    security_analytics.delete_detector::path.detector_id:
+      name: detector_id
+      in: path
+      description: The detector ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.delete_detector::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the deletion becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    security_analytics.delete_log_type::path.custom_logtype_id:
+      name: custom_logtype_id
+      in: path
+      description: The custom log type ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.delete_log_type::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the deletion becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    security_analytics.delete_rule::path.rule_id:
+      name: rule_id
+      in: path
+      description: The custom rule ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.delete_rule::query.forced:
+      name: forced
+      in: query
+      description: Forces deletion when dependent resources exist.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    security_analytics.delete_rule::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the deletion becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    security_analytics.get_correlation_alerts::query.alertState:
+      name: alertState
+      in: query
+      description: Filters by correlation alert state.
+      schema:
+        type: string
+        default: ALL
+      required: false
+    security_analytics.get_correlation_alerts::query.correlation_rule_id:
+      name: correlation_rule_id
+      in: query
+      description: Filters by correlation rule ID.
+      schema:
+        type: string
+      required: false
+    security_analytics.get_correlation_alerts::query.correlation_rule_name:
+      name: correlation_rule_name
+      in: query
+      description: Filters by correlation rule name.
+      schema:
+        type: string
+      required: false
+    security_analytics.get_correlation_alerts::query.endTime:
+      name: endTime
+      in: query
+      description: The end timestamp in milliseconds.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    security_analytics.get_correlation_alerts::query.missing:
+      name: missing
+      in: query
+      description: Specifies how missing sort values are handled.
+      schema:
+        type: string
+      required: false
+    security_analytics.get_correlation_alerts::query.searchString:
+      name: searchString
+      in: query
+      description: Text used to filter correlation alerts.
+      schema:
+        type: string
+        default: ''
+      required: false
+    security_analytics.get_correlation_alerts::query.severityLevel:
+      name: severityLevel
+      in: query
+      description: Filters by severity level.
+      schema:
+        type: string
+        default: ALL
+      required: false
+    security_analytics.get_correlation_alerts::query.size:
+      name: size
+      in: query
+      description: The maximum number of alerts to return.
+      schema:
+        type: integer
+        default: 20
+      required: false
+    security_analytics.get_correlation_alerts::query.sortOrder:
+      name: sortOrder
+      in: query
+      description: The sort order.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SortOrder'
+        default: asc
+      required: false
+    security_analytics.get_correlation_alerts::query.sortString:
+      name: sortString
+      in: query
+      description: The field used to sort alerts.
+      schema:
+        type: string
+        default: start_time
+      required: false
+    security_analytics.get_correlation_alerts::query.startIndex:
+      name: startIndex
+      in: query
+      description: The pagination offset.
+      schema:
+        type: integer
+        default: 0
+      required: false
+    security_analytics.get_correlation_alerts::query.startTime:
+      name: startTime
+      in: query
+      description: The start timestamp in milliseconds.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    security_analytics.get_detector::path.detector_id:
+      name: detector_id
+      in: path
+      description: The detector ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.get_detector::query.version:
+      name: version
+      in: query
+      description: The expected document version.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    security_analytics.get_index_mappings::query.index_name:
+      name: index_name
+      in: query
+      description: The index whose mappings are returned.
+      schema:
+        type: string
+      required: false
+    security_analytics.get_mappings_view::query.index_name:
+      name: index_name
+      in: query
+      description: The index used to build the mapping view.
+      schema:
+        type: string
+      required: false
+    security_analytics.get_mappings_view::query.rule_topic:
+      name: rule_topic
+      in: query
+      description: The rule topic used to build the mapping view.
+      schema:
+        type: string
+      required: false
+    security_analytics.list_correlations::query.end_timestamp:
+      name: end_timestamp
+      in: query
+      description: The end of the correlation time range in milliseconds.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    security_analytics.list_correlations::query.start_timestamp:
+      name: start_timestamp
+      in: query
+      description: The start of the correlation time range in milliseconds.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    security_analytics.search_rules::query.pre_packaged:
+      name: pre_packaged
+      in: query
+      description: Searches prepackaged rules when true and custom rules when false.
+      schema:
+        type: boolean
+        default: true
+      required: false
+    security_analytics.update_correlation_rule::path.correlation_rule_id:
+      name: correlation_rule_id
+      in: path
+      description: The correlation rule ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.update_detector::path.detector_id:
+      name: detector_id
+      in: path
+      description: The detector ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.update_detector::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the updated detector becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    security_analytics.update_index_mappings::query.alias:
+      name: alias
+      in: query
+      description: The alias to assign to the field.
+      schema:
+        type: string
+      required: false
+    security_analytics.update_index_mappings::query.field:
+      name: field
+      in: query
+      description: The index field to map.
+      schema:
+        type: string
+      required: false
+    security_analytics.update_index_mappings::query.index_name:
+      name: index_name
+      in: query
+      description: The index whose mapping is updated.
+      schema:
+        type: string
+      required: false
+    security_analytics.update_log_type::path.custom_logtype_id:
+      name: custom_logtype_id
+      in: path
+      description: The custom log type ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.update_log_type::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the updated log type becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    security_analytics.update_rule::path.rule_id:
+      name: rule_id
+      in: path
+      description: The custom rule ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.update_rule::query.category:
+      name: category
+      in: query
+      description: The rule category or custom log type.
+      schema:
+        type: string
+      required: true
+    security_analytics.update_rule::query.forced:
+      name: forced
+      in: query
+      description: Forces the operation when dependent resources exist.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    security_analytics.update_rule::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the updated rule becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    security_analytics.delete_threat_intel_monitor::path.threat_intel_monitor_id:
+      name: threat_intel_monitor_id
+      in: path
+      description: The threat intelligence monitor ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.delete_threat_intel_source::path.threat_intel_source_config_id:
+      name: threat_intel_source_config_id
+      in: path
+      description: The threat intelligence source configuration ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.get_ioc_findings::query.endTime:
+      name: endTime
+      in: query
+      description: The end timestamp in milliseconds.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    security_analytics.get_ioc_findings::query.findingIds:
+      name: findingIds
+      in: query
+      description: A comma-separated list of finding IDs.
+      schema:
+        type: string
+      required: false
+    security_analytics.get_ioc_findings::query.iocIds:
+      name: iocIds
+      in: query
+      description: A comma-separated list of IOC IDs.
+      schema:
+        type: string
+      required: false
+    security_analytics.get_ioc_findings::query.missing:
+      name: missing
+      in: query
+      description: Specifies how missing sort values are handled.
+      schema:
+        type: string
+      required: false
+    security_analytics.get_ioc_findings::query.searchString:
+      name: searchString
+      in: query
+      description: Text used to filter findings.
+      schema:
+        type: string
+        default: ''
+      required: false
+    security_analytics.get_ioc_findings::query.size:
+      name: size
+      in: query
+      description: The maximum number of findings to return.
+      schema:
+        type: integer
+        default: 20
+      required: false
+    security_analytics.get_ioc_findings::query.sortOrder:
+      name: sortOrder
+      in: query
+      description: The sort order.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SortOrder'
+        default: asc
+      required: false
+    security_analytics.get_ioc_findings::query.sortString:
+      name: sortString
+      in: query
+      description: The field used to sort findings.
+      schema:
+        type: string
+        default: timestamp
+      required: false
+    security_analytics.get_ioc_findings::query.startIndex:
+      name: startIndex
+      in: query
+      description: The pagination offset.
+      schema:
+        type: integer
+        default: 0
+      required: false
+    security_analytics.get_ioc_findings::query.startTime:
+      name: startTime
+      in: query
+      description: The start timestamp in milliseconds.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    security_analytics.get_threat_intel_alerts::query.alertState:
+      name: alertState
+      in: query
+      description: Filters by alert state.
+      schema:
+        type: string
+        default: ALL
+      required: false
+    security_analytics.get_threat_intel_alerts::query.endTime:
+      name: endTime
+      in: query
+      description: The end timestamp in milliseconds.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    security_analytics.get_threat_intel_alerts::query.missing:
+      name: missing
+      in: query
+      description: Specifies how missing sort values are handled.
+      schema:
+        type: string
+      required: false
+    security_analytics.get_threat_intel_alerts::query.searchString:
+      name: searchString
+      in: query
+      description: Text used to filter alerts.
+      schema:
+        type: string
+        default: ''
+      required: false
+    security_analytics.get_threat_intel_alerts::query.severityLevel:
+      name: severityLevel
+      in: query
+      description: Filters by severity level.
+      schema:
+        type: string
+        default: ALL
+      required: false
+    security_analytics.get_threat_intel_alerts::query.size:
+      name: size
+      in: query
+      description: The maximum number of alerts to return.
+      schema:
+        type: integer
+        default: 20
+      required: false
+    security_analytics.get_threat_intel_alerts::query.sortOrder:
+      name: sortOrder
+      in: query
+      description: The sort order.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SortOrder'
+        default: asc
+      required: false
+    security_analytics.get_threat_intel_alerts::query.sortString:
+      name: sortString
+      in: query
+      description: The field used to sort alerts.
+      schema:
+        type: string
+        default: start_time
+      required: false
+    security_analytics.get_threat_intel_alerts::query.startIndex:
+      name: startIndex
+      in: query
+      description: The pagination offset.
+      schema:
+        type: integer
+        default: 0
+      required: false
+    security_analytics.get_threat_intel_alerts::query.startTime:
+      name: startTime
+      in: query
+      description: The start timestamp in milliseconds.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    security_analytics.get_threat_intel_source::path.threat_intel_source_config_id:
+      name: threat_intel_source_config_id
+      in: path
+      description: The threat intelligence source configuration ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.get_threat_intel_source::query.version:
+      name: version
+      in: query
+      description: The expected document version.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    security_analytics.list_iocs::query.feed_ids:
+      name: feed_ids
+      in: query
+      description: A comma-separated list of threat intelligence feed IDs.
+      schema:
+        type: string
+        default: ''
+      required: false
+    security_analytics.list_iocs::query.missing:
+      name: missing
+      in: query
+      description: Specifies how missing sort values are handled.
+      schema:
+        type: string
+      required: false
+    security_analytics.list_iocs::query.searchString:
+      name: searchString
+      in: query
+      description: Text used to filter IOCs.
+      schema:
+        type: string
+        default: ''
+      required: false
+    security_analytics.list_iocs::query.size:
+      name: size
+      in: query
+      description: The maximum number of IOCs to return.
+      schema:
+        type: integer
+        default: 20
+      required: false
+    security_analytics.list_iocs::query.sortOrder:
+      name: sortOrder
+      in: query
+      description: The sort order.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SortOrder'
+        default: asc
+      required: false
+    security_analytics.list_iocs::query.sortString:
+      name: sortString
+      in: query
+      description: The field used to sort IOCs.
+      schema:
+        type: string
+        default: name
+      required: false
+    security_analytics.list_iocs::query.startIndex:
+      name: startIndex
+      in: query
+      description: The pagination offset.
+      schema:
+        type: integer
+        default: 0
+      required: false
+    security_analytics.list_iocs::query.type:
+      name: type
+      in: query
+      description: A comma-separated list of IOC types.
+      schema:
+        type: string
+        default: ALL
+      required: false
+    security_analytics.refresh_threat_intel_source::path.threat_intel_source_config_id:
+      name: threat_intel_source_config_id
+      in: path
+      description: The threat intelligence source configuration ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.update_threat_intel_alerts_status::query.alert_ids:
+      name: alert_ids
+      in: query
+      description: A comma-separated list of alert IDs.
+      schema:
+        type: string
+      required: false
+    security_analytics.update_threat_intel_alerts_status::query.state:
+      name: state
+      in: query
+      description: The new alert state.
+      schema:
+        $ref: '../schemas/security_analytics.alerts.yaml#/components/schemas/AlertState'
+      required: true
+    security_analytics.update_threat_intel_monitor::path.threat_intel_monitor_id:
+      name: threat_intel_monitor_id
+      in: path
+      description: The threat intelligence monitor ID.
+      schema:
+        type: string
+      required: true
+    security_analytics.update_threat_intel_source::path.threat_intel_source_config_id:
+      name: threat_intel_source_config_id
+      in: path
+      description: The threat intelligence source configuration ID.
+      schema:
+        type: string
+      required: true

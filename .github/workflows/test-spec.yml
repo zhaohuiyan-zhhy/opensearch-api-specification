@@ -35,6 +35,8 @@ jobs:
           #   ref: '@sha256:95be442d5ae90490a4dd9fb32f4e5aa3e9bb48288d789d65e33e051f7549592a'
 
           # test suites for specific plugins
+          - version: 3.8.0
+            tests: plugins/security_analytics
           - version: 3.1.0
             tests: plugins/index_state_management
           - version: 3.1.0

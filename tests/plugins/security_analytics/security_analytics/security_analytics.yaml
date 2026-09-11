@@ -1,0 +1,172 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test the OpenSearch Security Analytics API.
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+
+prologues:
+  - path: /security-analytics-spec-events
+    method: PUT
+    request:
+      payload:
+        mappings:
+          properties:
+            event_type:
+              type: keyword
+
+chapters:
+  - synopsis: Get rule categories.
+    path: /_plugins/_security_analytics/rules/categories
+    method: GET
+    response:
+      status: 200
+
+  - synopsis: Create a custom log type.
+    id: create_log_type
+    path: /_plugins/_security_analytics/logtype
+    method: POST
+    parameters:
+      refresh: true
+    request:
+      payload:
+        name: api-spec-security-analytics-story
+        description: Security Analytics API specification test
+        category: Other
+        source: Custom
+        tags: {}
+    response:
+      status: 201
+    output:
+      log_type_id: payload._id
+
+  - synopsis: Search custom log types with POST.
+    path: /_plugins/_security_analytics/logtype/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match:
+            name: api-spec-security-analytics-story
+    response:
+      status: 200
+
+  - synopsis: Search custom log types with GET.
+    path: /_plugins/_security_analytics/logtype/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match:
+            name: api-spec-security-analytics-story
+    response:
+      status: 200
+
+  - synopsis: Update a custom log type.
+    path: /_plugins/_security_analytics/logtype/{custom_logtype_id}
+    method: PUT
+    parameters:
+      custom_logtype_id: ${create_log_type.log_type_id}
+      refresh: true
+    request:
+      payload:
+        name: api-spec-security-analytics-story
+        description: Updated Security Analytics API specification test
+        category: Other
+        source: Custom
+        tags: {}
+    response:
+      status: 200
+
+  - synopsis: Create index mappings.
+    path: /_plugins/_security_analytics/mappings
+    method: POST
+    request:
+      payload:
+        index_name: security-analytics-spec-events
+        rule_topic: windows
+        partial: true
+        alias_mappings: {}
+    response:
+      status: 200
+
+  - synopsis: Get index mappings.
+    path: /_plugins/_security_analytics/mappings
+    method: GET
+    parameters:
+      index_name: security-analytics-spec-events
+    response:
+      status: 200
+
+  - synopsis: Create a correlation rule.
+    id: create_correlation_rule
+    path: /_plugins/_security_analytics/correlation/rules
+    method: POST
+    request:
+      payload:
+        name: api-spec-correlation-rule
+        correlate:
+          - index: security-analytics-spec-events
+            query: event_type:network
+            category: network
+          - index: security-analytics-spec-events
+            query: event_type:windows
+            category: windows
+        time_window: 300000
+    response:
+      status: 201
+    output:
+      correlation_rule_id: payload._id
+
+  - synopsis: Search correlation rules.
+    path: /_plugins/_security_analytics/correlation/rules/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match:
+            name: api-spec-correlation-rule
+    response:
+      status: 200
+
+  - synopsis: Update a correlation rule.
+    path: /_plugins/_security_analytics/correlation/rules/{correlation_rule_id}
+    method: PUT
+    parameters:
+      correlation_rule_id: ${create_correlation_rule.correlation_rule_id}
+    request:
+      payload:
+        name: api-spec-correlation-rule-updated
+        correlate:
+          - index: security-analytics-spec-events
+            query: event_type:network
+            category: network
+          - index: security-analytics-spec-events
+            query: event_type:windows
+            category: windows
+        time_window: 300000
+    response:
+      status: 200
+
+  - synopsis: Delete a correlation rule.
+    path: /_plugins/_security_analytics/correlation/rules/{correlation_rule_id}
+    method: DELETE
+    parameters:
+      correlation_rule_id: ${create_correlation_rule.correlation_rule_id}
+      refresh: true
+    response:
+      status: 200
+
+  - synopsis: Delete a custom log type.
+    path: /_plugins/_security_analytics/logtype/{custom_logtype_id}
+    method: DELETE
+    parameters:
+      custom_logtype_id: ${create_log_type.log_type_id}
+      refresh: true
+    response:
+      status: 200
+
+epilogues:
+  - path: /security-analytics-spec-events
+    method: DELETE
+    status: [200, 404]

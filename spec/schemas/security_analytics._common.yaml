@@ -1,0 +1,1114 @@
+openapi: 3.1.0
+info:
+  title: Schemas of `security_analytics._common` Category
+  description: Schemas shared by Security Analytics APIs.
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    AcknowledgeAlertsRequest:
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            type: string
+      required:
+        - alerts
+
+    AcknowledgeAlertsResponse:
+      type: object
+      properties:
+        acknowledged:
+          type: array
+          items:
+            $ref: 'security_analytics.alerts.yaml#/components/schemas/Alert'
+        failed:
+          type: array
+          items:
+            $ref: 'security_analytics.alerts.yaml#/components/schemas/Alert'
+        missing:
+          type: array
+          items:
+            type: string
+      required:
+        - acknowledged
+        - failed
+        - missing
+
+    AcknowledgeCorrelationAlertsRequest:
+      type: object
+      properties:
+        alertIds:
+          type: array
+          items:
+            type: string
+      required:
+        - alertIds
+
+    AcknowledgeCorrelationAlertsResponse:
+      type: object
+      properties:
+        acknowledged:
+          type: array
+          items:
+            $ref: '#/components/schemas/CorrelationAlert'
+        failed:
+          type: array
+          items:
+            $ref: '#/components/schemas/CorrelationAlert'
+      required:
+        - acknowledged
+        - failed
+
+    Action:
+      description: An Alerting action attached to a detector or correlation trigger.
+      type: object
+      additionalProperties: true
+
+    CorrelatedFinding:
+      type: object
+      properties:
+        finding1:
+          type: string
+        logType1:
+          type: string
+        finding2:
+          type: string
+        logType2:
+          type: string
+        rules:
+          type: array
+          items:
+            type: string
+      required:
+        - finding1
+        - finding2
+        - logType1
+        - logType2
+        - rules
+
+    CorrelationAlert:
+      description: A correlation alert serialized by the common Alerting model.
+      type: object
+      additionalProperties: true
+
+    CorrelationQuery:
+      type: object
+      properties:
+        index:
+          type: string
+        query:
+          type: string
+        category:
+          type: string
+        field:
+          type: string
+      required:
+        - category
+        - index
+
+    CorrelationRule:
+      type: object
+      properties:
+        name:
+          type: string
+        correlate:
+          type: array
+          items:
+            $ref: '#/components/schemas/CorrelationQuery'
+        time_window:
+          type: integer
+          format: int64
+          default: 300000
+        trigger:
+          oneOf:
+            - $ref: '#/components/schemas/CorrelationRuleTrigger'
+            - type: 'null'
+      required:
+        - correlate
+        - name
+
+    CorrelationRuleTrigger:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        severity:
+          type: string
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+      required:
+        - actions
+        - name
+        - severity
+
+    CreateIndexMappingsRequest:
+      type: object
+      properties:
+        index_name:
+          type: string
+        rule_topic:
+          type: string
+        alias_mappings:
+          $ref: '#/components/schemas/MappingProperties'
+        partial:
+          type: boolean
+          default: true
+      required:
+        - index_name
+
+    CustomLogType:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        category:
+          $ref: '#/components/schemas/CustomLogTypeCategory'
+        source:
+          type: string
+        tags:
+          $ref: '#/components/schemas/SecurityAnalyticsObject'
+      required:
+        - description
+        - name
+        - source
+        - tags
+
+    CustomLogTypeCategory:
+      type: string
+      default: Other
+      enum:
+        - Access Management
+        - Applications
+        - Cloud Services
+        - Network Activity
+        - Other
+        - Security
+        - System Activity
+
+    DeleteResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+      required:
+        - _id
+        - _version
+
+    DeleteMonitorResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+      required:
+        - _id
+        - _version
+
+    DetectionType:
+      type: string
+      enum:
+        - rules
+        - threat_intel
+
+    Detector:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        detector_type:
+          type: string
+        threat_intel_enabled:
+          type: boolean
+          default: false
+        enabled:
+          type: boolean
+        enabled_time:
+          type: ['null', string]
+          format: date-time
+        enabled_time_in_millis:
+          type: integer
+          format: int64
+        schedule:
+          $ref: '#/components/schemas/Schedule'
+        inputs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetectorInputContainer'
+        triggers:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetectorTrigger'
+        last_update_time:
+          type: ['null', string]
+          format: date-time
+        last_update_time_in_millis:
+          type: integer
+          format: int64
+        monitor_id:
+          type: array
+          items:
+            type: string
+        workflow_ids:
+          type: [array,'null']
+          items:
+            type: string
+        bucket_monitor_id_rule_id:
+          type: object
+          additionalProperties:
+            type: string
+        rule_topic_index:
+          type: ['null', string]
+        alert_index:
+          type: ['null', string]
+        alert_history_index:
+          type: ['null', string]
+        alert_history_index_pattern:
+          type: ['null', string]
+        findings_index:
+          type: ['null', string]
+        findings_index_pattern:
+          type: ['null', string]
+      required:
+        - detector_type
+        - enabled
+        - inputs
+        - name
+        - schedule
+        - triggers
+
+    DetectorInput:
+      type: object
+      properties:
+        description:
+          type: string
+        indices:
+          type: array
+          items:
+            type: string
+        custom_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetectorRule'
+        pre_packaged_rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetectorRule'
+      required:
+        - custom_rules
+        - description
+        - indices
+        - pre_packaged_rules
+
+    DetectorInputContainer:
+      type: object
+      properties:
+        detector_input:
+          $ref: '#/components/schemas/DetectorInput'
+      required:
+        - detector_input
+
+    DetectorResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        detector:
+          $ref: '#/components/schemas/Detector'
+      required:
+        - _id
+        - _version
+        - detector
+
+    DetectorRule:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+        - id
+
+    DetectorTrigger:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        severity:
+          type: string
+        types:
+          type: array
+          items:
+            type: string
+        ids:
+          type: array
+          items:
+            type: string
+        sev_levels:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items:
+            type: string
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+        detection_types:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetectionType'
+      required:
+        - actions
+        - ids
+        - name
+        - sev_levels
+        - severity
+        - tags
+        - types
+
+    GetCorrelationAlertsResponse:
+      type: object
+      properties:
+        correlationAlerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CorrelationAlert'
+        total_alerts:
+          type: integer
+      required:
+        - correlationAlerts
+        - total_alerts
+
+    GetIndexMappingsRequest:
+      type: object
+      properties:
+        index_name:
+          type: string
+      required:
+        - index_name
+
+    GetIndexMappingsResponse:
+      description: Mapping metadata keyed by index name.
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/IndexMapping'
+
+    GetMappingsViewRequest:
+      type: object
+      properties:
+        index_name:
+          type: string
+        rule_topic:
+          type: string
+      required:
+        - index_name
+        - rule_topic
+
+    GetMappingsViewResponse:
+      type: object
+      properties:
+        properties:
+          $ref: '#/components/schemas/MappingProperties'
+        unmapped_index_fields:
+          type: array
+          items:
+            type: string
+        unmapped_field_aliases:
+          type: array
+          items:
+            type: string
+        threat_intel_field_aliases:
+          type: array
+          items:
+            $ref: '#/components/schemas/IocFields'
+
+    GetRuleCategoriesResponse:
+      type: object
+      properties:
+        rule_categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleCategory'
+      required:
+        - rule_categories
+
+    IndexCorrelationRuleResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        rule:
+          $ref: '#/components/schemas/CorrelationRule'
+      required:
+        - _id
+        - _version
+        - rule
+
+    IndexCustomLogTypeResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        logType:
+          $ref: '#/components/schemas/CustomLogType'
+      required:
+        - _id
+        - _version
+        - logType
+
+    IndexMapping:
+      type: object
+      properties:
+        mappings:
+          $ref: '#/components/schemas/SecurityAnalyticsObject'
+      required:
+        - mappings
+
+    IndexRuleResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        rule:
+          $ref: '#/components/schemas/Rule'
+      required:
+        - _id
+        - _version
+        - rule
+
+    IocFields:
+      type: object
+      properties:
+        ioc:
+          type: string
+        fields:
+          type: array
+          items:
+            type: string
+      additionalProperties: true
+
+    ListCorrelationsResponse:
+      type: object
+      properties:
+        findings:
+          type: array
+          items:
+            $ref: '#/components/schemas/CorrelatedFinding'
+      required:
+        - findings
+
+    MappingProperties:
+      type: object
+      additionalProperties: true
+
+    Rule:
+      type: object
+      properties:
+        category:
+          type: string
+        title:
+          type: string
+        log_source:
+          type: string
+        description:
+          type: string
+        tags:
+          type: array
+          items: {}
+        references:
+          type: array
+          items: {}
+        level:
+          type: string
+        false_positives:
+          type: array
+          items: {}
+        author:
+          type: string
+        status:
+          type: string
+        last_update_time:
+          type: string
+          format: date-time
+        queries:
+          type: array
+          items: {}
+        query_field_names:
+          type: array
+          items: {}
+        aggregationQueries:
+          type: array
+          items: {}
+        rule:
+          type: string
+      required:
+        - category
+        - rule
+        - title
+
+    RuleCategory:
+      type: object
+      properties:
+        key:
+          type: string
+        display_name:
+          type: string
+      required:
+        - display_name
+        - key
+
+    SearchRequest:
+      description: A search body parsed by OpenSearch `SearchSourceBuilder`.
+      type: object
+      properties:
+        _source:
+          $ref: '_core.search.yaml#/components/schemas/SourceConfig'
+        from:
+          type: integer
+          minimum: 0
+        query:
+          $ref: '_common.query_dsl.yaml#/components/schemas/QueryContainer'
+        seq_no_primary_term:
+          type: boolean
+        size:
+          type: integer
+          minimum: 0
+        sort:
+          oneOf:
+            - type: string
+            - type: array
+              items: {}
+        timeout:
+          $ref: '_common.yaml#/components/schemas/Duration'
+        track_scores:
+          type: boolean
+        track_total_hits:
+          oneOf:
+            - type: boolean
+            - type: integer
+              minimum: 0
+        version:
+          type: boolean
+      additionalProperties: true
+
+    Schedule:
+      oneOf:
+        - $ref: '#/components/schemas/CronSchedule'
+        - $ref: '#/components/schemas/IntervalSchedule'
+
+    CronSchedule:
+      type: object
+      properties:
+        cron:
+          $ref: '#/components/schemas/CronScheduleDefinition'
+      required:
+        - cron
+
+    CronScheduleDefinition:
+      type: object
+      properties:
+        expression:
+          type: string
+        timezone:
+          type: string
+      required:
+        - expression
+        - timezone
+
+    IntervalSchedule:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/IntervalScheduleDefinition'
+      required:
+        - period
+
+    IntervalScheduleDefinition:
+      type: object
+      properties:
+        interval:
+          type: integer
+          minimum: 1
+        unit:
+          type: string
+      required:
+        - interval
+        - unit
+
+    SecurityAnalyticsObject:
+      type: object
+      additionalProperties: true
+
+    TestS3ConnectionRequest:
+      type: object
+      properties:
+        bucket_name:
+          type: string
+        object_key:
+          type: string
+        region:
+          type: string
+        role_arn:
+          type: string
+      required:
+        - bucket_name
+        - object_key
+        - region
+        - role_arn
+
+    TestS3ConnectionResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        error:
+          type: ['null', string]
+      required:
+        - error
+        - status
+
+    DeleteThreatIntelSourceResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+      required:
+        - _id
+
+    GetIocFindingsResponse:
+      type: object
+      properties:
+        total_findings:
+          type: integer
+        ioc_findings:
+          type: array
+          items:
+            $ref: '#/components/schemas/IocFinding'
+      required:
+        - ioc_findings
+        - total_findings
+
+    GetThreatIntelAlertsResponse:
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThreatIntelAlert'
+        total_alerts:
+          type: integer
+      required:
+        - alerts
+        - total_alerts
+
+    IndexThreatIntelMonitorResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: integer
+          format: int64
+          description: The monitor document version, serialized under the source field name.
+        seq_no:
+          type: integer
+          format: int64
+        primary_term:
+          type: integer
+          format: int64
+        monitor:
+          $ref: '#/components/schemas/ThreatIntelMonitor'
+      required:
+        - id
+        - monitor
+        - name
+        - primary_term
+        - seq_no
+
+    Ioc:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+        value:
+          type: string
+        severity:
+          type: string
+        created:
+          type: string
+          format: date-time
+        modified:
+          type: string
+          format: date-time
+        description:
+          type: string
+        labels:
+          type: array
+          items:
+            type: string
+        spec_version:
+          type: string
+        feed_id:
+          type: string
+        feed_name:
+          type: string
+        version:
+          type: integer
+          format: int64
+        num_findings:
+          type: integer
+          format: int64
+
+    IocFinding:
+      type: object
+      properties:
+        id:
+          type: string
+        related_doc_ids:
+          type: array
+          items:
+            type: string
+        ioc_feed_ids:
+          type: array
+          items:
+            $ref: '#/components/schemas/SecurityAnalyticsObject'
+        monitor_id:
+          type: string
+        monitor_name:
+          type: string
+        ioc_value:
+          type: string
+        ioc_type:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        execution_id:
+          type: string
+      required:
+        - id
+        - ioc_feed_ids
+        - ioc_type
+        - ioc_value
+        - monitor_id
+        - monitor_name
+        - related_doc_ids
+        - timestamp
+
+    ListIocsResponse:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int64
+        iocs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ioc'
+      required:
+        - iocs
+        - total
+
+    PerIocTypeScanInput:
+      type: object
+      properties:
+        ioc_type:
+          type: string
+        index_to_fields_map:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+      required:
+        - index_to_fields_map
+        - ioc_type
+
+    ThreatIntelAlert:
+      type: object
+      properties:
+        id:
+          type: string
+        version:
+          type: integer
+          format: int64
+        schema_version:
+          type: integer
+          format: int64
+        seq_no:
+          type: integer
+          format: int64
+        primary_term:
+          type: integer
+          format: int64
+        trigger_id:
+          type: string
+        trigger_name:
+          type: string
+        state:
+          $ref: 'security_analytics.alerts.yaml#/components/schemas/AlertState'
+        error_message:
+          type: ['null', string]
+        ioc_value:
+          type: string
+        ioc_type:
+          type: string
+        severity:
+          type: string
+        finding_ids:
+          type: array
+          items:
+            type: string
+        acknowledged_time:
+          type: ['null', string]
+          format: date-time
+        last_updated_time:
+          type: ['null', string]
+          format: date-time
+        start_time:
+          type: ['null', string]
+          format: date-time
+        end_time:
+          type: ['null', string]
+          format: date-time
+
+    ThreatIntelMonitor:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        per_ioc_type_scan_input_list:
+          type: array
+          items:
+            $ref: '#/components/schemas/PerIocTypeScanInput'
+        schedule:
+          $ref: '#/components/schemas/Schedule'
+        enabled:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/SecurityAnalyticsObject'
+        indices:
+          type: array
+          items:
+            type: string
+          readOnly: true
+        triggers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThreatIntelTrigger'
+      required:
+        - enabled
+        - name
+        - per_ioc_type_scan_input_list
+        - schedule
+        - triggers
+
+    ThreatIntelSourceConfig:
+      type: object
+      properties:
+        name:
+          type: string
+        format:
+          type: string
+        type:
+          $ref: '#/components/schemas/ThreatIntelSourceType'
+        description:
+          type: ['null', string]
+        created_by_user:
+          $ref: '#/components/schemas/SecurityAnalyticsObject'
+        created_at:
+          type: ['null', string]
+          format: date-time
+        created_at_in_millis:
+          type: integer
+          format: int64
+        source:
+          $ref: '#/components/schemas/SecurityAnalyticsObject'
+        ioc_schema:
+          $ref: '#/components/schemas/SecurityAnalyticsObject'
+        enabled_time:
+          type: ['null', string]
+          format: date-time
+        enabled_time_in_millis:
+          type: integer
+          format: int64
+        last_update_time:
+          type: ['null', string]
+          format: date-time
+        last_update_time_in_millis:
+          type: integer
+          format: int64
+        schedule:
+          $ref: '#/components/schemas/SecurityAnalyticsObject'
+        state:
+          type: string
+        refresh_type:
+          type: string
+        last_refreshed_time:
+          type: ['null', string]
+          format: date-time
+        last_refreshed_time_in_millis:
+          type: integer
+          format: int64
+        last_refreshed_user:
+          $ref: '#/components/schemas/SecurityAnalyticsObject'
+        enabled:
+          type: boolean
+        enabled_for_scan:
+          type: boolean
+        ioc_types:
+          type: array
+          items:
+            type: string
+      required:
+        - enabled
+        - enabled_for_scan
+        - format
+        - ioc_types
+        - name
+        - source
+        - type
+
+    ThreatIntelSourceResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        source_config:
+          $ref: '#/components/schemas/ThreatIntelSourceConfig'
+      required:
+        - _id
+        - _version
+        - source_config
+
+    ThreatIntelSourceRequest:
+      type: object
+      properties:
+        source_config:
+          $ref: '#/components/schemas/ThreatIntelSourceConfig'
+      required:
+        - source_config
+
+    ThreatIntelSourceType:
+      type: string
+      enum:
+        - IOC_UPLOAD
+        - S3_CUSTOM
+        - URL_DOWNLOAD
+
+    ThreatIntelTrigger:
+      type: object
+      properties:
+        data_sources:
+          type: array
+          items:
+            type: string
+        ioc_types:
+          type: array
+          items:
+            type: string
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Action'
+        id:
+          type: string
+        name:
+          type: string
+        severity:
+          type: string
+      required:
+        - actions
+        - data_sources
+        - ioc_types
+        - name
+        - severity
+
+    UpdateThreatIntelAlertsStatusResponse:
+      type: object
+      properties:
+        updated_alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThreatIntelAlert'
+        failure_messages:
+          type: array
+          items:
+            type: string
+      required:
+        - failure_messages
+        - updated_alerts
+
+    UpdateIndexMappingsRequest:
+      type: object
+      properties:
+        index_name:
+          type: string
+        field:
+          type: string
+        alias:
+          type: string
+      required:
+        - alias
+        - field
+        - index_name
+
+    ValidateRulesRequest:
+      type: object
+      properties:
+        index_name:
+          type: string
+        rules:
+          type: array
+          items:
+            type: string
+      required:
+        - index_name
+        - rules
+
+    ValidateRulesResponse:
+      type: object
+      properties:
+        nonapplicable_fields:
+          type: array
+          items:
+            type: string

@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: OpenSearch Job Scheduler API
+  description: APIs for inspecting scheduled jobs and managing Job Scheduler locks and extension job details.
+  version: 1.0.0
+paths:
+  /_plugins/_job_scheduler/_lock:
+    get:
+      operationId: job_scheduler.acquire_lock.0
+      x-operation-group: job_scheduler.acquire_lock
+      description: Acquires a lock for a scheduled job or resource.
+      requestBody:
+        $ref: '#/components/requestBodies/job_scheduler.acquire_lock'
+      responses:
+        '200':
+          $ref: '#/components/responses/job_scheduler.acquire_lock@200'
+  /_plugins/_job_scheduler/_release_lock/{lock_id}:
+    put:
+      operationId: job_scheduler.release_lock.0
+      x-operation-group: job_scheduler.release_lock
+      description: Releases a Job Scheduler lock.
+      parameters:
+        - $ref: '#/components/parameters/job_scheduler.release_lock::path.lock_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/job_scheduler.release_lock@200'
+  /_plugins/_job_scheduler/api/jobs:
+    get:
+      operationId: job_scheduler.get_scheduled_jobs.0
+      x-operation-group: job_scheduler.get_scheduled_jobs
+      description: Returns jobs currently tracked by Job Scheduler.
+      parameters:
+        - $ref: '#/components/parameters/job_scheduler.get_scheduled_jobs::query.by_node'
+      responses:
+        '200':
+          $ref: '#/components/responses/job_scheduler.get_scheduled_jobs@200'
+  /_plugins/_job_scheduler/api/locks:
+    get:
+      operationId: job_scheduler.get_locks.0
+      x-operation-group: job_scheduler.get_locks
+      description: Returns Job Scheduler locks.
+      responses:
+        '200':
+          $ref: '#/components/responses/job_scheduler.get_locks@200'
+  /_plugins/_job_scheduler/api/locks/{lock_id}:
+    get:
+      operationId: job_scheduler.get_locks.1
+      x-operation-group: job_scheduler.get_locks
+      description: Returns Job Scheduler locks.
+      parameters:
+        - $ref: '#/components/parameters/job_scheduler.get_locks::path.lock_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/job_scheduler.get_locks@200'
+  /_plugins/_job_scheduler/_job_details:
+    put:
+      operationId: job_scheduler.put_job_details.0
+      x-operation-group: job_scheduler.put_job_details
+      description: Creates or updates extension job details used by Job Scheduler.
+      requestBody:
+        $ref: '#/components/requestBodies/job_scheduler.put_job_details'
+      responses:
+        '200':
+          $ref: '#/components/responses/job_scheduler.put_job_details@200'
+  /_plugins/_job_scheduler/_job_details/{document_id}:
+    put:
+      operationId: job_scheduler.put_job_details.1
+      x-operation-group: job_scheduler.put_job_details
+      description: Creates or updates extension job details used by Job Scheduler.
+      parameters:
+        - $ref: '#/components/parameters/job_scheduler.put_job_details::path.document_id'
+      requestBody:
+        $ref: '#/components/requestBodies/job_scheduler.put_job_details'
+      responses:
+        '200':
+          $ref: '#/components/responses/job_scheduler.put_job_details@200'
+components:
+  parameters:
+    job_scheduler.release_lock::path.lock_id:
+      in: path
+      name: lock_id
+      required: true
+      description: The lock ID.
+      schema:
+        type: string
+    job_scheduler.get_locks::path.lock_id:
+      in: path
+      name: lock_id
+      required: true
+      description: The lock ID.
+      schema:
+        type: string
+    job_scheduler.get_scheduled_jobs::query.by_node:
+      in: query
+      name: by_node
+      description: Whether to group scheduled job information by node.
+      schema:
+        type: boolean
+        default: false
+    job_scheduler.put_job_details::path.document_id:
+      in: path
+      name: document_id
+      required: true
+      description: The job details document ID.
+      schema:
+        type: string
+  requestBodies:
+    job_scheduler.acquire_lock:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/job_scheduler._common.yaml#/components/schemas/AcquireLockRequest'
+    job_scheduler.put_job_details:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/job_scheduler._common.yaml#/components/schemas/JobDetailsRequest'
+  responses:
+    job_scheduler.acquire_lock@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/job_scheduler._common.yaml#/components/schemas/AcquireLockResponse'
+    job_scheduler.release_lock@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/job_scheduler._common.yaml#/components/schemas/ReleaseLockResponse'
+    job_scheduler.get_scheduled_jobs@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/job_scheduler._common.yaml#/components/schemas/ScheduledJobsResponse'
+    job_scheduler.get_locks@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/job_scheduler._common.yaml#/components/schemas/GetLocksResponse'
+    job_scheduler.put_job_details@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/job_scheduler._common.yaml#/components/schemas/PutJobDetailsResponse'

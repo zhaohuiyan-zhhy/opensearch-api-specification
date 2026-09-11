@@ -1,0 +1,41 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test Job Scheduler extension job details APIs.
+version: '>= 3.8'
+warnings:
+  multiple-paths-detected: false
+chapters:
+  - id: create_job_details
+    synopsis: Create extension job details.
+    path: /_plugins/_job_scheduler/_job_details
+    method: PUT
+    request:
+      payload:
+        job_index: spec-test-job-index
+        job_type: spec-test-job-type
+        job_parameter_action: spec-test-parameter-action
+        job_runner_action: spec-test-runner-action
+        extension_unique_id: spec-test-extension
+    response:
+      status: 200
+      payload:
+        response: success
+    output:
+      document_id: payload.document_id
+  - synopsis: Update extension job details.
+    path: /_plugins/_job_scheduler/_job_details/{document_id}
+    method: PUT
+    parameters:
+      document_id: ${create_job_details.document_id}
+    request:
+      payload:
+        job_index: spec-test-job-index
+        job_type: spec-test-job-type-updated
+        job_parameter_action: spec-test-parameter-action
+        job_runner_action: spec-test-runner-action
+        extension_unique_id: spec-test-extension
+    response:
+      status: 200
+      payload:
+        response: success
+        document_id: ${create_job_details.document_id}

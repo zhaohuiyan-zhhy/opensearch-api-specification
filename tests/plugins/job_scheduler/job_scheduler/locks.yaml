@@ -1,0 +1,55 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test Job Scheduler lock APIs.
+version: '>= 3.8'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+epilogues:
+  - path: /_plugins/_job_scheduler/_release_lock/{lock_id}
+    method: PUT
+    parameters:
+      lock_id: spec-test-index-spec-test-job
+    status: [200, 404, 500]
+chapters:
+  - id: acquire_lock
+    synopsis: Acquire a Job Scheduler lock.
+    path: /_plugins/_job_scheduler/_lock
+    method: GET
+    request:
+      payload:
+        job_id: spec-test-job
+        job_index_name: spec-test-index
+        lock_duration_seconds: 300
+    response:
+      status: 200
+      payload:
+        lock_id: spec-test-index-spec-test-job
+        lock_model:
+          job_index_name: spec-test-index
+          job_id: spec-test-job
+          lock_duration_seconds: 300
+          released: false
+    output:
+      lock_id: payload.lock_id
+  - synopsis: List all Job Scheduler locks.
+    path: /_plugins/_job_scheduler/api/locks
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get a Job Scheduler lock by ID.
+    path: /_plugins/_job_scheduler/api/locks/{lock_id}
+    method: GET
+    parameters:
+      lock_id: ${acquire_lock.lock_id}
+    response:
+      status: 200
+  - synopsis: Release a Job Scheduler lock.
+    path: /_plugins/_job_scheduler/_release_lock/{lock_id}
+    method: PUT
+    parameters:
+      lock_id: ${acquire_lock.lock_id}
+    response:
+      status: 200
+      payload:
+        release-lock: success

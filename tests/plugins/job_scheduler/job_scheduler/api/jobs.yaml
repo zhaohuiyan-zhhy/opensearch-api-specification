@@ -1,0 +1,24 @@
+$schema: ../../../../../json_schemas/test_story.schema.yaml
+
+description: Test Job Scheduler job inspection APIs.
+version: '>= 3.8'
+chapters:
+  - synopsis: List scheduled jobs for the cluster.
+    path: /_plugins/_job_scheduler/api/jobs
+    method: GET
+    response:
+      status: 200
+      payload:
+        jobs: []
+        failures: []
+        total_jobs: 0
+  - synopsis: List scheduled jobs grouped by node.
+    path: /_plugins/_job_scheduler/api/jobs
+    method: GET
+    parameters:
+      by_node: true
+    response:
+      status: 200
+      payload:
+        failures: []
+        total_jobs: 0

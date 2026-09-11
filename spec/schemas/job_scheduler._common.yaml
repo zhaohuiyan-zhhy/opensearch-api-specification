@@ -1,0 +1,264 @@
+openapi: 3.1.0
+info:
+  title: Schemas of the Job Scheduler API
+  description: Request and response schemas for Job Scheduler APIs.
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    AcquireLockRequest:
+      type: object
+      properties:
+        job_id:
+          type: string
+        job_index_name:
+          type: string
+        lock_duration_seconds:
+          type: integer
+          format: int64
+      required:
+        - job_id
+        - job_index_name
+        - lock_duration_seconds
+    AcquireLockResponse:
+      type: object
+      properties:
+        lock_id:
+          type: string
+        seq_no:
+          type: integer
+          format: int64
+        primary_term:
+          type: integer
+          format: int64
+        lock_model:
+          $ref: '#/components/schemas/LockModel'
+      required:
+        - lock_id
+        - seq_no
+        - primary_term
+        - lock_model
+    LockModel:
+      type: object
+      properties:
+        job_index_name:
+          type: string
+        job_id:
+          type: string
+        lock_time:
+          type: integer
+          format: int64
+          description: The lock acquisition time as epoch seconds.
+        lock_duration_seconds:
+          type: integer
+          format: int64
+        released:
+          type: boolean
+      required:
+        - job_index_name
+        - job_id
+        - lock_time
+        - lock_duration_seconds
+        - released
+    ReleaseLockStatus:
+      type: string
+      enum:
+        - success
+        - failed
+    OperationResult:
+      type: string
+      enum:
+        - success
+        - failed
+    ScheduleType:
+      type: string
+      enum:
+        - interval
+        - cron
+        - unknown
+    ReleaseLockResponse:
+      type: object
+      properties:
+        release-lock:
+          $ref: '#/components/schemas/ReleaseLockStatus'
+      required:
+        - release-lock
+    GetLocksResponse:
+      type: object
+      properties:
+        total_locks:
+          type: integer
+          format: int32
+        locks:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/LockModel'
+      required:
+        - total_locks
+        - locks
+    ScheduledJobsResponse:
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduledJob'
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeScheduledJobs'
+        failures:
+          type: array
+          items:
+            $ref: '#/components/schemas/NodeFailure'
+        total_jobs:
+          type: integer
+          format: int32
+      required:
+        - failures
+        - total_jobs
+    NodeScheduledJobs:
+      type: object
+      properties:
+        node_id:
+          type: string
+        node_name:
+          type: string
+        scheduled_job_info:
+          $ref: '#/components/schemas/NodeScheduledJobInfo'
+      required:
+        - node_id
+        - node_name
+        - scheduled_job_info
+    NodeScheduledJobInfo:
+      type: object
+      properties:
+        jobs:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScheduledJob'
+        total_jobs:
+          type: integer
+          format: int32
+        error:
+          type: string
+      required:
+        - jobs
+        - total_jobs
+    NodeFailure:
+      type: object
+      properties:
+        node_id:
+          type: string
+        reason:
+          type: string
+      required:
+        - node_id
+        - reason
+    ScheduledJob:
+      type: object
+      properties:
+        job_type:
+          type: string
+        job_id:
+          type: string
+        index_name:
+          type: string
+        name:
+          type: string
+        descheduled:
+          type: boolean
+        enabled:
+          type: boolean
+        enabled_time:
+          type: string
+          format: date-time
+        last_update_time:
+          type: string
+          format: date-time
+        last_execution_time:
+          type: string
+        last_expected_execution_time:
+          type: string
+        next_expected_execution_time:
+          type: string
+        schedule:
+          $ref: '#/components/schemas/JobSchedule'
+        lock_duration:
+          oneOf:
+            - type: integer
+              format: int64
+            - type: string
+        jitter:
+          oneOf:
+            - type: number
+              format: double
+            - type: string
+      required:
+        - job_type
+        - job_id
+        - index_name
+        - name
+        - descheduled
+        - enabled
+        - enabled_time
+        - last_update_time
+        - last_execution_time
+        - last_expected_execution_time
+        - next_expected_execution_time
+        - lock_duration
+        - jitter
+    JobSchedule:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ScheduleType'
+        start_time:
+          type: string
+          format: date-time
+        interval:
+          type: integer
+          format: int64
+        unit:
+          type: string
+        expression:
+          type: string
+        timezone:
+          type: string
+        delay:
+          oneOf:
+            - type: integer
+              format: int64
+            - type: string
+      required:
+        - type
+    JobDetailsRequest:
+      type: object
+      properties:
+        document_id:
+          type: string
+        job_index:
+          type: string
+        job_type:
+          type: string
+        job_parameter_action:
+          type: string
+        job_runner_action:
+          type: string
+        extension_unique_id:
+          type: string
+      required:
+        - job_index
+        - job_type
+        - job_parameter_action
+        - job_runner_action
+        - extension_unique_id
+    PutJobDetailsResponse:
+      type: object
+      properties:
+        response:
+          $ref: '#/components/schemas/OperationResult'
+        document_id:
+          type: string
+      required:
+        - response

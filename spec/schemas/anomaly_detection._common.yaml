@@ -1,0 +1,578 @@
+openapi: 3.1.0
+info:
+  title: Schemas of `anomaly_detection._common` Category
+  description: Schemas of `anomaly_detection._common` category.
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    AnomalyDetector:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 64
+        description:
+          type: ['null', string]
+          maxLength: 1000
+        time_field:
+          type: string
+        indices:
+          type: array
+          items:
+            type: string
+        feature_attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnomalyFeature'
+        filter_query:
+          $ref: '_common.query_dsl.yaml#/components/schemas/QueryContainer'
+        detection_interval:
+          $ref: '#/components/schemas/IntervalTimeConfiguration'
+        window_delay:
+          $ref: '#/components/schemas/IntervalTimeConfiguration'
+        shingle_size:
+          type: integer
+        ui_metadata:
+          $ref: '#/components/schemas/AnomalyObject'
+        schema_version:
+          type: integer
+        last_update_time:
+          type: integer
+          format: int64
+        category_field:
+          type: array
+          items:
+            type: string
+        result_index:
+          type: ['null', string]
+          maxLength: 255
+          pattern: '^opensearch-ad-plugin-result-[a-z0-9_-]*$'
+        imputation_option:
+          $ref: '#/components/schemas/AnomalyObject'
+        recency_emphasis:
+          type: integer
+        suggested_seasonality:
+          type: integer
+        history:
+          type: integer
+        result_index_min_size:
+          type: integer
+        result_index_min_age:
+          type: integer
+        result_index_ttl:
+          type: integer
+        flatten_custom_result_index:
+          type: boolean
+        last_ui_breaking_change_time:
+          type: integer
+          format: int64
+        frequency:
+          $ref: '#/components/schemas/IntervalTimeConfiguration'
+        auto_created:
+          type: boolean
+        source_type:
+          $ref: '#/components/schemas/AnomalyDetectorSourceType'
+        ppl_source:
+          $ref: '#/components/schemas/PPLSource'
+        detector_type:
+          $ref: '#/components/schemas/AnomalyDetectorType'
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnomalyObject'
+      required:
+        - name
+
+    AnomalyDetectorSourceType:
+      type: string
+      enum:
+        - OPENSEARCH
+        - PPL
+
+    AnomalyDetectorType:
+      type: string
+      enum:
+        - MULTI_ENTITY
+        - SINGLE_ENTITY
+
+    AnomalyDetectorExecutionInput:
+      type: object
+      properties:
+        detector_id:
+          type: string
+        period_start:
+          type: integer
+          format: int64
+        period_end:
+          type: integer
+          format: int64
+        detector:
+          $ref: '#/components/schemas/AnomalyDetector'
+      required:
+        - period_end
+        - period_start
+
+    AnomalyDetectionError:
+      type: object
+      additionalProperties: true
+
+    AnomalyFeature:
+      type: object
+      properties:
+        feature_id:
+          type: string
+        feature_name:
+          type: string
+        feature_enabled:
+          type: boolean
+        aggregation_query:
+          $ref: '#/components/schemas/AnomalyObject'
+      required:
+        - feature_enabled
+        - feature_name
+
+    AnomalyFeatureData:
+      type: object
+      properties:
+        feature_id:
+          type: string
+        feature_name:
+          type: string
+        data:
+          type: number
+          format: double
+
+    AnomalyObject:
+      type: object
+      additionalProperties: true
+
+    AnomalyResult:
+      type: object
+      properties:
+        detector_id:
+          type: string
+        schema_version:
+          type: integer
+        data_start_time:
+          type: integer
+          format: int64
+        data_end_time:
+          type: integer
+          format: int64
+        feature_data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnomalyFeatureData'
+        execution_start_time:
+          type: integer
+          format: int64
+        execution_end_time:
+          type: integer
+          format: int64
+        anomaly_score:
+          type: number
+          format: double
+        anomaly_grade:
+          type: number
+          format: double
+        confidence:
+          type: number
+          format: double
+        error:
+          type: string
+        entity:
+          $ref: '#/components/schemas/AnomalyObject'
+        task_id:
+          type: string
+        model_id:
+          type: string
+        approx_anomaly_start_time:
+          type: integer
+          format: int64
+        threshold:
+          type: number
+          format: double
+      additionalProperties: true
+
+    AnomalyResultResponse:
+      type: object
+      properties:
+        anomalyGrade:
+          type: [number, string]
+          format: double
+        confidence:
+          type: [number, string]
+          format: double
+        anomalyScore:
+          type: [number, string]
+          format: double
+        error:
+          type: ['null', string]
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnomalyFeatureData'
+        rcfTotalUpdates:
+          type: [integer,'null']
+          format: int64
+        detectorIntervalInMinutes:
+          type: [integer,'null']
+          format: int64
+        relativeIndex:
+          type: [integer,'null']
+        relevantAttribution:
+          type: [array,'null']
+          items:
+            type: number
+            format: double
+        pastValues:
+          type: [array,'null']
+          items:
+            type: number
+            format: double
+        expectedValuesList:
+          type: [array,'null']
+          items:
+            type: array
+            items:
+              type: number
+              format: double
+        likelihoodOfValues:
+          type: [array,'null']
+          items:
+            type: number
+            format: double
+        threshold:
+          type: ['null', number, string]
+          format: double
+        task_id:
+          type: ['null', string]
+
+    AnomalySearchRequest:
+      description: A search body parsed by OpenSearch `SearchSourceBuilder`.
+      type: object
+      properties:
+        _source:
+          $ref: '_core.search.yaml#/components/schemas/SourceConfig'
+        from:
+          type: integer
+          minimum: 0
+        query:
+          $ref: '_common.query_dsl.yaml#/components/schemas/QueryContainer'
+        seq_no_primary_term:
+          type: boolean
+        size:
+          type: integer
+          minimum: 0
+        sort:
+          oneOf:
+            - type: string
+            - type: array
+              items: {}
+        timeout:
+          $ref: '_common.yaml#/components/schemas/Duration'
+        track_scores:
+          type: boolean
+        track_total_hits:
+          oneOf:
+            - type: boolean
+            - type: integer
+              minimum: 0
+        version:
+          type: boolean
+      additionalProperties: true
+
+    AnomalyResultBucket:
+      type: object
+      properties:
+        key:
+          type: object
+          additionalProperties: true
+        doc_count:
+          type: integer
+        max_anomaly_grade:
+          type: number
+          format: double
+      required:
+        - doc_count
+        - key
+        - max_anomaly_grade
+
+    AnomalyStatsResponse:
+      description: Cluster-level statistics plus per-node statistics selected by the request path.
+      type: object
+      properties:
+        nodes:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/StatsValues'
+      additionalProperties: true
+
+    DetectorInfoResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int64
+        match:
+          type: boolean
+      required:
+        - count
+        - match
+
+    DateRange:
+      type: object
+      properties:
+        start_time:
+          type: integer
+          format: int64
+        end_time:
+          type: integer
+          format: int64
+      required:
+        - end_time
+        - start_time
+
+    DeleteAnomalyResultsRequest:
+      type: object
+      properties:
+        query:
+          $ref: '_common.query_dsl.yaml#/components/schemas/QueryContainer'
+      required:
+        - query
+
+    DeleteDocumentResponse:
+      type: object
+      properties:
+        _index:
+          type: string
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        result:
+          type: string
+        _seq_no:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+      additionalProperties: true
+
+    DetectorProfileResponse:
+      description: Detector, job, task, model, entity, and initialization profile sections selected by path and query parameters.
+      type: object
+      additionalProperties: true
+
+    GetAnomalyDetectorResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        _primary_term:
+          type: integer
+          format: int64
+        _seq_no:
+          type: integer
+          format: int64
+        anomaly_detector:
+          $ref: '#/components/schemas/AnomalyDetector'
+        anomaly_detector_job:
+          $ref: '#/components/schemas/AnomalyObject'
+        realtime_detection_task:
+          $ref: '#/components/schemas/AnomalyObject'
+        historical_analysis_task:
+          $ref: '#/components/schemas/AnomalyObject'
+      required:
+        - _id
+        - _primary_term
+        - _seq_no
+        - _version
+        - anomaly_detector
+
+    IndexAnomalyDetectorResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        _version:
+          type: integer
+          format: int64
+        _seq_no:
+          type: integer
+          format: int64
+        anomaly_detector:
+          $ref: '#/components/schemas/AnomalyDetector'
+        _primary_term:
+          type: integer
+          format: int64
+      required:
+        - _id
+        - _primary_term
+        - _seq_no
+        - _version
+        - anomaly_detector
+
+    InsightsJobResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        total_hits:
+          type: integer
+          format: int64
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnomalyObject'
+        job_name:
+          type: string
+        enabled:
+          type: boolean
+        enabled_time:
+          type: integer
+          format: int64
+        disabled_time:
+          type: integer
+          format: int64
+        last_update_time:
+          type: integer
+          format: int64
+        schedule:
+          $ref: '#/components/schemas/AnomalyObject'
+
+    InsightsStartRequest:
+      type: object
+      properties:
+        frequency:
+          type: string
+          default: 24h
+
+    IntervalTimeConfiguration:
+      type: object
+      properties:
+        period:
+          $ref: '#/components/schemas/TimePeriod'
+      required:
+        - period
+
+    JobResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+      required:
+        - _id
+
+    ProfileEntityRequest:
+      description: Optional entity attributes used to select a high-cardinality detector entity profile.
+      type: object
+      additionalProperties: true
+
+    PreviewAnomalyDetectorResponse:
+      type: object
+      properties:
+        anomaly_result:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnomalyResult'
+        anomaly_detector:
+          $ref: '#/components/schemas/AnomalyDetector'
+      required:
+        - anomaly_detector
+        - anomaly_result
+
+    PPLSource:
+      type: object
+      properties:
+        query_language:
+          type: string
+          enum:
+            - PPL
+        query:
+          type: string
+      required:
+        - query
+        - query_language
+
+    SearchTopAnomaliesRequest:
+      type: object
+      properties:
+        task_id:
+          type: string
+        size:
+          type: integer
+          minimum: 0
+        category_field:
+          type: array
+          items:
+            type: string
+        order:
+          type: string
+        start_time_ms:
+          type: integer
+          format: int64
+        end_time_ms:
+          type: integer
+          format: int64
+      required:
+        - end_time_ms
+        - start_time_ms
+
+    SearchTopAnomaliesResponse:
+      type: object
+      properties:
+        buckets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnomalyResultBucket'
+      required:
+        - buckets
+
+    StatsValues:
+      type: object
+      additionalProperties: true
+
+    SuggestDetectorResponse:
+      type: object
+      properties:
+        interval:
+          $ref: '#/components/schemas/IntervalTimeConfiguration'
+        horizon:
+          type: integer
+        history:
+          type: integer
+        windowDelay:
+          $ref: '#/components/schemas/IntervalTimeConfiguration'
+
+    TimePeriod:
+      type: object
+      properties:
+        interval:
+          type: integer
+          format: int64
+          minimum: 0
+        unit:
+          $ref: '#/components/schemas/TimeUnit'
+      required:
+        - interval
+        - unit
+
+    TimeUnit:
+      type: string
+      enum:
+        - MINUTES
+        - Minutes
+        - SECONDS
+        - Seconds
+
+    ValidateDetectorResponse:
+      description: Validation issues keyed first by validation aspect and then by issue type.
+      type: object
+      additionalProperties: true

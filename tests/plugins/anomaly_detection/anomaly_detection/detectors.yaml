@@ -1,0 +1,724 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test the OpenSearch Anomaly Detection API.
+version: '>= 3.8'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+
+prologues:
+  - path: /anomaly-spec-test-data
+    method: PUT
+    request:
+      payload:
+        mappings:
+          properties:
+            timestamp:
+              type: date
+            value:
+              type: double
+            city:
+              type: keyword
+  - path: /anomaly-spec-test-data/_doc
+    method: POST
+    parameters:
+      refresh: true
+    request:
+      payload:
+        timestamp: '2026-09-11T00:00:00Z'
+        value: 10
+        city: shanghai
+  - path: /opensearch-ad-plugin-result-spec-test
+    method: PUT
+  - path: /_cat/nodes
+    id: node
+    method: GET
+    parameters:
+      full_id: true
+      size: 1
+      format: json
+      h: id
+    output:
+      id: payload[0].id
+
+chapters:
+  - synopsis: Validate an anomaly detector.
+    path: /_plugins/_anomaly_detection/detectors/_validate
+    method: POST
+    request:
+      payload:
+        name: anomaly-spec-validate
+        time_field: timestamp
+        indices:
+          - anomaly-spec-test-data
+        feature_attributes:
+          - feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        detection_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+        window_delay:
+          period:
+            interval: 1
+            unit: MINUTES
+    response:
+      status: 200
+  - synopsis: Validate the detector aspect.
+    path: /_plugins/_anomaly_detection/detectors/_validate/{type}
+    method: POST
+    parameters:
+      type: detector
+    request:
+      payload:
+        name: anomaly-spec-validate-type
+        time_field: timestamp
+        indices:
+          - anomaly-spec-test-data
+        feature_attributes:
+          - feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        detection_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+        window_delay:
+          period:
+            interval: 1
+            unit: MINUTES
+    response:
+      status: 200
+  - synopsis: Suggest a detection interval.
+    path: /_plugins/_anomaly_detection/detectors/_suggest/{type}
+    method: POST
+    parameters:
+      type: detection_interval
+    request:
+      payload:
+        name: anomaly-spec-suggest
+        time_field: timestamp
+        indices:
+          - anomaly-spec-test-data
+        feature_attributes:
+          - feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+    response:
+      status: 200
+  - synopsis: Preview an inline anomaly detector.
+    path: /_plugins/_anomaly_detection/detectors/_preview
+    method: POST
+    request:
+      payload:
+        period_start: 1789084740000
+        period_end: 1789084860000
+        detector:
+          name: anomaly-spec-inline-preview
+          time_field: timestamp
+          indices:
+            - anomaly-spec-test-data
+          filter_query:
+            match_all: {}
+          feature_attributes:
+            - feature_name: value_sum
+              feature_enabled: true
+              aggregation_query:
+                value_sum:
+                  sum:
+                    field: value
+          detection_interval:
+            period:
+              interval: 1
+              unit: MINUTES
+          window_delay:
+            period:
+              interval: 1
+              unit: MINUTES
+    response:
+      status: 200
+  - synopsis: Create an anomaly detector.
+    id: create_detector
+    path: /_plugins/_anomaly_detection/detectors
+    method: POST
+    request:
+      payload:
+        name: anomaly-spec-test
+        description: Anomaly spec test
+        time_field: timestamp
+        indices:
+          - anomaly-spec-test-data
+        filter_query:
+          match_all: {}
+        feature_attributes:
+          - feature_id: value_sum
+            feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        category_field:
+          - city
+        detection_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+        window_delay:
+          period:
+            interval: 1
+            unit: MINUTES
+        schema_version: 2
+        shingle_size: 4
+    response:
+      status: 201
+    output:
+      detector_id: payload._id
+  - synopsis: Search anomaly detectors with GET.
+    path: /_plugins/_anomaly_detection/detectors/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search anomaly detectors with POST.
+    path: /_plugins/_anomaly_detection/detectors/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Get an anomaly detector.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}
+    method: GET
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Check whether an anomaly detector exists.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}
+    method: HEAD
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Update an anomaly detector.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}
+    method: PUT
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    request:
+      payload:
+        name: anomaly-spec-test
+        description: Updated anomaly spec test
+        time_field: timestamp
+        indices:
+          - anomaly-spec-test-data
+        filter_query:
+          match_all: {}
+        feature_attributes:
+          - feature_id: value_sum
+            feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        category_field:
+          - city
+        detection_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+        window_delay:
+          period:
+            interval: 1
+            unit: MINUTES
+        schema_version: 2
+        shingle_size: 4
+    response:
+      status: 200
+  - synopsis: Preview a stored anomaly detector.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}/_preview
+    method: POST
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    request:
+      payload:
+        period_start: 1789084740000
+        period_end: 1789084860000
+    response:
+      status: 200
+  - synopsis: Get an anomaly detector profile.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}/_profile
+    method: GET
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Get an anomaly detector profile with POST.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}/_profile
+    method: POST
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    request:
+      payload: {}
+    response:
+      status: 200
+  - synopsis: Get a typed anomaly detector profile.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}/_profile/{type}
+    method: GET
+    parameters:
+      detector_id: ${create_detector.detector_id}
+      type: state
+    response:
+      status: 200
+  - synopsis: Get a typed anomaly detector profile with POST.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}/_profile/{type}
+    method: POST
+    parameters:
+      detector_id: ${create_detector.detector_id}
+      type: state
+    request:
+      payload: {}
+    response:
+      status: 200
+  - synopsis: Run an anomaly detector once.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}/_run
+    method: POST
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    request:
+      payload:
+        period_start: 1789084740000
+        period_end: 1789084860000
+    response:
+      status: 200
+  - synopsis: Start an anomaly detector.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}/_start
+    method: POST
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Stop an anomaly detector.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}/_stop
+    method: POST
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Search top anomaly results with GET.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}/results/_topAnomalies
+    method: GET
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    request:
+      payload:
+        category_field:
+          - city
+        start_time_ms: 1789084740000
+        end_time_ms: 1789084860000
+    response:
+      status: 200
+  - synopsis: Search top anomaly results with POST.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}/results/_topAnomalies
+    method: POST
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    request:
+      payload:
+        category_field:
+          - city
+        start_time_ms: 1789084740000
+        end_time_ms: 1789084860000
+    response:
+      status: 200
+  - synopsis: Count anomaly detectors.
+    path: /_plugins/_anomaly_detection/detectors/count
+    method: GET
+    response:
+      status: 200
+  - synopsis: Match an anomaly detector name.
+    path: /_plugins/_anomaly_detection/detectors/match
+    method: GET
+    parameters:
+      name: anomaly-spec-test
+    response:
+      status: 200
+  - synopsis: Search anomaly results with GET.
+    path: /_plugins/_anomaly_detection/detectors/results/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search anomaly results with POST.
+    path: /_plugins/_anomaly_detection/detectors/results/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search a custom anomaly result index with GET.
+    path: /_plugins/_anomaly_detection/detectors/results/_search/{result_index}
+    method: GET
+    parameters:
+      result_index: opensearch-ad-plugin-result-spec-test
+      only_query_custom_result_index: true
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search a custom anomaly result index with POST.
+    path: /_plugins/_anomaly_detection/detectors/results/_search/{result_index}
+    method: POST
+    parameters:
+      result_index: opensearch-ad-plugin-result-spec-test
+      only_query_custom_result_index: true
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search anomaly detection tasks with GET.
+    path: /_plugins/_anomaly_detection/detectors/tasks/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search anomaly detection tasks with POST.
+    path: /_plugins/_anomaly_detection/detectors/tasks/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Delete anomaly results.
+    path: /_plugins/_anomaly_detection/detectors/results
+    method: DELETE
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Start the insights job.
+    path: /_plugins/_anomaly_detection/insights/_start
+    method: POST
+    request:
+      payload:
+        frequency: 24h
+    response:
+      status: 200
+  - synopsis: Get the insights job status.
+    path: /_plugins/_anomaly_detection/insights/_status
+    method: GET
+    response:
+      status: 200
+  - synopsis: Stop the insights job.
+    path: /_plugins/_anomaly_detection/insights/_stop
+    method: POST
+    response:
+      status: 200
+  - synopsis: Get all anomaly detection statistics.
+    path: /_plugins/_anomaly_detection/stats/
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get one anomaly detection statistic.
+    path: /_plugins/_anomaly_detection/stats/{stat}
+    method: GET
+    parameters:
+      stat: detector_count
+    response:
+      status: 200
+  - synopsis: Get anomaly detection statistics for one node.
+    path: /_plugins/_anomaly_detection/{node_id}/stats/
+    method: GET
+    parameters:
+      node_id: ${node.id}
+    response:
+      status: 200
+  - synopsis: Get one anomaly detection statistic for one node.
+    path: /_plugins/_anomaly_detection/{node_id}/stats/{stat}
+    method: GET
+    parameters:
+      node_id: ${node.id}
+      stat: detector_count
+    response:
+      status: 200
+  - synopsis: Create an anomaly detector through the legacy route.
+    id: create_legacy_detector
+    path: /_opendistro/_anomaly_detection/detectors
+    method: POST
+    request:
+      payload:
+        name: anomaly-spec-legacy
+        time_field: timestamp
+        indices:
+          - anomaly-spec-test-data
+        filter_query:
+          match_all: {}
+        feature_attributes:
+          - feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        detection_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+        window_delay:
+          period:
+            interval: 1
+            unit: MINUTES
+    response:
+      status: 201
+    output:
+      detector_id: payload._id
+  - synopsis: Search anomaly detectors through the legacy GET route.
+    path: /_opendistro/_anomaly_detection/detectors/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search anomaly detectors through the legacy POST route.
+    path: /_opendistro/_anomaly_detection/detectors/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Get an anomaly detector through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/{detector_id}
+    method: GET
+    parameters:
+      detector_id: ${create_legacy_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Check an anomaly detector through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/{detector_id}
+    method: HEAD
+    parameters:
+      detector_id: ${create_legacy_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Update an anomaly detector through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/{detector_id}
+    method: PUT
+    parameters:
+      detector_id: ${create_legacy_detector.detector_id}
+    request:
+      payload:
+        name: anomaly-spec-legacy
+        description: Updated legacy detector
+        time_field: timestamp
+        indices:
+          - anomaly-spec-test-data
+        filter_query:
+          match_all: {}
+        feature_attributes:
+          - feature_name: value_sum
+            feature_enabled: true
+            aggregation_query:
+              value_sum:
+                sum:
+                  field: value
+        detection_interval:
+          period:
+            interval: 1
+            unit: MINUTES
+        window_delay:
+          period:
+            interval: 1
+            unit: MINUTES
+    response:
+      status: 200
+  - synopsis: Preview an anomaly detector through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/{detector_id}/_preview
+    method: POST
+    parameters:
+      detector_id: ${create_legacy_detector.detector_id}
+    request:
+      payload:
+        period_start: 1789084740000
+        period_end: 1789084860000
+    response:
+      status: 200
+  - synopsis: Get an anomaly detector profile through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/{detector_id}/_profile
+    method: GET
+    parameters:
+      detector_id: ${create_legacy_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Get a typed anomaly detector profile through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/{detector_id}/_profile/{type}
+    method: GET
+    parameters:
+      detector_id: ${create_legacy_detector.detector_id}
+      type: state
+    response:
+      status: 200
+  - synopsis: Run an anomaly detector through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/{detector_id}/_run
+    method: POST
+    parameters:
+      detector_id: ${create_legacy_detector.detector_id}
+    request:
+      payload:
+        period_start: 1789084740000
+        period_end: 1789084860000
+    response:
+      status: 200
+  - synopsis: Start an anomaly detector through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/{detector_id}/_start
+    method: POST
+    parameters:
+      detector_id: ${create_legacy_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Stop an anomaly detector through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/{detector_id}/_stop
+    method: POST
+    parameters:
+      detector_id: ${create_legacy_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Count anomaly detectors through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/count
+    method: GET
+    response:
+      status: 200
+  - synopsis: Match an anomaly detector name through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/match
+    method: GET
+    parameters:
+      name: anomaly-spec-legacy
+    response:
+      status: 200
+  - synopsis: Search anomaly results through the legacy GET route.
+    path: /_opendistro/_anomaly_detection/detectors/results/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search anomaly results through the legacy POST route.
+    path: /_opendistro/_anomaly_detection/detectors/results/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search anomaly detection tasks through the legacy GET route.
+    path: /_opendistro/_anomaly_detection/detectors/tasks/_search
+    method: GET
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Search anomaly detection tasks through the legacy POST route.
+    path: /_opendistro/_anomaly_detection/detectors/tasks/_search
+    method: POST
+    request:
+      payload:
+        query:
+          match_all: {}
+    response:
+      status: 200
+  - synopsis: Get all anomaly detection statistics through the legacy route.
+    path: /_opendistro/_anomaly_detection/stats/
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get one anomaly detection statistic through the legacy route.
+    path: /_opendistro/_anomaly_detection/stats/{stat}
+    method: GET
+    parameters:
+      stat: detector_count
+    response:
+      status: 200
+  - synopsis: Get node anomaly detection statistics through the legacy route.
+    path: /_opendistro/_anomaly_detection/{node_id}/stats/
+    method: GET
+    parameters:
+      node_id: ${node.id}
+    response:
+      status: 200
+  - synopsis: Get one node anomaly detection statistic through the legacy route.
+    path: /_opendistro/_anomaly_detection/{node_id}/stats/{stat}
+    method: GET
+    parameters:
+      node_id: ${node.id}
+      stat: detector_count
+    response:
+      status: 200
+  - synopsis: Delete an anomaly detector through the legacy route.
+    path: /_opendistro/_anomaly_detection/detectors/{detector_id}
+    method: DELETE
+    parameters:
+      detector_id: ${create_legacy_detector.detector_id}
+    response:
+      status: 200
+  - synopsis: Delete an anomaly detector.
+    path: /_plugins/_anomaly_detection/detectors/{detector_id}
+    method: DELETE
+    parameters:
+      detector_id: ${create_detector.detector_id}
+    response:
+      status: 200
+
+epilogues:
+  - path: /_plugins/_anomaly_detection/detectors/${create_detector.detector_id}
+    method: DELETE
+    status: [200, 404]
+  - path: /_plugins/_anomaly_detection/detectors/${create_legacy_detector.detector_id}
+    method: DELETE
+    status: [200, 404]
+  - path: /anomaly-spec-test-data
+    method: DELETE
+    status: [200, 404]
+  - path: /opensearch-ad-plugin-result-spec-test
+    method: DELETE
+    status: [200, 404]

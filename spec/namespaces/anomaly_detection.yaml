@@ -1,0 +1,1553 @@
+openapi: 3.1.0
+info:
+  title: OpenSearch Anomaly Detection API
+  description: OpenSearch Anomaly Detection API.
+  version: 1.0.0
+paths:
+  /_opendistro/_anomaly_detection/{node_id}/stats/:
+    get:
+      operationId: anomaly_detection.node_stats.1
+      x-operation-group: anomaly_detection.node_stats
+      description: Retrieves Anomaly Detection statistics from the specified nodes.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.node_stats::path.node_id'
+        - $ref: '#/components/parameters/anomaly_detection.node_stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.node_stats@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.node_stats@400'
+  /_opendistro/_anomaly_detection/{node_id}/stats/{stat}:
+    get:
+      operationId: anomaly_detection.node_stats_metric.1
+      x-operation-group: anomaly_detection.node_stats_metric
+      description: Retrieves selected Anomaly Detection statistics from the specified nodes.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.node_stats_metric::path.node_id'
+        - $ref: '#/components/parameters/anomaly_detection.node_stats_metric::path.stat'
+        - $ref: '#/components/parameters/anomaly_detection.node_stats_metric::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.node_stats_metric@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.node_stats_metric@400'
+  /_opendistro/_anomaly_detection/detectors:
+    post:
+      operationId: anomaly_detection.create_detector.1
+      x-operation-group: anomaly_detection.create_detector
+      description: Creates an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.create_detector::query.if_primary_term'
+        - $ref: '#/components/parameters/anomaly_detection.create_detector::query.if_seq_no'
+        - $ref: '#/components/parameters/anomaly_detection.create_detector::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.create_detector'
+      responses:
+        '201':
+          $ref: '#/components/responses/anomaly_detection.create_detector@201'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.create_detector@400'
+  /_opendistro/_anomaly_detection/detectors/_search:
+    get:
+      operationId: anomaly_detection.search_detectors.2
+      x-operation-group: anomaly_detection.search_detectors
+      description: Searches anomaly detectors.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_detectors'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_detectors@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_detectors@408'
+    post:
+      operationId: anomaly_detection.search_detectors.3
+      x-operation-group: anomaly_detection.search_detectors
+      description: Searches anomaly detectors.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_detectors'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_detectors@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_detectors@408'
+  /_opendistro/_anomaly_detection/detectors/{detector_id}:
+    get:
+      operationId: anomaly_detection.get_detector.1
+      x-operation-group: anomaly_detection.get_detector
+      description: Retrieves an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.get_detector::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector::query._all'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector::query.job'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector::query.task'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.get_detector@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.get_detector@404'
+    head:
+      operationId: anomaly_detection.detector_exists.1
+      x-operation-group: anomaly_detection.detector_exists
+      description: Checks whether an anomaly detector exists.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.detector_exists::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.detector_exists::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.detector_exists@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.detector_exists@404'
+    put:
+      operationId: anomaly_detection.update_detector.1
+      x-operation-group: anomaly_detection.update_detector
+      description: Updates an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.update_detector::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.update_detector::query.if_primary_term'
+        - $ref: '#/components/parameters/anomaly_detection.update_detector::query.if_seq_no'
+        - $ref: '#/components/parameters/anomaly_detection.update_detector::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.update_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.update_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.update_detector@400'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.update_detector@404'
+    delete:
+      operationId: anomaly_detection.delete_detector.1
+      x-operation-group: anomaly_detection.delete_detector
+      description: Deletes an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.delete_detector::path.detector_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.delete_detector@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.delete_detector@404'
+  /_opendistro/_anomaly_detection/detectors/{detector_id}/_preview:
+    post:
+      operationId: anomaly_detection.preview_detector.1
+      x-operation-group: anomaly_detection.preview_detector
+      description: Previews anomaly results for a stored detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.preview_detector::path.detector_id'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.preview_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.preview_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.preview_detector@400'
+  /_opendistro/_anomaly_detection/detectors/{detector_id}/_profile:
+    get:
+      operationId: anomaly_detection.get_detector_profile.2
+      x-operation-group: anomaly_detection.get_detector_profile
+      description: Retrieves profile information for an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query._all'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query.job'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query.task'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query.version'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.get_detector_profile'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile@404'
+  /_opendistro/_anomaly_detection/detectors/{detector_id}/_profile/{type}:
+    get:
+      operationId: anomaly_detection.get_detector_profile_type.2
+      x-operation-group: anomaly_detection.get_detector_profile_type
+      description: Retrieves selected profile information for an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::path.type'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query._all'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query.job'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query.task'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query.version'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.get_detector_profile_type'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile_type@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile_type@404'
+  /_opendistro/_anomaly_detection/detectors/{detector_id}/_run:
+    post:
+      operationId: anomaly_detection.run_detector.1
+      x-operation-group: anomaly_detection.run_detector
+      description: Runs an anomaly detector for a supplied time period.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.run_detector::path.detector_id'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.run_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.run_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.run_detector@400'
+  /_opendistro/_anomaly_detection/detectors/{detector_id}/_start:
+    post:
+      operationId: anomaly_detection.start_detector.1
+      x-operation-group: anomaly_detection.start_detector
+      description: Starts real-time or historical analysis for an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.start_detector::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.start_detector::query.historical'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.start_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.start_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.start_detector@400'
+  /_opendistro/_anomaly_detection/detectors/{detector_id}/_stop:
+    post:
+      operationId: anomaly_detection.stop_detector.1
+      x-operation-group: anomaly_detection.stop_detector
+      description: Stops real-time or historical analysis for an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.stop_detector::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.stop_detector::query.historical'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.stop_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.stop_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.stop_detector@400'
+  /_opendistro/_anomaly_detection/detectors/results/_search:
+    get:
+      operationId: anomaly_detection.search_results.2
+      x-operation-group: anomaly_detection.search_results
+      description: Searches anomaly results.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.search_results::query.only_query_custom_result_index'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_results'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_results@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_results@408'
+    post:
+      operationId: anomaly_detection.search_results.3
+      x-operation-group: anomaly_detection.search_results
+      description: Searches anomaly results.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.search_results::query.only_query_custom_result_index'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_results'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_results@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_results@408'
+  /_opendistro/_anomaly_detection/detectors/tasks/_search:
+    get:
+      operationId: anomaly_detection.search_tasks.2
+      x-operation-group: anomaly_detection.search_tasks
+      description: Searches Anomaly Detection tasks.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_tasks'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_tasks@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_tasks@408'
+    post:
+      operationId: anomaly_detection.search_tasks.3
+      x-operation-group: anomaly_detection.search_tasks
+      description: Searches Anomaly Detection tasks.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_tasks'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_tasks@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_tasks@408'
+  /_opendistro/_anomaly_detection/stats/:
+    get:
+      operationId: anomaly_detection.stats.1
+      x-operation-group: anomaly_detection.stats
+      description: Retrieves Anomaly Detection statistics from all eligible data nodes.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.stats@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.stats@400'
+  /_opendistro/_anomaly_detection/stats/{stat}:
+    get:
+      operationId: anomaly_detection.stats_metric.1
+      x-operation-group: anomaly_detection.stats_metric
+      description: Retrieves selected Anomaly Detection statistics from all eligible data nodes.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.stats_metric::path.stat'
+        - $ref: '#/components/parameters/anomaly_detection.stats_metric::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.stats_metric@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.stats_metric@400'
+  /_plugins/_anomaly_detection/{node_id}/stats/:
+    get:
+      operationId: anomaly_detection.node_stats.0
+      x-operation-group: anomaly_detection.node_stats
+      description: Retrieves Anomaly Detection statistics from the specified nodes.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.node_stats::path.node_id'
+        - $ref: '#/components/parameters/anomaly_detection.node_stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.node_stats@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.node_stats@400'
+  /_plugins/_anomaly_detection/{node_id}/stats/{stat}:
+    get:
+      operationId: anomaly_detection.node_stats_metric.0
+      x-operation-group: anomaly_detection.node_stats_metric
+      description: Retrieves selected Anomaly Detection statistics from the specified nodes.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.node_stats_metric::path.node_id'
+        - $ref: '#/components/parameters/anomaly_detection.node_stats_metric::path.stat'
+        - $ref: '#/components/parameters/anomaly_detection.node_stats_metric::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.node_stats_metric@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.node_stats_metric@400'
+  /_plugins/_anomaly_detection/detectors:
+    post:
+      operationId: anomaly_detection.create_detector.0
+      x-operation-group: anomaly_detection.create_detector
+      description: Creates an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.create_detector::query.if_primary_term'
+        - $ref: '#/components/parameters/anomaly_detection.create_detector::query.if_seq_no'
+        - $ref: '#/components/parameters/anomaly_detection.create_detector::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.create_detector'
+      responses:
+        '201':
+          $ref: '#/components/responses/anomaly_detection.create_detector@201'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.create_detector@400'
+  /_plugins/_anomaly_detection/detectors/_preview:
+    post:
+      operationId: anomaly_detection.preview_detector_inline.0
+      x-operation-group: anomaly_detection.preview_detector_inline
+      description: Previews anomaly results for an inline detector.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.preview_detector_inline'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.preview_detector_inline@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.preview_detector_inline@400'
+  /_plugins/_anomaly_detection/detectors/_search:
+    get:
+      operationId: anomaly_detection.search_detectors.0
+      x-operation-group: anomaly_detection.search_detectors
+      description: Searches anomaly detectors.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_detectors'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_detectors@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_detectors@408'
+    post:
+      operationId: anomaly_detection.search_detectors.1
+      x-operation-group: anomaly_detection.search_detectors
+      description: Searches anomaly detectors.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_detectors'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_detectors@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_detectors@408'
+  /_plugins/_anomaly_detection/detectors/_suggest/{type}:
+    post:
+      operationId: anomaly_detection.suggest_detector.0
+      x-operation-group: anomaly_detection.suggest_detector
+      description: Suggests anomaly detector configuration parameters.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.suggest_detector::path.type'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.suggest_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.suggest_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.suggest_detector@400'
+  /_plugins/_anomaly_detection/detectors/_validate:
+    post:
+      operationId: anomaly_detection.validate_detector.0
+      x-operation-group: anomaly_detection.validate_detector
+      description: Validates an anomaly detector configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.validate_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.validate_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.validate_detector@400'
+  /_plugins/_anomaly_detection/detectors/_validate/{type}:
+    post:
+      operationId: anomaly_detection.validate_detector_type.0
+      x-operation-group: anomaly_detection.validate_detector_type
+      description: Validates selected aspects of an anomaly detector configuration.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.validate_detector_type::path.type'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.validate_detector_type'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.validate_detector_type@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.validate_detector_type@400'
+  /_plugins/_anomaly_detection/detectors/{detector_id}:
+    get:
+      operationId: anomaly_detection.get_detector.0
+      x-operation-group: anomaly_detection.get_detector
+      description: Retrieves an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.get_detector::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector::query._all'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector::query.job'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector::query.task'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.get_detector@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.get_detector@404'
+    head:
+      operationId: anomaly_detection.detector_exists.0
+      x-operation-group: anomaly_detection.detector_exists
+      description: Checks whether an anomaly detector exists.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.detector_exists::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.detector_exists::query.version'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.detector_exists@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.detector_exists@404'
+    put:
+      operationId: anomaly_detection.update_detector.0
+      x-operation-group: anomaly_detection.update_detector
+      description: Updates an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.update_detector::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.update_detector::query.if_primary_term'
+        - $ref: '#/components/parameters/anomaly_detection.update_detector::query.if_seq_no'
+        - $ref: '#/components/parameters/anomaly_detection.update_detector::query.refresh'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.update_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.update_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.update_detector@400'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.update_detector@404'
+    delete:
+      operationId: anomaly_detection.delete_detector.0
+      x-operation-group: anomaly_detection.delete_detector
+      description: Deletes an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.delete_detector::path.detector_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.delete_detector@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.delete_detector@404'
+  /_plugins/_anomaly_detection/detectors/{detector_id}/_preview:
+    post:
+      operationId: anomaly_detection.preview_detector.0
+      x-operation-group: anomaly_detection.preview_detector
+      description: Previews anomaly results for a stored detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.preview_detector::path.detector_id'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.preview_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.preview_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.preview_detector@400'
+  /_plugins/_anomaly_detection/detectors/{detector_id}/_profile:
+    get:
+      operationId: anomaly_detection.get_detector_profile.0
+      x-operation-group: anomaly_detection.get_detector_profile
+      description: Retrieves profile information for an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query._all'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query.job'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query.task'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query.version'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.get_detector_profile'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile@404'
+    post:
+      operationId: anomaly_detection.get_detector_profile.1
+      x-operation-group: anomaly_detection.get_detector_profile
+      description: Retrieves profile information for an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query._all'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query.job'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query.task'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile::query.version'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.get_detector_profile'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile@404'
+  /_plugins/_anomaly_detection/detectors/{detector_id}/_profile/{type}:
+    get:
+      operationId: anomaly_detection.get_detector_profile_type.0
+      x-operation-group: anomaly_detection.get_detector_profile_type
+      description: Retrieves selected profile information for an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::path.type'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query._all'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query.job'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query.task'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query.version'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.get_detector_profile_type'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile_type@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile_type@404'
+    post:
+      operationId: anomaly_detection.get_detector_profile_type.1
+      x-operation-group: anomaly_detection.get_detector_profile_type
+      description: Retrieves selected profile information for an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::path.type'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query._all'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query.job'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query.task'
+        - $ref: '#/components/parameters/anomaly_detection.get_detector_profile_type::query.version'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.get_detector_profile_type'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile_type@200'
+        '404':
+          $ref: '#/components/responses/anomaly_detection.get_detector_profile_type@404'
+  /_plugins/_anomaly_detection/detectors/{detector_id}/_run:
+    post:
+      operationId: anomaly_detection.run_detector.0
+      x-operation-group: anomaly_detection.run_detector
+      description: Runs an anomaly detector for a supplied time period.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.run_detector::path.detector_id'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.run_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.run_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.run_detector@400'
+  /_plugins/_anomaly_detection/detectors/{detector_id}/_start:
+    post:
+      operationId: anomaly_detection.start_detector.0
+      x-operation-group: anomaly_detection.start_detector
+      description: Starts real-time or historical analysis for an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.start_detector::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.start_detector::query.historical'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.start_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.start_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.start_detector@400'
+  /_plugins/_anomaly_detection/detectors/{detector_id}/_stop:
+    post:
+      operationId: anomaly_detection.stop_detector.0
+      x-operation-group: anomaly_detection.stop_detector
+      description: Stops real-time or historical analysis for an anomaly detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.stop_detector::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.stop_detector::query.historical'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.stop_detector'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.stop_detector@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.stop_detector@400'
+  /_plugins/_anomaly_detection/detectors/{detector_id}/results/_topAnomalies:
+    get:
+      operationId: anomaly_detection.search_top_anomalies.0
+      x-operation-group: anomaly_detection.search_top_anomalies
+      description: Retrieves top anomaly result buckets for a high-cardinality detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.search_top_anomalies::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.search_top_anomalies::query.historical'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_top_anomalies'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_top_anomalies@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.search_top_anomalies@400'
+    post:
+      operationId: anomaly_detection.search_top_anomalies.1
+      x-operation-group: anomaly_detection.search_top_anomalies
+      description: Retrieves top anomaly result buckets for a high-cardinality detector.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.search_top_anomalies::path.detector_id'
+        - $ref: '#/components/parameters/anomaly_detection.search_top_anomalies::query.historical'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_top_anomalies'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_top_anomalies@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.search_top_anomalies@400'
+  /_plugins/_anomaly_detection/detectors/count:
+    get:
+      operationId: anomaly_detection.get_detector_count.0
+      x-operation-group: anomaly_detection.get_detector_count
+      description: Retrieves the number of anomaly detectors.
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.get_detector_count@200'
+  /_plugins/_anomaly_detection/detectors/match:
+    get:
+      operationId: anomaly_detection.match_detector_name.0
+      x-operation-group: anomaly_detection.match_detector_name
+      description: Checks whether an anomaly detector name exists.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.match_detector_name::query.name'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.match_detector_name@200'
+  /_plugins/_anomaly_detection/detectors/results:
+    delete:
+      operationId: anomaly_detection.delete_results.0
+      x-operation-group: anomaly_detection.delete_results
+      description: Deletes anomaly results matching a query from the default result indexes.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.delete_results'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.delete_results@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.delete_results@400'
+  /_plugins/_anomaly_detection/detectors/results/_search:
+    get:
+      operationId: anomaly_detection.search_results.0
+      x-operation-group: anomaly_detection.search_results
+      description: Searches anomaly results.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.search_results::query.only_query_custom_result_index'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_results'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_results@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_results@408'
+    post:
+      operationId: anomaly_detection.search_results.1
+      x-operation-group: anomaly_detection.search_results
+      description: Searches anomaly results.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.search_results::query.only_query_custom_result_index'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_results'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_results@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_results@408'
+  /_plugins/_anomaly_detection/detectors/results/_search/{result_index}:
+    get:
+      operationId: anomaly_detection.search_results_index.0
+      x-operation-group: anomaly_detection.search_results_index
+      description: Searches anomaly results in a custom result index and optionally the default result indexes.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.search_results_index::path.result_index'
+        - $ref: '#/components/parameters/anomaly_detection.search_results_index::query.only_query_custom_result_index'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_results_index'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_results_index@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_results_index@408'
+    post:
+      operationId: anomaly_detection.search_results_index.1
+      x-operation-group: anomaly_detection.search_results_index
+      description: Searches anomaly results in a custom result index and optionally the default result indexes.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.search_results_index::path.result_index'
+        - $ref: '#/components/parameters/anomaly_detection.search_results_index::query.only_query_custom_result_index'
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_results_index'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_results_index@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_results_index@408'
+  /_plugins/_anomaly_detection/detectors/tasks/_search:
+    get:
+      operationId: anomaly_detection.search_tasks.0
+      x-operation-group: anomaly_detection.search_tasks
+      description: Searches Anomaly Detection tasks.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_tasks'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_tasks@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_tasks@408'
+    post:
+      operationId: anomaly_detection.search_tasks.1
+      x-operation-group: anomaly_detection.search_tasks
+      description: Searches Anomaly Detection tasks.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.search_tasks'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.search_tasks@200'
+        '408':
+          $ref: '#/components/responses/anomaly_detection.search_tasks@408'
+  /_plugins/_anomaly_detection/insights/_start:
+    post:
+      operationId: anomaly_detection.start_insights.0
+      x-operation-group: anomaly_detection.start_insights
+      description: Starts the Anomaly Detection insights job.
+      requestBody:
+        $ref: '#/components/requestBodies/anomaly_detection.start_insights'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.start_insights@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.start_insights@400'
+  /_plugins/_anomaly_detection/insights/_status:
+    get:
+      operationId: anomaly_detection.get_insights_status.0
+      x-operation-group: anomaly_detection.get_insights_status
+      description: Retrieves the Anomaly Detection insights job status.
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.get_insights_status@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.get_insights_status@400'
+  /_plugins/_anomaly_detection/insights/_stop:
+    post:
+      operationId: anomaly_detection.stop_insights.0
+      x-operation-group: anomaly_detection.stop_insights
+      description: Stops the Anomaly Detection insights job.
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.stop_insights@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.stop_insights@400'
+  /_plugins/_anomaly_detection/stats/:
+    get:
+      operationId: anomaly_detection.stats.0
+      x-operation-group: anomaly_detection.stats
+      description: Retrieves Anomaly Detection statistics from all eligible data nodes.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.stats@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.stats@400'
+  /_plugins/_anomaly_detection/stats/{stat}:
+    get:
+      operationId: anomaly_detection.stats_metric.0
+      x-operation-group: anomaly_detection.stats_metric
+      description: Retrieves selected Anomaly Detection statistics from all eligible data nodes.
+      parameters:
+        - $ref: '#/components/parameters/anomaly_detection.stats_metric::path.stat'
+        - $ref: '#/components/parameters/anomaly_detection.stats_metric::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/anomaly_detection.stats_metric@200'
+        '400':
+          $ref: '#/components/responses/anomaly_detection.stats_metric@400'
+components:
+  parameters:
+    anomaly_detection.create_detector::query.if_primary_term:
+      name: if_primary_term
+      in: query
+      description: Performs the operation only if the last operation that changed the detector has this primary term.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    anomaly_detection.create_detector::query.if_seq_no:
+      name: if_seq_no
+      in: query
+      description: Performs the operation only if the detector has this sequence number.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SequenceNumber'
+      required: false
+    anomaly_detection.create_detector::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the created detector becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    anomaly_detection.delete_detector::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.detector_exists::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.detector_exists::query.version:
+      name: version
+      in: query
+      description: The detector version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    anomaly_detection.get_detector::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.get_detector::query._all:
+      name: _all
+      in: query
+      description: Whether to return all supported detector, job, and task information.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.get_detector::query.job:
+      name: job
+      in: query
+      description: Whether to include the detector job.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.get_detector::query.task:
+      name: task
+      in: query
+      description: Whether to include real-time and historical tasks.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.get_detector::query.version:
+      name: version
+      in: query
+      description: The detector version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    anomaly_detection.get_detector_profile::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.get_detector_profile::query._all:
+      name: _all
+      in: query
+      description: Whether to return all supported profile sections.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.get_detector_profile::query.job:
+      name: job
+      in: query
+      description: Whether to include the detector job.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.get_detector_profile::query.task:
+      name: task
+      in: query
+      description: Whether to include the detector task.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.get_detector_profile::query.version:
+      name: version
+      in: query
+      description: The detector version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    anomaly_detection.get_detector_profile_type::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.get_detector_profile_type::path.type:
+      name: type
+      in: path
+      description: A comma-separated list of detector profile sections.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.get_detector_profile_type::query._all:
+      name: _all
+      in: query
+      description: Whether to return all supported profile sections.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.get_detector_profile_type::query.job:
+      name: job
+      in: query
+      description: Whether to include the detector job.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.get_detector_profile_type::query.task:
+      name: task
+      in: query
+      description: Whether to include the detector task.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.get_detector_profile_type::query.version:
+      name: version
+      in: query
+      description: The detector version that must match the stored document.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/VersionNumber'
+      required: false
+    anomaly_detection.match_detector_name::query.name:
+      name: name
+      in: query
+      description: The detector name to match.
+      schema:
+        type: string
+      required: false
+    anomaly_detection.node_stats::path.node_id:
+      name: node_id
+      in: path
+      description: A comma-separated list of node IDs.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.node_stats::query.timeout:
+      name: timeout
+      in: query
+      description: The maximum time to wait for node statistics.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Duration'
+      required: false
+    anomaly_detection.node_stats_metric::path.node_id:
+      name: node_id
+      in: path
+      description: A comma-separated list of node IDs.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.node_stats_metric::path.stat:
+      name: stat
+      in: path
+      description: A comma-separated list of statistic names or `_all`.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.node_stats_metric::query.timeout:
+      name: timeout
+      in: query
+      description: The maximum time to wait for node statistics.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Duration'
+      required: false
+    anomaly_detection.preview_detector::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.run_detector::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.search_results::query.only_query_custom_result_index:
+      name: only_query_custom_result_index
+      in: query
+      description: Whether to search only the supplied custom result index.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.search_results_index::path.result_index:
+      name: result_index
+      in: path
+      description: A custom anomaly result index or index pattern.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.search_results_index::query.only_query_custom_result_index:
+      name: only_query_custom_result_index
+      in: query
+      description: Whether to search only the custom result index.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.search_top_anomalies::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.search_top_anomalies::query.historical:
+      name: historical
+      in: query
+      description: Whether to retrieve results from a historical analysis task.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.start_detector::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.start_detector::query.historical:
+      name: historical
+      in: query
+      description: Whether to start historical analysis.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.stats::query.timeout:
+      name: timeout
+      in: query
+      description: The maximum time to wait for node statistics.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Duration'
+      required: false
+    anomaly_detection.stats_metric::path.stat:
+      name: stat
+      in: path
+      description: A comma-separated list of statistic names or `_all`.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.stats_metric::query.timeout:
+      name: timeout
+      in: query
+      description: The maximum time to wait for node statistics.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Duration'
+      required: false
+    anomaly_detection.stop_detector::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.stop_detector::query.historical:
+      name: historical
+      in: query
+      description: Whether to stop historical analysis.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    anomaly_detection.suggest_detector::path.type:
+      name: type
+      in: path
+      description: The detector configuration parameter to suggest.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.update_detector::path.detector_id:
+      name: detector_id
+      in: path
+      description: The anomaly detector ID.
+      schema:
+        type: string
+      required: true
+    anomaly_detection.update_detector::query.if_primary_term:
+      name: if_primary_term
+      in: query
+      description: Performs the operation only if the last operation that changed the detector has this primary term.
+      schema:
+        type: integer
+        format: int64
+      required: false
+    anomaly_detection.update_detector::query.if_seq_no:
+      name: if_seq_no
+      in: query
+      description: Performs the operation only if the detector has this sequence number.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/SequenceNumber'
+      required: false
+    anomaly_detection.update_detector::query.refresh:
+      name: refresh
+      in: query
+      description: Controls when the updated detector becomes visible to search.
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Refresh'
+      required: false
+    anomaly_detection.validate_detector_type::path.type:
+      name: type
+      in: path
+      description: A comma-separated list of validation aspects.
+      schema:
+        type: string
+      required: true
+  requestBodies:
+    anomaly_detection.create_detector:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetector'
+      required: true
+    anomaly_detection.delete_results:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/DeleteAnomalyResultsRequest'
+      required: true
+    anomaly_detection.get_detector_profile:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/ProfileEntityRequest'
+    anomaly_detection.get_detector_profile_type:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/ProfileEntityRequest'
+    anomaly_detection.search_detectors:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalySearchRequest'
+    anomaly_detection.search_results:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalySearchRequest'
+    anomaly_detection.search_results_index:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalySearchRequest'
+    anomaly_detection.search_tasks:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalySearchRequest'
+    anomaly_detection.search_top_anomalies:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/SearchTopAnomaliesRequest'
+      required: true
+    anomaly_detection.preview_detector:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectorExecutionInput'
+      required: true
+    anomaly_detection.preview_detector_inline:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectorExecutionInput'
+      required: true
+    anomaly_detection.run_detector:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectorExecutionInput'
+      required: true
+    anomaly_detection.start_detector:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/DateRange'
+    anomaly_detection.start_insights:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/InsightsStartRequest'
+    anomaly_detection.stop_detector:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/DateRange'
+    anomaly_detection.suggest_detector:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetector'
+      required: true
+    anomaly_detection.update_detector:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetector'
+      required: true
+    anomaly_detection.validate_detector:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetector'
+      required: true
+    anomaly_detection.validate_detector_type:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetector'
+      required: true
+  responses:
+    anomaly_detection.create_detector@201:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/IndexAnomalyDetectorResponse'
+    anomaly_detection.create_detector@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.delete_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/DeleteDocumentResponse'
+    anomaly_detection.delete_detector@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.delete_results@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/BulkByScrollResponseBase'
+    anomaly_detection.delete_results@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.detector_exists@200:
+      description: The anomaly detector exists.
+      content:
+        application/json: {}
+    anomaly_detection.detector_exists@404:
+      description: The anomaly detector does not exist.
+      content:
+        application/json: {}
+    anomaly_detection.get_detector_count@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/DetectorInfoResponse'
+    anomaly_detection.get_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/GetAnomalyDetectorResponse'
+    anomaly_detection.get_detector@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.get_detector_profile@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/DetectorProfileResponse'
+    anomaly_detection.get_detector_profile@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.get_detector_profile_type@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/DetectorProfileResponse'
+    anomaly_detection.get_detector_profile_type@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.match_detector_name@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/DetectorInfoResponse'
+    anomaly_detection.get_insights_status@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/InsightsJobResponse'
+    anomaly_detection.get_insights_status@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.node_stats@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyStatsResponse'
+    anomaly_detection.node_stats@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.node_stats_metric@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyStatsResponse'
+    anomaly_detection.node_stats_metric@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.preview_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/PreviewAnomalyDetectorResponse'
+    anomaly_detection.preview_detector@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.preview_detector_inline@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/PreviewAnomalyDetectorResponse'
+    anomaly_detection.preview_detector_inline@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.run_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyResultResponse'
+    anomaly_detection.run_detector@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.search_detectors@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    anomaly_detection.search_detectors@408:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.search_results@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    anomaly_detection.search_results@408:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.search_results_index@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    anomaly_detection.search_results_index@408:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.search_tasks@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_core.search.yaml#/components/schemas/SearchResponse'
+    anomaly_detection.search_tasks@408:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.search_top_anomalies@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/SearchTopAnomaliesResponse'
+    anomaly_detection.search_top_anomalies@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.start_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/JobResponse'
+    anomaly_detection.start_detector@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.start_insights@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/InsightsJobResponse'
+    anomaly_detection.start_insights@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.stats@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyStatsResponse'
+    anomaly_detection.stats@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.stats_metric@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyStatsResponse'
+    anomaly_detection.stats_metric@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.stop_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/JobResponse'
+    anomaly_detection.stop_detector@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.stop_insights@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/InsightsJobResponse'
+    anomaly_detection.stop_insights@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.suggest_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/SuggestDetectorResponse'
+    anomaly_detection.suggest_detector@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.update_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/IndexAnomalyDetectorResponse'
+    anomaly_detection.update_detector@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.update_detector@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.validate_detector@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/ValidateDetectorResponse'
+    anomaly_detection.validate_detector@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'
+    anomaly_detection.validate_detector_type@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/ValidateDetectorResponse'
+    anomaly_detection.validate_detector_type@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/anomaly_detection._common.yaml#/components/schemas/AnomalyDetectionError'

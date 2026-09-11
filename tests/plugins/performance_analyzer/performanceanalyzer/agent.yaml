@@ -1,0 +1,11 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test the Performance Analyzer agent proxy API.
+chapters:
+  - synopsis: Proxy a Performance Analyzer agent metrics request.
+    method: GET
+    path: /_plugins/_performanceanalyzer/_agent/{redirect_endpoint}
+    parameters:
+      redirect_endpoint: metrics
+    response:
+      status: [200, 500]

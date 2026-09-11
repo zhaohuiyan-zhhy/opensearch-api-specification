@@ -1,0 +1,17 @@
+$schema: ../../../../../json_schemas/test_story.schema.yaml
+
+description: Test the Performance Analyzer RCA local configuration API.
+chapters:
+  - synopsis: Get the RCA local configuration.
+    method: GET
+    path: /_plugins/_performanceanalyzer/rca/config
+    response:
+      status: 200
+  - synopsis: Update the RCA local configuration.
+    method: POST
+    path: /_plugins/_performanceanalyzer/rca/config
+    request:
+      payload:
+        enabled: false
+    response:
+      status: 200

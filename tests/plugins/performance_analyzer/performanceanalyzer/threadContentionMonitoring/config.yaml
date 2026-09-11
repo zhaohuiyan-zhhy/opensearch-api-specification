@@ -1,0 +1,17 @@
+$schema: ../../../../../json_schemas/test_story.schema.yaml
+
+description: Test the Performance Analyzer thread contention monitoring local configuration API.
+chapters:
+  - synopsis: Get the thread contention monitoring local configuration.
+    method: GET
+    path: /_plugins/_performanceanalyzer/threadContentionMonitoring/config
+    response:
+      status: 200
+  - synopsis: Update the thread contention monitoring local configuration.
+    method: POST
+    path: /_plugins/_performanceanalyzer/threadContentionMonitoring/config
+    request:
+      payload:
+        enabled: false
+    response:
+      status: 200

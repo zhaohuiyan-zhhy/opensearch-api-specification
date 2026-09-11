@@ -1,0 +1,17 @@
+$schema: ../../../../../../json_schemas/test_story.schema.yaml
+
+description: Test the Performance Analyzer RCA cluster configuration API.
+chapters:
+  - synopsis: Get the RCA cluster configuration.
+    method: GET
+    path: /_plugins/_performanceanalyzer/rca/cluster/config
+    response:
+      status: 200
+  - synopsis: Update the RCA cluster configuration.
+    method: POST
+    path: /_plugins/_performanceanalyzer/rca/cluster/config
+    request:
+      payload:
+        enabled: false
+    response:
+      status: 200

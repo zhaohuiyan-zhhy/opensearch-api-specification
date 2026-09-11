@@ -1,0 +1,21 @@
+$schema: ../../../../../json_schemas/test_story.schema.yaml
+
+description: Test the Performance Analyzer cluster configuration API.
+chapters:
+  - synopsis: Get the Performance Analyzer cluster configuration with verbose state.
+    method: GET
+    path: /_plugins/_performanceanalyzer/cluster/config
+    parameters:
+      verbose: true
+    response:
+      status: 200
+  - synopsis: Update the Performance Analyzer cluster configuration.
+    method: POST
+    path: /_plugins/_performanceanalyzer/cluster/config
+    request:
+      payload:
+        enabled: false
+        shardsPerCollection: 0
+        collectorsSetting: 0
+    response:
+      status: 200

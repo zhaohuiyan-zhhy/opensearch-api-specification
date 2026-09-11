@@ -1,0 +1,18 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test the Performance Analyzer local configuration API.
+chapters:
+  - synopsis: Get the Performance Analyzer local configuration.
+    method: GET
+    path: /_plugins/_performanceanalyzer/config
+    response:
+      status: 200
+  - synopsis: Update the Performance Analyzer local configuration.
+    method: POST
+    path: /_plugins/_performanceanalyzer/config
+    request:
+      payload:
+        enabled: false
+        shardsPerCollection: 0
+    response:
+      status: 200

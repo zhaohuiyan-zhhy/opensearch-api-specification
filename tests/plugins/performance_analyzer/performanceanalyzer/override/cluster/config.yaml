@@ -1,0 +1,20 @@
+$schema: ../../../../../../json_schemas/test_story.schema.yaml
+
+description: Test the Performance Analyzer cluster override API.
+chapters:
+  - synopsis: Get the Performance Analyzer cluster overrides.
+    method: GET
+    path: /_plugins/_performanceanalyzer/override/cluster/config
+    response:
+      status: 200
+  - synopsis: Update the Performance Analyzer cluster overrides.
+    method: POST
+    path: /_plugins/_performanceanalyzer/override/cluster/config
+    request:
+      payload:
+        enable: {}
+        disable: {}
+    response:
+      status: 200
+      payload:
+        override triggered: true

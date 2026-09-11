@@ -1,0 +1,351 @@
+openapi: 3.1.0
+info:
+  title: OpenSearch Performance Analyzer API
+  description: OpenSearch Performance Analyzer configuration and agent proxy APIs.
+  version: 1.0.0
+paths:
+  /_plugins/_performanceanalyzer/_agent/{redirect_endpoint}:
+    get:
+      operationId: performance_analyzer.proxy_agent_resource.0
+      x-operation-group: performance_analyzer.proxy_agent_resource
+      description: Proxies a supported Performance Analyzer agent resource.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.proxy_agent_resource::path.redirect_endpoint'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.proxy_agent_resource@200'
+        '404':
+          $ref: '#/components/responses/performance_analyzer.proxy_agent_resource@404'
+        '500':
+          $ref: '#/components/responses/performance_analyzer.proxy_agent_resource@500'
+
+  /_plugins/_performanceanalyzer/batch/cluster/config:
+    get:
+      operationId: performance_analyzer.get_cluster_config.0
+      x-operation-group: performance_analyzer.get_cluster_config
+      description: Retrieves a cluster-wide Performance Analyzer feature configuration.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.get_cluster_config::query.verbose'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_cluster_config@200'
+    post:
+      operationId: performance_analyzer.update_cluster_config.0
+      x-operation-group: performance_analyzer.update_cluster_config
+      description: Updates a cluster-wide Performance Analyzer feature configuration.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.update_cluster_config::query.verbose'
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_cluster_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_cluster_config@200'
+
+  /_plugins/_performanceanalyzer/batch/config:
+    get:
+      operationId: performance_analyzer.get_local_config.0
+      x-operation-group: performance_analyzer.get_local_config
+      description: Retrieves a local Performance Analyzer feature configuration.
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_local_config@200'
+    post:
+      operationId: performance_analyzer.update_local_config.0
+      x-operation-group: performance_analyzer.update_local_config
+      description: Updates a local Performance Analyzer feature configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_local_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_local_config@200'
+        '400':
+          $ref: '#/components/responses/performance_analyzer.update_local_config@400'
+
+  /_plugins/_performanceanalyzer/cluster/config:
+    get:
+      operationId: performance_analyzer.get_cluster_config.1
+      x-operation-group: performance_analyzer.get_cluster_config
+      description: Retrieves a cluster-wide Performance Analyzer feature configuration.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.get_cluster_config::query.verbose'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_cluster_config@200'
+    post:
+      operationId: performance_analyzer.update_cluster_config.1
+      x-operation-group: performance_analyzer.update_cluster_config
+      description: Updates a cluster-wide Performance Analyzer feature configuration.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.update_cluster_config::query.verbose'
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_cluster_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_cluster_config@200'
+
+  /_plugins/_performanceanalyzer/config:
+    get:
+      operationId: performance_analyzer.get_local_config.1
+      x-operation-group: performance_analyzer.get_local_config
+      description: Retrieves a local Performance Analyzer feature configuration.
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_local_config@200'
+    post:
+      operationId: performance_analyzer.update_local_config.1
+      x-operation-group: performance_analyzer.update_local_config
+      description: Updates a local Performance Analyzer feature configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_local_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_local_config@200'
+        '400':
+          $ref: '#/components/responses/performance_analyzer.update_local_config@400'
+
+  /_plugins/_performanceanalyzer/logging/cluster/config:
+    get:
+      operationId: performance_analyzer.get_cluster_config.2
+      x-operation-group: performance_analyzer.get_cluster_config
+      description: Retrieves a cluster-wide Performance Analyzer feature configuration.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.get_cluster_config::query.verbose'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_cluster_config@200'
+    post:
+      operationId: performance_analyzer.update_cluster_config.2
+      x-operation-group: performance_analyzer.update_cluster_config
+      description: Updates a cluster-wide Performance Analyzer feature configuration.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.update_cluster_config::query.verbose'
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_cluster_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_cluster_config@200'
+
+  /_plugins/_performanceanalyzer/logging/config:
+    get:
+      operationId: performance_analyzer.get_local_config.2
+      x-operation-group: performance_analyzer.get_local_config
+      description: Retrieves a local Performance Analyzer feature configuration.
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_local_config@200'
+    post:
+      operationId: performance_analyzer.update_local_config.2
+      x-operation-group: performance_analyzer.update_local_config
+      description: Updates a local Performance Analyzer feature configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_local_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_local_config@200'
+        '400':
+          $ref: '#/components/responses/performance_analyzer.update_local_config@400'
+
+  /_plugins/_performanceanalyzer/override/cluster/config:
+    get:
+      operationId: performance_analyzer.get_cluster_overrides.0
+      x-operation-group: performance_analyzer.get_cluster_overrides
+      description: Retrieves cluster-wide Performance Analyzer component overrides.
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_cluster_overrides@200'
+    post:
+      operationId: performance_analyzer.update_cluster_overrides.0
+      x-operation-group: performance_analyzer.update_cluster_overrides
+      description: Updates cluster-wide Performance Analyzer component overrides.
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_cluster_overrides'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_cluster_overrides@200'
+        '400':
+          $ref: '#/components/responses/performance_analyzer.update_cluster_overrides@400'
+
+  /_plugins/_performanceanalyzer/rca/cluster/config:
+    get:
+      operationId: performance_analyzer.get_cluster_config.3
+      x-operation-group: performance_analyzer.get_cluster_config
+      description: Retrieves a cluster-wide Performance Analyzer feature configuration.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.get_cluster_config::query.verbose'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_cluster_config@200'
+    post:
+      operationId: performance_analyzer.update_cluster_config.3
+      x-operation-group: performance_analyzer.update_cluster_config
+      description: Updates a cluster-wide Performance Analyzer feature configuration.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.update_cluster_config::query.verbose'
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_cluster_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_cluster_config@200'
+
+  /_plugins/_performanceanalyzer/rca/config:
+    get:
+      operationId: performance_analyzer.get_local_config.3
+      x-operation-group: performance_analyzer.get_local_config
+      description: Retrieves a local Performance Analyzer feature configuration.
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_local_config@200'
+    post:
+      operationId: performance_analyzer.update_local_config.3
+      x-operation-group: performance_analyzer.update_local_config
+      description: Updates a local Performance Analyzer feature configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_local_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_local_config@200'
+        '400':
+          $ref: '#/components/responses/performance_analyzer.update_local_config@400'
+
+  /_plugins/_performanceanalyzer/threadContentionMonitoring/cluster/config:
+    get:
+      operationId: performance_analyzer.get_cluster_config.4
+      x-operation-group: performance_analyzer.get_cluster_config
+      description: Retrieves a cluster-wide Performance Analyzer feature configuration.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.get_cluster_config::query.verbose'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_cluster_config@200'
+    post:
+      operationId: performance_analyzer.update_cluster_config.4
+      x-operation-group: performance_analyzer.update_cluster_config
+      description: Updates a cluster-wide Performance Analyzer feature configuration.
+      parameters:
+        - $ref: '#/components/parameters/performance_analyzer.update_cluster_config::query.verbose'
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_cluster_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_cluster_config@200'
+
+  /_plugins/_performanceanalyzer/threadContentionMonitoring/config:
+    get:
+      operationId: performance_analyzer.get_local_config.4
+      x-operation-group: performance_analyzer.get_local_config
+      description: Retrieves a local Performance Analyzer feature configuration.
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.get_local_config@200'
+    post:
+      operationId: performance_analyzer.update_local_config.4
+      x-operation-group: performance_analyzer.update_local_config
+      description: Updates a local Performance Analyzer feature configuration.
+      requestBody:
+        $ref: '#/components/requestBodies/performance_analyzer.update_local_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/performance_analyzer.update_local_config@200'
+        '400':
+          $ref: '#/components/responses/performance_analyzer.update_local_config@400'
+
+components:
+  parameters:
+    performance_analyzer.get_cluster_config::query.verbose:
+      name: verbose
+      in: query
+      description: Returns per-feature cluster state values when true.
+      schema:
+        type: boolean
+        default: false
+      required: false
+    performance_analyzer.proxy_agent_resource::path.redirect_endpoint:
+      name: redirect_endpoint
+      in: path
+      description: The Performance Analyzer agent resource to proxy.
+      schema:
+        $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/AgentRedirectEndpoint'
+      required: true
+    performance_analyzer.update_cluster_config::query.verbose:
+      name: verbose
+      in: query
+      description: Returns per-feature cluster state values when true.
+      schema:
+        type: boolean
+        default: false
+      required: false
+
+  requestBodies:
+    performance_analyzer.update_cluster_config:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/ClusterConfigRequest'
+    performance_analyzer.update_cluster_overrides:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/ConfigOverrides'
+    performance_analyzer.update_local_config:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/LocalConfigRequest'
+
+  responses:
+    performance_analyzer.get_cluster_config@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/ClusterConfigResponse'
+    performance_analyzer.get_cluster_overrides@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/ConfigOverridesResponse'
+    performance_analyzer.get_local_config@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/LocalConfigResponse'
+    performance_analyzer.proxy_agent_resource@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/AgentResponse'
+    performance_analyzer.proxy_agent_resource@404:
+      content:
+        text/plain:
+          schema:
+            type: string
+    performance_analyzer.proxy_agent_resource@500:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    performance_analyzer.update_cluster_overrides@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/ConfigOverrideUpdateResponse'
+    performance_analyzer.update_cluster_overrides@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/ConfigOverrideErrorResponse'
+    performance_analyzer.update_cluster_config@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/ClusterConfigResponse'
+    performance_analyzer.update_local_config@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/performance_analyzer._common.yaml#/components/schemas/LocalConfigResponse'
+    performance_analyzer.update_local_config@400:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'

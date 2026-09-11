@@ -1,0 +1,141 @@
+openapi: 3.1.0
+info:
+  title: Schemas of `performance_analyzer._common` Category
+  description: Schemas shared by Performance Analyzer APIs.
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    AgentRedirectEndpoint:
+      type: string
+      enum:
+        - actions
+        - batch
+        - metrics
+        - rca
+
+    AgentResponse:
+      description: A response proxied from the Performance Analyzer agent.
+      type: object
+      additionalProperties: true
+
+    ClusterConfigRequest:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        shardsPerCollection:
+          type: integer
+        collectorsSetting:
+          type: integer
+
+    ClusterConfigResponse:
+      type: object
+      properties:
+        currentPerformanceAnalyzerClusterState:
+          oneOf:
+            - type: integer
+            - $ref: '#/components/schemas/FeatureStateMap'
+        shardsPerCollection:
+          type: integer
+        collectorsSetting:
+          type: integer
+        batchMetricsRetentionPeriodMinutes:
+          type: integer
+      required:
+        - batchMetricsRetentionPeriodMinutes
+        - collectorsSetting
+        - currentPerformanceAnalyzerClusterState
+        - shardsPerCollection
+
+    ConfigOverrideComponents:
+      type: object
+      properties:
+        rcas:
+          type: array
+          items:
+            type: string
+        deciders:
+          type: array
+          items:
+            type: string
+        actions:
+          type: array
+          items:
+            type: string
+        collectors:
+          type: array
+          items:
+            type: string
+
+    ConfigOverrideErrorResponse:
+      type: object
+      properties:
+        reason:
+          type: string
+      required:
+        - reason
+
+    ConfigOverrides:
+      type: object
+      properties:
+        enable:
+          $ref: '#/components/schemas/ConfigOverrideComponents'
+        disable:
+          $ref: '#/components/schemas/ConfigOverrideComponents'
+
+    ConfigOverridesResponse:
+      type: object
+      properties:
+        overrides:
+          type: string
+          description: The serialized cluster override configuration.
+      required:
+        - overrides
+
+    ConfigOverrideUpdateResponse:
+      type: object
+      properties:
+        override triggered:
+          type: boolean
+      required:
+        - override triggered
+
+    FeatureStateMap:
+      type: object
+      additionalProperties:
+        type: boolean
+
+    LocalConfigRequest:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        shardsPerCollection:
+          type: integer
+
+    LocalConfigResponse:
+      type: object
+      properties:
+        performanceAnalyzerEnabled:
+          type: boolean
+        rcaEnabled:
+          type: boolean
+        loggingEnabled:
+          type: boolean
+        shardsPerCollection:
+          type: integer
+        batchMetricsEnabled:
+          type: boolean
+        threadContentionMonitoringEnabled:
+          type: boolean
+        batchMetricsRetentionPeriodMinutes:
+          type: integer
+      required:
+        - batchMetricsEnabled
+        - batchMetricsRetentionPeriodMinutes
+        - loggingEnabled
+        - performanceAnalyzerEnabled
+        - rcaEnabled
+        - shardsPerCollection
+        - threadContentionMonitoringEnabled

@@ -1,0 +1,20 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test the global ML statistics trailing-slash route.
+version: '>= 3.8'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+chapters:
+  - synopsis: Get all ML stats using the trailing-slash route.
+    path: /_plugins/_ml/stats/
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get local-node ML stats using the trailing-slash route.
+    path: /_plugins/_ml/{node_id}/stats/
+    method: GET
+    parameters:
+      node_id: _local
+    response:
+      status: 200

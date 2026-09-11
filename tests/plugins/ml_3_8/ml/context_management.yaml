@@ -1,0 +1,78 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test context management template APIs.
+version: '>= 3.8'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+prologues:
+  - path: /_cluster/settings
+    method: PUT
+    request:
+      payload:
+        persistent:
+          plugins.ml_commons.agent_framework_enabled: true
+epilogues:
+  - path: /_plugins/_ml/context_management/spec_test_context
+    method: DELETE
+    status: [200, 404]
+chapters:
+  - synopsis: Create a context management template.
+    path: /_plugins/_ml/context_management/{template_name}
+    method: POST
+    parameters:
+      template_name: spec_test_context
+    request:
+      payload:
+        description: Spec test template
+        hooks:
+          pre_execution:
+            - type: TestContextManager
+    response:
+      status: 200
+      payload:
+        context_management_name: spec_test_context
+        status: created
+  - synopsis: Get a context management template.
+    path: /_plugins/_ml/context_management/{template_name}
+    method: GET
+    parameters:
+      template_name: spec_test_context
+    response:
+      status: 200
+      payload:
+        name: spec_test_context
+        description: Spec test template
+  - synopsis: List context management templates.
+    path: /_plugins/_ml/context_management
+    method: GET
+    parameters:
+      from: 0
+      size: 10
+    response:
+      status: 200
+  - synopsis: Update a context management template.
+    path: /_plugins/_ml/context_management/{template_name}
+    method: PUT
+    parameters:
+      template_name: spec_test_context
+    request:
+      payload:
+        description: Updated spec test template
+        hooks:
+          pre_execution:
+            - type: TestContextManager
+    response:
+      status: 200
+      payload:
+        result: updated
+  - synopsis: Delete a context management template.
+    path: /_plugins/_ml/context_management/{template_name}
+    method: DELETE
+    parameters:
+      template_name: spec_test_context
+    response:
+      status: 200
+      payload:
+        context_management_name: spec_test_context
+        status: deleted

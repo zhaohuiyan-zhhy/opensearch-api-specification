@@ -493,6 +493,17 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ml.get_agent@200'
+    put:
+      operationId: ml.update_agent.0
+      x-operation-group: ml.update_agent
+      description: Updates an agent.
+      parameters:
+        - $ref: "#/components/parameters/ml.update_agent::path.agent_id"
+      requestBody:
+        $ref: "#/components/requestBodies/ml.update_agent"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.update_agent@200"
     delete:
       operationId: ml.delete_agent.0
       x-operation-group: ml.delete_agent
@@ -1039,6 +1050,289 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ml.search_agentic_memory@200'
+    post:
+      operationId: ml.search_agentic_memory.1
+      x-operation-group: ml.search_agentic_memory
+      description: Search for memories of a specific type within a memory container.
+      parameters:
+        - $ref: '#/components/parameters/ml.search_agentic_memory::path.memory_container_id'
+        - $ref: '#/components/parameters/ml.search_agentic_memory::path.type'
+      requestBody:
+        $ref: '#/components/requestBodies/ml.search_agentic_memory'
+      responses:
+        '200':
+          $ref: '#/components/responses/ml.search_agentic_memory@200'
+  /_plugins/_ml/models/{model_id}/_batch_predict:
+    post:
+      operationId: ml.batch_predict_model.0
+      x-operation-group: ml.batch_predict_model
+      description: Runs batch prediction using a model.
+      parameters:
+        - $ref: "#/components/parameters/ml.batch_predict_model::path.model_id"
+      requestBody:
+        $ref: "#/components/requestBodies/ml.batch_predict_model"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.batch_predict_model@200"
+  /_plugins/_ml/models/{model_id}/{version}/_register:
+    post:
+      operationId: ml.register_model.1
+      x-operation-group: ml.register_model
+      description: Registers a model.
+      parameters:
+        - $ref: "#/components/parameters/ml.register_model::path.model_id"
+        - $ref: "#/components/parameters/ml.register_model::path.version"
+      requestBody:
+        $ref: '#/components/requestBodies/ml.register_model'
+      responses:
+        '200':
+          $ref: '#/components/responses/ml.register_model@200'
+  /_plugins/_ml/models/{model_id}/{version}/_upload:
+    post:
+      operationId: ml.upload_model.1
+      x-operation-group: ml.upload_model
+      deprecated: true
+      x-deprecation-message: Use `_register` instead.
+      description: Registers a model.
+      parameters:
+        - $ref: "#/components/parameters/ml.upload_model::path.model_id"
+        - $ref: "#/components/parameters/ml.upload_model::path.version"
+      requestBody:
+        $ref: '#/components/requestBodies/ml.upload_model'
+      responses:
+        '200':
+          $ref: '#/components/responses/ml.upload_model@200'
+  /_plugins/_ml/tasks/{task_id}/_cancel:
+    post:
+      operationId: ml.cancel_task.0
+      x-operation-group: ml.cancel_task
+      description: Cancels a batch task.
+      parameters:
+        - $ref: "#/components/parameters/ml.cancel_task::path.task_id"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.cancel_task@200"
+  /_plugins/_ml/stats/:
+    get:
+      operationId: ml.get_stats.4
+      x-operation-group: ml.get_stats
+      description: Get stats.
+      responses:
+        '200':
+          $ref: '#/components/responses/ml.get_stats@200'
+  /_plugins/_ml/{node_id}/stats/:
+    get:
+      operationId: ml.get_stats.5
+      x-operation-group: ml.get_stats
+      description: Get stats.
+      parameters:
+        - $ref: '#/components/parameters/ml.get_stats::path.node_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/ml.get_stats@200'
+  /_plugins/_ml/memory_containers/{memory_container_id}/memories/long-term/_semantic_search:
+    get:
+      operationId: ml.semantic_search_memories.0
+      x-operation-group: ml.semantic_search_memories
+      description: Performs semantic search over long-term memories.
+      parameters:
+        - $ref: "#/components/parameters/ml.semantic_search_memories::path.memory_container_id"
+      requestBody:
+        $ref: '#/components/requestBodies/ml.semantic_search_memories'
+      responses:
+        '200':
+          $ref: '#/components/responses/ml.semantic_search_memories@200'
+    post:
+      operationId: ml.semantic_search_memories.1
+      x-operation-group: ml.semantic_search_memories
+      description: Performs semantic search over long-term memories.
+      parameters:
+        - $ref: "#/components/parameters/ml.semantic_search_memories::path.memory_container_id"
+      requestBody:
+        $ref: '#/components/requestBodies/ml.semantic_search_memories'
+      responses:
+        '200':
+          $ref: '#/components/responses/ml.semantic_search_memories@200'
+  /_plugins/_ml/memory_containers/{memory_container_id}/memories/long-term/_hybrid_search:
+    get:
+      operationId: ml.hybrid_search_memories.0
+      x-operation-group: ml.hybrid_search_memories
+      description: Performs hybrid search over long-term memories.
+      parameters:
+        - $ref: "#/components/parameters/ml.hybrid_search_memories::path.memory_container_id"
+      requestBody:
+        $ref: '#/components/requestBodies/ml.hybrid_search_memories'
+      responses:
+        '200':
+          $ref: '#/components/responses/ml.hybrid_search_memories@200'
+    post:
+      operationId: ml.hybrid_search_memories.1
+      x-operation-group: ml.hybrid_search_memories
+      description: Performs hybrid search over long-term memories.
+      parameters:
+        - $ref: "#/components/parameters/ml.hybrid_search_memories::path.memory_container_id"
+      requestBody:
+        $ref: '#/components/requestBodies/ml.hybrid_search_memories'
+      responses:
+        '200':
+          $ref: '#/components/responses/ml.hybrid_search_memories@200'
+  /_plugins/_ml/config/{config_id}:
+    get:
+      operationId: ml.get_config.0
+      x-operation-group: ml.get_config
+      description: Retrieves an ML configuration.
+      parameters:
+        - $ref: "#/components/parameters/ml.get_config::path.config_id"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.get_config@200"
+  /_plugins/_ml/connectors/{connector_id}/tools:
+    get:
+      operationId: ml.list_connector_tools.0
+      x-operation-group: ml.list_connector_tools
+      description: Lists tools exposed by an MCP connector.
+      parameters:
+        - $ref: "#/components/parameters/ml.list_connector_tools::path.connector_id"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.list_connector_tools@200"
+  /_plugins/_ml/context_management:
+    get:
+      operationId: ml.list_context_management_templates.0
+      x-operation-group: ml.list_context_management_templates
+      description: Lists context management templates.
+      parameters:
+        - $ref: "#/components/parameters/ml.list_context_management_templates::query.from"
+        - $ref: "#/components/parameters/ml.list_context_management_templates::query.size"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.list_context_management_templates@200"
+  /_plugins/_ml/context_management/{template_name}:
+    get:
+      operationId: ml.get_context_management_template.0
+      x-operation-group: ml.get_context_management_template
+      description: Retrieves a context management template.
+      parameters:
+        - $ref: "#/components/parameters/ml.get_context_management_template::path.template_name"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.get_context_management_template@200"
+    post:
+      operationId: ml.create_context_management_template.0
+      x-operation-group: ml.create_context_management_template
+      description: Creates a context management template.
+      parameters:
+        - $ref: "#/components/parameters/ml.create_context_management_template::path.template_name"
+      requestBody:
+        $ref: "#/components/requestBodies/ml.create_context_management_template"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.create_context_management_template@200"
+    put:
+      operationId: ml.update_context_management_template.0
+      x-operation-group: ml.update_context_management_template
+      description: Updates a context management template.
+      parameters:
+        - $ref: "#/components/parameters/ml.update_context_management_template::path.template_name"
+      requestBody:
+        $ref: "#/components/requestBodies/ml.update_context_management_template"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.update_context_management_template@200"
+    delete:
+      operationId: ml.delete_context_management_template.0
+      x-operation-group: ml.delete_context_management_template
+      description: Deletes a context management template.
+      parameters:
+        - $ref: "#/components/parameters/ml.delete_context_management_template::path.template_name"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.delete_context_management_template@200"
+  /_plugins/_ml/index_insight_config/:
+    get:
+      operationId: ml.get_index_insight_config.0
+      x-operation-group: ml.get_index_insight_config
+      description: Retrieves the index insight configuration.
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.get_index_insight_config@200"
+    put:
+      operationId: ml.put_index_insight_config.0
+      x-operation-group: ml.put_index_insight_config
+      description: Updates the index insight configuration.
+      requestBody:
+        $ref: "#/components/requestBodies/ml.put_index_insight_config"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.put_index_insight_config@200"
+  /_plugins/_ml/insights/{index_id}/{insight_type}:
+    get:
+      operationId: ml.get_index_insight.0
+      x-operation-group: ml.get_index_insight
+      description: Retrieves an insight for an index.
+      parameters:
+        - $ref: "#/components/parameters/ml.get_index_insight::path.index_id"
+        - $ref: "#/components/parameters/ml.get_index_insight::path.insight_type"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.get_index_insight@200"
+  /_plugins/_ml/mcp:
+    get:
+      operationId: ml.get_mcp_server.0
+      x-operation-group: ml.get_mcp_server
+      description: Probes the MCP server endpoint.
+      responses:
+        '405':
+          $ref: "#/components/responses/ml.get_mcp_server@405"
+    post:
+      operationId: ml.call_mcp_server.0
+      x-operation-group: ml.call_mcp_server
+      description: Sends a JSON-RPC request to the MCP server.
+      requestBody:
+        $ref: "#/components/requestBodies/ml.call_mcp_server"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.call_mcp_server@200"
+        '202':
+          $ref: "#/components/responses/ml.call_mcp_server@202"
+  /_plugins/_ml/mcp/tools/_list:
+    get:
+      operationId: ml.list_mcp_tools.0
+      x-operation-group: ml.list_mcp_tools
+      description: Lists registered MCP tools.
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.list_mcp_tools@200"
+  /_plugins/_ml/mcp/tools/_register:
+    post:
+      operationId: ml.register_mcp_tools.0
+      x-operation-group: ml.register_mcp_tools
+      description: Registers MCP tools.
+      requestBody:
+        $ref: "#/components/requestBodies/ml.register_mcp_tools"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.register_mcp_tools@200"
+  /_plugins/_ml/mcp/tools/_remove:
+    post:
+      operationId: ml.remove_mcp_tools.0
+      x-operation-group: ml.remove_mcp_tools
+      description: Removes MCP tools.
+      requestBody:
+        $ref: "#/components/requestBodies/ml.remove_mcp_tools"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.remove_mcp_tools@200"
+  /_plugins/_ml/mcp/tools/_update:
+    post:
+      operationId: ml.update_mcp_tools.0
+      x-operation-group: ml.update_mcp_tools
+      description: Updates MCP tools.
+      requestBody:
+        $ref: "#/components/requestBodies/ml.update_mcp_tools"
+      responses:
+        '200':
+          $ref: "#/components/responses/ml.update_mcp_tools@200"
 components:
   requestBodies:
     ml.register_model_group:
@@ -1931,6 +2225,190 @@ components:
                 description: The number of memory containers to return.
               sort:
                 $ref: '../schemas/_common.yaml#/components/schemas/Sort'
+    ml.update_agent:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+              description:
+                type: string
+              llm:
+                $ref: ../schemas/ml._common.yaml#/components/schemas/LLM
+              tools:
+                type: array
+                items:
+                  $ref: ../schemas/ml._common.yaml#/components/schemas/ToolItems
+              parameters:
+                $ref: ../schemas/ml._common.yaml#/components/schemas/Parameters
+              memory:
+                $ref: ../schemas/ml._common.yaml#/components/schemas/Memory
+              app_type:
+                type: string
+              last_updated_time:
+                type: integer
+                format: int64
+    ml.batch_predict_model:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              parameters:
+                type: object
+                additionalProperties:
+                  type: string
+                description: The parameters to pass to the model. Used by remote connector models to fill the connector request_body template variables from this map.
+              action_type:
+                $ref: ../schemas/ml._common.yaml#/components/schemas/PredictionActionType
+                description: Overrides the action type derived from the request path. Used for remote connector models.
+              dlq:
+                type: object
+                additionalProperties:
+                  type: string
+                description: Dead-letter queue configuration for batch predict on remote connector models (since OpenSearch 2.19).
+              text_docs:
+                type: array
+                items:
+                  type: string
+                description: The text documents. Used by local text-embedding and sparse-encoding models.
+              query_text:
+                type: string
+                description: The query text. Used by local text-similarity models.
+              question:
+                type: string
+                description: The question input. Used by local question-answering models.
+              context:
+                type: string
+                description: The context input. Used by local question-answering models.
+    ml.create_context_management_template:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/ml._common.yaml#/components/schemas/ContextManagementTemplate
+    ml.update_context_management_template:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/ml._common.yaml#/components/schemas/ContextManagementTemplate
+    ml.put_index_insight_config:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              is_enable:
+                type: boolean
+    ml.call_mcp_server:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+    ml.register_mcp_tools:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tools:
+                type: array
+                minItems: 1
+                items:
+                  $ref: ../schemas/ml._common.yaml#/components/schemas/McpToolRegisterInput
+            required:
+              - tools
+    ml.remove_mcp_tools:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            minItems: 1
+            items:
+              type: string
+    ml.update_mcp_tools:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tools:
+                type: array
+                minItems: 1
+                items:
+                  $ref: ../schemas/ml._common.yaml#/components/schemas/McpToolUpdateInput
+            required:
+              - tools
+    ml.semantic_search_memories:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              query:
+                type: string
+              k:
+                type: integer
+                format: int32
+                default: 10
+              namespace:
+                type: object
+                additionalProperties:
+                  type: string
+              tags:
+                type: object
+                additionalProperties:
+                  type: string
+              min_score:
+                type: number
+                format: float
+              filter:
+                $ref: '../schemas/_common.query_dsl.yaml#/components/schemas/QueryContainer'
+    ml.hybrid_search_memories:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              query:
+                type: string
+              k:
+                type: integer
+                format: int32
+                default: 10
+              namespace:
+                type: object
+                additionalProperties:
+                  type: string
+              tags:
+                type: object
+                additionalProperties:
+                  type: string
+              min_score:
+                type: number
+                format: float
+              filter:
+                $ref: '../schemas/_common.query_dsl.yaml#/components/schemas/QueryContainer'
+              bm25_weight:
+                type: number
+                format: float
+              neural_weight:
+                type: number
+                format: float
   responses:
     ml.register_model_group@200:
       content:
@@ -2456,6 +2934,177 @@ components:
         application/json:
           schema:
             $ref: '../schemas/ml._common.yaml#/components/schemas/SearchResponse'
+    ml.update_agent@200:
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/_common.yaml#/components/schemas/WriteResponseBase
+    ml.batch_predict_model@200:
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/ml._common.yaml#/components/schemas/PredictModelResponse
+    ml.cancel_task@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+            required:
+              - status
+    ml.get_config@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+    ml.list_connector_tools@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tools:
+                type: array
+                items:
+                  $ref: '../schemas/ml._common.yaml#/components/schemas/McpToolInfo'
+            required:
+              - tools
+    ml.list_context_management_templates@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              total:
+                type: integer
+                format: int64
+              templates:
+                type: array
+                items:
+                  $ref: ../schemas/ml._common.yaml#/components/schemas/ContextManagementTemplate
+            required:
+              - total
+              - templates
+    ml.get_context_management_template@200:
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/ml._common.yaml#/components/schemas/ContextManagementTemplate
+    ml.create_context_management_template@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              context_management_name:
+                type: string
+              status:
+                type: string
+            required:
+              - context_management_name
+              - status
+    ml.update_context_management_template@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/WriteResponseBase'
+    ml.delete_context_management_template@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              context_management_name:
+                type: string
+              status:
+                type: string
+            required:
+              - context_management_name
+              - status
+    ml.get_index_insight_config@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              is_enable:
+                type: boolean
+              tenant_id:
+                type: string
+            required:
+              - is_enable
+    ml.put_index_insight_config@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              acknowledged:
+                type: boolean
+            required:
+              - acknowledged
+    ml.get_index_insight@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              index_insight:
+                type: object
+                additionalProperties: true
+    ml.get_mcp_server@405:
+      description: The MCP endpoint does not accept GET requests.
+    ml.call_mcp_server@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+    ml.call_mcp_server@202:
+      description: The MCP request was accepted without a response body.
+    ml.list_mcp_tools@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              tools:
+                type: array
+                items:
+                  $ref: '../schemas/ml._common.yaml#/components/schemas/McpToolRegisterInput'
+            required:
+              - tools
+    ml.register_mcp_tools@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+    ml.remove_mcp_tools@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+    ml.update_mcp_tools@200:
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+    ml.semantic_search_memories@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ml._common.yaml#/components/schemas/SearchResponse'
+    ml.hybrid_search_memories@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ml._common.yaml#/components/schemas/SearchResponse'
   parameters:
     ml.get_all_memories::query.max_results:
       name: max_results
@@ -2923,3 +3572,122 @@ components:
       required: true
       schema:
         $ref: '../schemas/ml._common.yaml#/components/schemas/MemoryType'
+    ml.update_agent::path.agent_id:
+      name: agent_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.batch_predict_model::path.model_id:
+      name: model_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.register_model::path.model_id:
+      name: model_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.register_model::path.version:
+      name: version
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.upload_model::path.model_id:
+      name: model_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.upload_model::path.version:
+      name: version
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.cancel_task::path.task_id:
+      name: task_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.semantic_search_memories::path.memory_container_id:
+      name: memory_container_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.hybrid_search_memories::path.memory_container_id:
+      name: memory_container_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.get_config::path.config_id:
+      name: config_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.list_connector_tools::path.connector_id:
+      name: connector_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.list_context_management_templates::query.from:
+      name: from
+      in: query
+      schema:
+        type: integer
+        format: int32
+        default: 0
+        minimum: 0
+    ml.list_context_management_templates::query.size:
+      name: size
+      in: query
+      schema:
+        type: integer
+        format: int32
+        default: 10
+        minimum: 1
+        maximum: 1000
+    ml.get_context_management_template::path.template_name:
+      name: template_name
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.create_context_management_template::path.template_name:
+      name: template_name
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.update_context_management_template::path.template_name:
+      name: template_name
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.delete_context_management_template::path.template_name:
+      name: template_name
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.get_index_insight::path.index_id:
+      name: index_id
+      in: path
+      required: true
+      schema:
+        type: string
+    ml.get_index_insight::path.insight_type:
+      name: insight_type
+      in: path
+      required: true
+      schema:
+        type: string

@@ -1,0 +1,19 @@
+$schema: ../../../../../../json_schemas/test_story.schema.yaml
+
+description: Test MCP tool listing.
+version: '>= 3.8'
+prologues:
+  - path: /_cluster/settings
+    method: PUT
+    request:
+      payload:
+        persistent:
+          plugins.ml_commons.mcp_server_enabled: true
+chapters:
+  - synopsis: List registered MCP tools.
+    path: /_plugins/_ml/mcp/tools/_list
+    method: GET
+    response:
+      status: 200
+      payload:
+        tools: []

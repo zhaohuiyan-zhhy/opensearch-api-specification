@@ -1766,3 +1766,97 @@ components:
         - long-term
         - sessions
         - working
+
+    ContextManagementTemplate:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: "^[a-z0-9_-]{1,49}$"
+        description:
+          type: string
+        hooks:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: "#/components/schemas/ContextManagerConfig"
+        created_time:
+          type: integer
+          format: int64
+        last_modified:
+          type: integer
+          format: int64
+        created_by:
+          type: string
+    ContextManagerConfig:
+      type: object
+      properties:
+        type:
+          type: string
+        activation:
+          type: object
+          additionalProperties: true
+        config:
+          type: object
+          additionalProperties: true
+      required:
+        - type
+    McpToolRegisterInput:
+      type: object
+      properties:
+        type:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        parameters:
+          type: object
+          additionalProperties: true
+        attributes:
+          type: object
+          additionalProperties: true
+        create_time:
+          type: integer
+          format: int64
+        last_update_time:
+          type: integer
+          format: int64
+      required:
+        - type
+    McpToolInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        input_schema:
+          type: string
+      required:
+        - name
+        - type
+    McpToolUpdateInput:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        parameters:
+          type: object
+          additionalProperties: true
+        attributes:
+          type: object
+          additionalProperties: true
+        create_time:
+          type: integer
+          format: int64
+        last_update_time:
+          type: integer
+          format: int64
+      required:
+        - name

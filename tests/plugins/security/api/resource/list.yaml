@@ -1,0 +1,10 @@
+$schema: ../../../../../json_schemas/test_story.schema.yaml
+
+description: Test disabled accessible resource list response.
+chapters:
+  - synopsis: List resources when the feature is disabled.
+    method: GET
+    path: /_plugins/_security/api/resource/list
+    response:
+      status: 501
+      content_type: text/plain

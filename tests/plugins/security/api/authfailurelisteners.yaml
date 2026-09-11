@@ -1,0 +1,33 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test authentication failure listener APIs.
+epilogues:
+  - method: DELETE
+    path: /_plugins/_security/api/authfailurelisteners/spec_test_listener
+    status: [200, 404]
+chapters:
+  - synopsis: Retrieve authentication failure listeners.
+    method: GET
+    path: /_plugins/_security/api/authfailurelisteners
+    response:
+      status: 200
+  - synopsis: Create an IP authentication failure listener.
+    method: PUT
+    path: /_plugins/_security/api/authfailurelisteners/{name}
+    parameters:
+      name: spec_test_listener
+    request:
+      payload:
+        type: ip
+        allowed_tries: 10
+        time_window_seconds: 3600
+        block_expiry_seconds: 600
+    response:
+      status: 200
+  - synopsis: Delete an authentication failure listener.
+    method: DELETE
+    path: /_plugins/_security/api/authfailurelisteners/{name}
+    parameters:
+      name: spec_test_listener
+    response:
+      status: 200

@@ -57,6 +57,89 @@ components:
       additionalProperties:
         $ref: '#/components/schemas/ActionGroup'
 
+    ApiTokenCreateRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          pattern: '^[a-zA-Z0-9_-]+$'
+        cluster_permissions:
+          type: array
+          items:
+            type: string
+          default: []
+        index_permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiTokenIndexPermission'
+          default: []
+        duration_seconds:
+          type: integer
+          format: int64
+          minimum: 0
+          default: 0
+
+    ApiTokenCreateResponse:
+      type: object
+      required:
+        - id
+        - token
+      properties:
+        id:
+          type: string
+        token:
+          type: string
+
+    ApiTokenIndexPermission:
+      type: object
+      additionalProperties: false
+      properties:
+        index_pattern:
+          type: array
+          items:
+            type: string
+          default: []
+        allowed_actions:
+          type: array
+          items:
+            type: string
+          default: []
+
+    ApiTokenInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        iat:
+          type: integer
+          format: int64
+        expires_at:
+          type: integer
+          format: int64
+        cluster_permissions:
+          type: array
+          items:
+            type: string
+        index_permissions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApiTokenIndexPermission'
+        revoked_at:
+          type: integer
+          format: int64
+        created_by:
+          type: string
+
+    ApiTokens:
+      type: array
+      items:
+        $ref: '#/components/schemas/ApiTokenInfo'
+
     AllowListConfig:
       type: object
       properties:
@@ -184,6 +267,84 @@ components:
           type: string
           description: The size of the user's backend roles in bytes.
 
+    AuthFailureListener:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/AuthFailureListenerType'
+        ignore_hosts:
+          type: array
+          items:
+            type: string
+        authentication_backend:
+          type: ['null', string]
+        allowed_tries:
+          type: integer
+          default: 10
+        time_window_seconds:
+          type: integer
+          default: 3600
+        block_expiry_seconds:
+          type: integer
+          default: 600
+        max_blocked_clients:
+          type: integer
+          default: 100000
+        max_tracked_clients:
+          type: integer
+          default: 100000
+
+    AuthFailureListenerRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          $ref: '#/components/schemas/AuthFailureListenerType'
+        ignore_hosts:
+          type: array
+          items:
+            type: string
+          default: []
+        authentication_backend:
+          type: string
+          description: Required with value `internal` when `type` is `username`; omitted when `type` is `ip`.
+        allowed_tries:
+          type: integer
+          default: 10
+        time_window_seconds:
+          type: integer
+          default: 3600
+        block_expiry_seconds:
+          type: integer
+          default: 600
+        max_blocked_clients:
+          type: integer
+          default: 100000
+        max_tracked_clients:
+          type: integer
+          default: 100000
+
+    AuthFailureListeners:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/AuthFailureListener'
+
+    AuthFailureListenerType:
+      type: string
+      enum:
+        - ip
+        - username
+
+    CertificateReloadType:
+      type: string
+      enum:
+        - http
+        - transport
+
     CertificatesDetail:
       type: object
       properties:
@@ -292,6 +453,41 @@ components:
           type: boolean
         internal_config:
           type: boolean
+
+    ConfigUpdateNode:
+      type: object
+      properties:
+        updated_config_types:
+          type: array
+          items:
+            type: string
+        updated_config_size:
+          type: integer
+        message:
+          type: ['null', string]
+
+    ConfigUpdateResponse:
+      type: object
+      properties:
+        configupdate_response:
+          $ref: '#/components/schemas/ConfigUpdateResult'
+
+    ConfigUpdateResult:
+      type: object
+      properties:
+        nodes:
+          $ref: '#/components/schemas/ConfigUpdateNodes'
+        node_size:
+          type: integer
+        has_failures:
+          type: boolean
+        failures_size:
+          type: integer
+
+    ConfigUpdateNodes:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/ConfigUpdateNode'
 
     ConfigUpgradePayload:
       type: object
@@ -586,6 +782,175 @@ components:
             $ref: '#/components/schemas/TenantPermission'
         static:
           type: boolean
+
+    AccessibleResource:
+      type: object
+      properties:
+        resource_id:
+          type: string
+        tenant:
+          type: string
+        created_by:
+          $ref: '#/components/schemas/ResourceCreatedBy'
+        share_with:
+          $ref: '#/components/schemas/ResourceShareWith'
+        can_share:
+          type: boolean
+
+    AccessibleResourcesResponse:
+      type: object
+      properties:
+        resources:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccessibleResource'
+
+    ResourceAccessLevelMap:
+      type: object
+      additionalProperties:
+        type: string
+
+    ResourceCreatedBy:
+      type: object
+      required:
+        - user
+      properties:
+        user:
+          type: string
+
+    ResourceRecipients:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: string
+        roles:
+          type: array
+          items:
+            type: string
+        backend_roles:
+          type: array
+          items:
+            type: string
+
+    ResourceShareWith:
+      type: object
+      properties:
+        general_access:
+          type: ['null', string]
+      additionalProperties:
+        $ref: '#/components/schemas/ResourceRecipients'
+
+    ResourceSharing:
+      type: object
+      properties:
+        resource_id:
+          type: string
+        resource_type:
+          type: string
+        tenant:
+          type: string
+        parent_type:
+          type: string
+        parent_id:
+          type: string
+        created_by:
+          $ref: '#/components/schemas/ResourceCreatedBy'
+        share_with:
+          $ref: '#/components/schemas/ResourceShareWith'
+
+    ResourceSharingMigrationRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - backend_roles_path
+        - default_owner
+        - source_index
+        - username_path
+      properties:
+        source_index:
+          type: string
+        username_path:
+          type: string
+        backend_roles_path:
+          type: string
+        default_owner:
+          type: string
+        default_access_level:
+          $ref: '#/components/schemas/ResourceAccessLevelMap'
+
+    ResourceSharingMigrationResponse:
+      type: object
+      properties:
+        summary:
+          type: string
+        resourcesWithDefaultOwner:
+          type: array
+          items:
+            type: string
+        skippedResources:
+          type: array
+          items:
+            type: string
+
+    ResourceSharingPutRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - resource_id
+        - resource_type
+        - share_with
+      properties:
+        resource_id:
+          type: string
+        resource_type:
+          type: string
+        share_with:
+          $ref: '#/components/schemas/ResourceShareWith'
+
+    ResourceSharingResponse:
+      type: object
+      properties:
+        sharing_info:
+          $ref: '#/components/schemas/ResourceSharing'
+
+    ResourceSharingUpdateRequest:
+      type: object
+      additionalProperties: false
+      minProperties: 3
+      required:
+        - resource_id
+        - resource_type
+      properties:
+        resource_id:
+          type: string
+        resource_type:
+          type: string
+        add:
+          $ref: '#/components/schemas/ResourceShareWith'
+        revoke:
+          $ref: '#/components/schemas/ResourceShareWith'
+        general_access:
+          type: ['null', string]
+
+    ResourceTypeInfo:
+      type: object
+      properties:
+        type:
+          type: string
+        access_levels:
+          type: array
+          items:
+            type: string
+
+    ResourceTypesResponse:
+      type: object
+      properties:
+        types:
+          type: array
+          items:
+            $ref: '#/components/schemas/ResourceTypeInfo'
 
     RoleMapping:
       type: object

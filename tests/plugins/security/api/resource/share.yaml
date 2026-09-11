@@ -1,0 +1,10 @@
+$schema: ../../../../../json_schemas/test_story.schema.yaml
+
+description: Test disabled resource sharing information response.
+chapters:
+  - synopsis: Retrieve resource sharing information when the feature is disabled.
+    method: GET
+    path: /_plugins/_security/api/resource/share
+    response:
+      status: 501
+      content_type: text/plain

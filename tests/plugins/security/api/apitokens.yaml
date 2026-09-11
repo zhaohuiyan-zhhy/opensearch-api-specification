@@ -1,0 +1,30 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test API token lifecycle APIs.
+warnings:
+  multiple-paths-detected: false
+chapters:
+  - synopsis: Retrieve API tokens.
+    method: GET
+    path: /_plugins/_security/api/apitokens
+    response:
+      status: 200
+  - synopsis: Create an API token.
+    id: create_token
+    method: POST
+    path: /_plugins/_security/api/apitokens
+    request:
+      payload:
+        name: spec_test_token
+        duration_seconds: 60
+    response:
+      status: 200
+    output:
+      token_id: payload.id
+  - synopsis: Revoke an API token.
+    method: DELETE
+    path: /_plugins/_security/api/apitokens/{id}
+    parameters:
+      id: ${create_token.token_id}
+    response:
+      status: 200

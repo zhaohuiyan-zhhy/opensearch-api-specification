@@ -1,0 +1,38 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test singular action group APIs.
+epilogues:
+  - method: DELETE
+    path: /_plugins/_security/api/actiongroup/spec_test_group
+    status: [200, 404]
+chapters:
+  - synopsis: Retrieve all action groups through the singular route.
+    method: GET
+    path: /_plugins/_security/api/actiongroup
+    response:
+      status: 200
+  - synopsis: Create an action group through the singular route.
+    method: PUT
+    path: /_plugins/_security/api/actiongroup/{action_group}
+    parameters:
+      action_group: spec_test_group
+    request:
+      payload:
+        allowed_actions:
+          - cluster:monitor/main
+    response:
+      status: [200, 201]
+  - synopsis: Retrieve an action group through the singular route.
+    method: GET
+    path: /_plugins/_security/api/actiongroup/{action_group}
+    parameters:
+      action_group: spec_test_group
+    response:
+      status: 200
+  - synopsis: Delete an action group through the singular route.
+    method: DELETE
+    path: /_plugins/_security/api/actiongroup/{action_group}
+    parameters:
+      action_group: spec_test_group
+    response:
+      status: 200

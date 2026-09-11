@@ -1,0 +1,328 @@
+openapi: 3.1.0
+info:
+  title: Schemas of the Reports API
+  description: Request and response schemas for Reports APIs.
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    SourceType:
+      type: string
+      enum:
+        - Dashboard
+        - Notebook
+        - SavedSearch
+        - Visualization
+    FileFormat:
+      type: string
+      enum:
+        - Csv
+        - Pdf
+        - Png
+        - Xlsx
+    TriggerType:
+      type: string
+      enum:
+        - CronSchedule
+        - Download
+        - IntervalSchedule
+        - OnDemand
+    ReportStatus:
+      type: string
+      enum:
+        - Executing
+        - Failed
+        - Scheduled
+        - Success
+    TotalHitRelation:
+      type: string
+      enum:
+        - eq
+        - gte
+    ReportSource:
+      type: object
+      properties:
+        description:
+          type: string
+        type:
+          $ref: '#/components/schemas/SourceType'
+        origin:
+          type: string
+        id:
+          type: string
+      required:
+        - description
+        - id
+        - origin
+        - type
+    ReportFormat:
+      type: object
+      properties:
+        duration:
+          type: string
+          description: The report time range as an ISO-8601 duration.
+        fileFormat:
+          $ref: '#/components/schemas/FileFormat'
+        limit:
+          type: integer
+          format: int32
+        header:
+          type: ['null', string]
+        footer:
+          type: ['null', string]
+        timeFrom:
+          type: ['null', string]
+        timeTo:
+          type: ['null', string]
+      required:
+        - duration
+        - fileFormat
+    CronSchedule:
+      type: object
+      properties:
+        expression:
+          type: string
+        timezone:
+          type: string
+      required:
+        - expression
+        - timezone
+    IntervalSchedule:
+      type: object
+      properties:
+        start_time:
+          type: integer
+          format: int64
+        period:
+          type: integer
+          format: int64
+        unit:
+          type: string
+      required:
+        - period
+        - start_time
+        - unit
+    ReportSchedule:
+      type: object
+      properties:
+        cron:
+          $ref: '#/components/schemas/CronSchedule'
+        interval:
+          $ref: '#/components/schemas/IntervalSchedule'
+    ReportTrigger:
+      type: object
+      properties:
+        triggerType:
+          $ref: '#/components/schemas/TriggerType'
+        schedule:
+          $ref: '#/components/schemas/ReportSchedule'
+      required:
+        - triggerType
+    ReportDelivery:
+      type: object
+      properties:
+        title:
+          type: string
+        textDescription:
+          type: string
+        htmlDescription:
+          type: ['null', string]
+        configIds:
+          type: array
+          items:
+            type: string
+      required:
+        - textDescription
+        - title
+    ReportDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        isEnabled:
+          type: boolean
+          default: false
+        source:
+          $ref: '#/components/schemas/ReportSource'
+        format:
+          $ref: '#/components/schemas/ReportFormat'
+        trigger:
+          $ref: '#/components/schemas/ReportTrigger'
+        delivery:
+          $ref: '#/components/schemas/ReportDelivery'
+      required:
+        - format
+        - name
+        - source
+        - trigger
+    ReportDefinitionRequest:
+      type: object
+      properties:
+        reportDefinition:
+          $ref: '#/components/schemas/ReportDefinition'
+      required:
+        - reportDefinition
+    ReportDefinitionDetails:
+      type: object
+      properties:
+        id:
+          type: string
+        lastUpdatedTimeMs:
+          type: integer
+          format: int64
+        createdTimeMs:
+          type: integer
+          format: int64
+        tenant:
+          type: string
+        access:
+          type: array
+          items:
+            type: string
+        reportDefinition:
+          $ref: '#/components/schemas/ReportDefinition'
+      required:
+        - createdTimeMs
+        - id
+        - lastUpdatedTimeMs
+        - reportDefinition
+    ReportInstance:
+      type: object
+      properties:
+        id:
+          type: string
+        lastUpdatedTimeMs:
+          type: integer
+          format: int64
+        createdTimeMs:
+          type: integer
+          format: int64
+        beginTimeMs:
+          type: integer
+          format: int64
+        endTimeMs:
+          type: integer
+          format: int64
+        tenant:
+          type: string
+        access:
+          type: array
+          items:
+            type: string
+        reportDefinitionDetails:
+          $ref: '#/components/schemas/ReportDefinitionDetails'
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        statusText:
+          type: ['null', string]
+        inContextDownloadUrlPath:
+          type: ['null', string]
+      required:
+        - beginTimeMs
+        - createdTimeMs
+        - endTimeMs
+        - id
+        - lastUpdatedTimeMs
+        - status
+        - tenant
+    InContextReportRequest:
+      type: object
+      properties:
+        beginTimeMs:
+          type: integer
+          format: int64
+        endTimeMs:
+          type: integer
+          format: int64
+        reportDefinitionDetails:
+          $ref: '#/components/schemas/ReportDefinitionDetails'
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        statusText:
+          type: string
+        inContextDownloadUrlPath:
+          type: string
+      required:
+        - beginTimeMs
+        - endTimeMs
+        - reportDefinitionDetails
+        - status
+    UpdateReportInstanceRequest:
+      type: object
+      properties:
+        reportInstanceId:
+          type: string
+        status:
+          $ref: '#/components/schemas/ReportStatus'
+        statusText:
+          type: string
+      required:
+        - status
+    ReportDefinitionIdResponse:
+      type: object
+      properties:
+        reportDefinitionId:
+          type: string
+      required:
+        - reportDefinitionId
+    ReportInstanceIdResponse:
+      type: object
+      properties:
+        reportInstanceId:
+          type: string
+      required:
+        - reportInstanceId
+    GetReportDefinitionResponse:
+      type: object
+      properties:
+        reportDefinitionDetails:
+          $ref: '#/components/schemas/ReportDefinitionDetails'
+      required:
+        - reportDefinitionDetails
+    ReportInstanceResponse:
+      type: object
+      properties:
+        reportInstance:
+          $ref: '#/components/schemas/ReportInstance'
+      required:
+        - reportInstance
+    ReportDefinitionListResponse:
+      type: object
+      properties:
+        startIndex:
+          type: integer
+          format: int64
+        totalHits:
+          type: integer
+          format: int64
+        totalHitRelation:
+          $ref: '#/components/schemas/TotalHitRelation'
+        reportDefinitionDetailsList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportDefinitionDetails'
+      required:
+        - reportDefinitionDetailsList
+        - startIndex
+        - totalHitRelation
+        - totalHits
+    ReportInstanceListResponse:
+      type: object
+      properties:
+        startIndex:
+          type: integer
+          format: int64
+        totalHits:
+          type: integer
+          format: int64
+        totalHitRelation:
+          $ref: '#/components/schemas/TotalHitRelation'
+        reportInstanceList:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportInstance'
+      required:
+        - reportInstanceList
+        - startIndex
+        - totalHitRelation
+        - totalHits

@@ -1,0 +1,297 @@
+openapi: 3.1.0
+info:
+  title: OpenSearch Reports API
+  description: APIs for managing report definitions and report instances.
+  version: 1.0.0
+paths:
+  /_plugins/_reports/_local/stats:
+    get:
+      operationId: reports.stats.0
+      x-operation-group: reports.stats
+      x-version-added: '1.0'
+      description: Returns local Reports plugin statistics.
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.stats@200'
+  /_plugins/_reports/definitions:
+    get:
+      operationId: reports.list_definitions.0
+      x-operation-group: reports.list_definitions
+      x-version-added: '1.0'
+      description: Returns report definitions.
+      parameters:
+        - $ref: '#/components/parameters/reports.list_definitions::query.fromIndex'
+        - $ref: '#/components/parameters/reports.list_definitions::query.maxItems'
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.list_definitions@200'
+  /_plugins/_reports/definition:
+    post:
+      operationId: reports.create_definition.0
+      x-operation-group: reports.create_definition
+      x-version-added: '1.0'
+      description: Creates a report definition.
+      requestBody:
+        $ref: '#/components/requestBodies/reports.create_definition'
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.create_definition@200'
+  /_plugins/_reports/definition/{report_definition_id}:
+    get:
+      operationId: reports.get_definition.0
+      x-operation-group: reports.get_definition
+      x-version-added: '1.0'
+      description: Returns a report definition.
+      parameters:
+        - $ref: '#/components/parameters/reports.get_definition::path.report_definition_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.get_definition@200'
+    put:
+      operationId: reports.update_definition.0
+      x-operation-group: reports.update_definition
+      x-version-added: '1.0'
+      description: Updates a report definition.
+      parameters:
+        - $ref: '#/components/parameters/reports.update_definition::path.report_definition_id'
+      requestBody:
+        $ref: '#/components/requestBodies/reports.update_definition'
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.update_definition@200'
+    delete:
+      operationId: reports.delete_definition.0
+      x-operation-group: reports.delete_definition
+      x-version-added: '1.0'
+      description: Deletes a report definition.
+      parameters:
+        - $ref: '#/components/parameters/reports.delete_definition::path.report_definition_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.delete_definition@200'
+  /_plugins/_reports/instances:
+    get:
+      operationId: reports.list_instances.0
+      x-operation-group: reports.list_instances
+      x-version-added: '1.0'
+      description: Returns report instances.
+      parameters:
+        - $ref: '#/components/parameters/reports.list_instances::query.fromIndex'
+        - $ref: '#/components/parameters/reports.list_instances::query.maxItems'
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.list_instances@200'
+  /_plugins/_reports/instance/{report_instance_id}:
+    get:
+      operationId: reports.get_instance.0
+      x-operation-group: reports.get_instance
+      x-version-added: '1.0'
+      description: Returns a report instance.
+      parameters:
+        - $ref: '#/components/parameters/reports.get_instance::path.report_instance_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.get_instance@200'
+    post:
+      operationId: reports.update_instance.0
+      x-operation-group: reports.update_instance
+      x-version-added: '1.0'
+      description: Updates the status of a report instance.
+      parameters:
+        - $ref: '#/components/parameters/reports.update_instance::path.report_instance_id'
+      requestBody:
+        $ref: '#/components/requestBodies/reports.update_instance'
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.update_instance@200'
+  /_plugins/_reports/on_demand:
+    put:
+      operationId: reports.create_in_context_report.0
+      x-operation-group: reports.create_in_context_report
+      x-version-added: '1.0'
+      description: Creates a report instance from an in-context download.
+      requestBody:
+        $ref: '#/components/requestBodies/reports.create_in_context_report'
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.create_in_context_report@200'
+  /_plugins/_reports/on_demand/{report_definition_id}:
+    post:
+      operationId: reports.create_on_demand_report.0
+      x-operation-group: reports.create_on_demand_report
+      x-version-added: '1.0'
+      description: Creates an on-demand report instance from a report definition.
+      parameters:
+        - $ref: '#/components/parameters/reports.create_on_demand_report::path.report_definition_id'
+      requestBody:
+        $ref: '#/components/requestBodies/reports.create_on_demand_report'
+      responses:
+        '200':
+          $ref: '#/components/responses/reports.create_on_demand_report@200'
+components:
+  parameters:
+    reports.get_definition::path.report_definition_id:
+      in: path
+      name: report_definition_id
+      required: true
+      description: The report definition ID.
+      schema:
+        type: string
+    reports.update_definition::path.report_definition_id:
+      in: path
+      name: report_definition_id
+      required: true
+      description: The report definition ID.
+      schema:
+        type: string
+    reports.delete_definition::path.report_definition_id:
+      in: path
+      name: report_definition_id
+      required: true
+      description: The report definition ID.
+      schema:
+        type: string
+    reports.create_on_demand_report::path.report_definition_id:
+      in: path
+      name: report_definition_id
+      required: true
+      description: The report definition ID.
+      schema:
+        type: string
+    reports.get_instance::path.report_instance_id:
+      in: path
+      name: report_instance_id
+      required: true
+      description: The report instance ID.
+      schema:
+        type: string
+    reports.update_instance::path.report_instance_id:
+      in: path
+      name: report_instance_id
+      required: true
+      description: The report instance ID.
+      schema:
+        type: string
+    reports.list_definitions::query.fromIndex:
+      in: query
+      name: fromIndex
+      description: The zero-based index of the first result.
+      schema:
+        type: integer
+        format: int64
+        default: 0
+        minimum: 0
+    reports.list_definitions::query.maxItems:
+      in: query
+      name: maxItems
+      description: The maximum number of report definitions to return.
+      schema:
+        type: integer
+        format: int32
+        default: 100
+        minimum: 1
+    reports.list_instances::query.fromIndex:
+      in: query
+      name: fromIndex
+      description: The zero-based index of the first result.
+      schema:
+        type: integer
+        format: int64
+        default: 0
+        minimum: 0
+    reports.list_instances::query.maxItems:
+      in: query
+      name: maxItems
+      description: The maximum number of report instances to return.
+      schema:
+        type: integer
+        format: int32
+        default: 100
+        minimum: 1
+  requestBodies:
+    reports.create_definition:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportDefinitionRequest'
+    reports.update_definition:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportDefinitionRequest'
+    reports.update_instance:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/UpdateReportInstanceRequest'
+    reports.create_in_context_report:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/InContextReportRequest'
+    reports.create_on_demand_report:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+  responses:
+    reports.stats@200:
+      content:
+        text/plain:
+          schema:
+            type: string
+    reports.list_definitions@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportDefinitionListResponse'
+    reports.create_definition@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportDefinitionIdResponse'
+    reports.update_definition@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportDefinitionIdResponse'
+    reports.delete_definition@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportDefinitionIdResponse'
+    reports.get_definition@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/GetReportDefinitionResponse'
+    reports.list_instances@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportInstanceListResponse'
+    reports.get_instance@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportInstanceResponse'
+    reports.create_in_context_report@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportInstanceResponse'
+    reports.create_on_demand_report@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportInstanceResponse'
+    reports.update_instance@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/reports._common.yaml#/components/schemas/ReportInstanceIdResponse'

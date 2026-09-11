@@ -1,0 +1,177 @@
+$schema: ../../../json_schemas/test_story.schema.yaml
+
+description: Test Reports APIs.
+version: '>= 3.8'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+epilogues:
+  - path: /_plugins/_reports/definition/{report_definition_id}
+    method: DELETE
+    parameters:
+      report_definition_id: ${create_definition.report_definition_id}
+    status: [200, 404]
+chapters:
+  - synopsis: Get local Reports statistics.
+    path: /_plugins/_reports/_local/stats
+    method: GET
+    response:
+      status: 200
+      content_type: text/plain
+  - synopsis: List report definitions.
+    path: /_plugins/_reports/definitions
+    method: GET
+    parameters:
+      fromIndex: 0
+      maxItems: 100
+    response:
+      status: 200
+  - synopsis: List report instances.
+    path: /_plugins/_reports/instances
+    method: GET
+    parameters:
+      fromIndex: 0
+      maxItems: 100
+    response:
+      status: 200
+  - id: create_definition
+    synopsis: Create a report definition.
+    path: /_plugins/_reports/definition
+    method: POST
+    request:
+      payload:
+        reportDefinition:
+          name: api-spec-report
+          isEnabled: true
+          source:
+            description: API specification test
+            type: Dashboard
+            origin: 'localhost:5601'
+            id: api-spec-dashboard
+          format:
+            duration: PT1H
+            fileFormat: Pdf
+            limit: 1000
+            header: Test header
+            footer: Test footer
+          trigger:
+            triggerType: OnDemand
+    response:
+      status: 200
+    output:
+      report_definition_id: payload.reportDefinitionId
+  - synopsis: Get a report definition.
+    path: /_plugins/_reports/definition/{report_definition_id}
+    method: GET
+    parameters:
+      report_definition_id: ${create_definition.report_definition_id}
+    response:
+      status: 200
+      payload:
+        reportDefinitionDetails:
+          id: ${create_definition.report_definition_id}
+          reportDefinition:
+            name: api-spec-report
+  - synopsis: Update a report definition.
+    path: /_plugins/_reports/definition/{report_definition_id}
+    method: PUT
+    parameters:
+      report_definition_id: ${create_definition.report_definition_id}
+    request:
+      payload:
+        reportDefinition:
+          name: api-spec-report-updated
+          isEnabled: true
+          source:
+            description: API specification test
+            type: Dashboard
+            origin: 'localhost:5601'
+            id: api-spec-dashboard
+          format:
+            duration: PT1H
+            fileFormat: Pdf
+          trigger:
+            triggerType: OnDemand
+    response:
+      status: 200
+      payload:
+        reportDefinitionId: ${create_definition.report_definition_id}
+  - id: create_on_demand
+    synopsis: Create an on-demand report from a definition.
+    path: /_plugins/_reports/on_demand/{report_definition_id}
+    method: POST
+    parameters:
+      report_definition_id: ${create_definition.report_definition_id}
+    request:
+      payload: {}
+    response:
+      status: 200
+      payload:
+        reportInstance:
+          status: Success
+    output:
+      report_instance_id: payload.reportInstance.id
+  - synopsis: Get a report instance.
+    path: /_plugins/_reports/instance/{report_instance_id}
+    method: GET
+    parameters:
+      report_instance_id: ${create_on_demand.report_instance_id}
+    response:
+      status: 200
+      payload:
+        reportInstance:
+          id: ${create_on_demand.report_instance_id}
+  - synopsis: Update a report instance status.
+    path: /_plugins/_reports/instance/{report_instance_id}
+    method: POST
+    parameters:
+      report_instance_id: ${create_on_demand.report_instance_id}
+    request:
+      payload:
+        status: Success
+        statusText: Operation completed
+    response:
+      status: 200
+      payload:
+        reportInstanceId: ${create_on_demand.report_instance_id}
+  - synopsis: Create an in-context report.
+    path: /_plugins/_reports/on_demand
+    method: PUT
+    request:
+      payload:
+        beginTimeMs: 1604425466263
+        endTimeMs: 1604429066263
+        reportDefinitionDetails:
+          id: api-spec-in-context
+          lastUpdatedTimeMs: 1604429066263
+          createdTimeMs: 1604429066263
+          reportDefinition:
+            name: api-spec-in-context
+            isEnabled: true
+            source:
+              description: API specification test
+              type: Dashboard
+              origin: 'localhost:5601'
+              id: api-spec-dashboard
+            format:
+              duration: PT1H
+              fileFormat: Pdf
+            trigger:
+              triggerType: Download
+        status: Success
+        statusText: Operation completed
+        inContextDownloadUrlPath: /app/dashboard#view/api-spec-dashboard
+    response:
+      status: 200
+      payload:
+        reportInstance:
+          status: Success
+  - synopsis: Delete a report definition.
+    path: /_plugins/_reports/definition/{report_definition_id}
+    method: DELETE
+    parameters:
+      report_definition_id: ${create_definition.report_definition_id}
+    response:
+      status: 200
+      payload:
+        reportDefinitionId: ${create_definition.report_definition_id}

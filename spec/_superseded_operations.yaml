@@ -321,8 +321,8 @@ $schema: ./json_schemas/_superseded_operations.schema.yaml
   superseded_by: /_plugins/_reports/definition
   operations:
     - POST
-/_opendistro/_reports/definition/{reportDefinitionId}:
-  superseded_by: /_plugins/_reports/definition/{reportDefinitionId}
+/_opendistro/_reports/definition/{report_definition_id}:
+  superseded_by: /_plugins/_reports/definition/{report_definition_id}
   operations:
     - GET
     - PUT
@@ -331,8 +331,8 @@ $schema: ./json_schemas/_superseded_operations.schema.yaml
   superseded_by: /_plugins/_reports/definitions
   operations:
     - GET
-/_opendistro/_reports/instance/{reportInstanceId}:
-  superseded_by: /_plugins/_reports/instance/{reportInstanceId}
+/_opendistro/_reports/instance/{report_instance_id}:
+  superseded_by: /_plugins/_reports/instance/{report_instance_id}
   operations:
     - GET
     - POST
@@ -344,8 +344,8 @@ $schema: ./json_schemas/_superseded_operations.schema.yaml
   superseded_by: /_plugins/_reports/on_demand
   operations:
     - PUT
-/_opendistro/_reports/on_demand/{reportDefinitionId}:
-  superseded_by: /_plugins/_reports/on_demand/{reportDefinitionId}
+/_opendistro/_reports/on_demand/{report_definition_id}:
+  superseded_by: /_plugins/_reports/on_demand/{report_definition_id}
   operations:
     - POST
 /_opendistro/_rollup/jobs:

@@ -14,6 +14,15 @@ paths:
         '200':
           $ref: '#/components/responses/ltr.list_stores@200'
 
+    post:
+      operationId: ltr.update_default_store.0
+      x-operation-group: ltr.update_default_store
+      x-version-added: 2.17.1
+      description: Attempts to update the default feature store. Feature store updates are not supported.
+      responses:
+        '400':
+          $ref: '#/components/responses/ltr.update_default_store@400'
+
     put:
       operationId: ltr.create_default_store.0
       x-operation-group: ltr.create_default_store
@@ -45,6 +54,17 @@ paths:
           $ref: '#/components/responses/ltr.get_store@200'
         '404':
           $ref: '#/components/responses/ltr.get_store@404'
+
+    post:
+      operationId: ltr.update_store.0
+      x-operation-group: ltr.update_store
+      x-version-added: 2.17.1
+      description: Attempts to update a feature store. Feature store updates are not supported.
+      parameters:
+        - $ref: '#/components/parameters/ltr.update_store::path.store'
+      responses:
+        '400':
+          $ref: '#/components/responses/ltr.update_store@400'
 
     put:
       operationId: ltr.create_store.0
@@ -80,6 +100,18 @@ paths:
         '200':
           $ref: '#/components/responses/ltr.stats@200'
 
+  /_plugins/_ltr/stats/:
+    get:
+      operationId: ltr.stats.4
+      x-operation-group: ltr.stats
+      x-version-added: '2.19'
+      description: Provides information about the current status of the LTR plugin.
+      parameters:
+        - $ref: '#/components/parameters/ltr.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.stats@200'
+
   /_plugins/_ltr/stats/{stat}:
     get:
       operationId: ltr.stats.1
@@ -106,9 +138,74 @@ paths:
         '200':
           $ref: '#/components/responses/ltr.stats@200'
 
+  /_plugins/_ltr/{node_id}/stats/:
+    get:
+      operationId: ltr.stats.5
+      x-operation-group: ltr.stats
+      x-version-added: '2.19'
+      description: Provides information about the current status of the LTR plugin.
+      parameters:
+        - $ref: '#/components/parameters/ltr.stats::path.node_id'
+        - $ref: '#/components/parameters/ltr.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.stats@200'
+
   /_plugins/_ltr/{node_id}/stats/{stat}:
     get:
       operationId: ltr.stats.3
+      x-operation-group: ltr.stats
+      x-version-added: '2.19'
+      description: Provides information about the current status of the LTR plugin.
+      parameters:
+        - $ref: '#/components/parameters/ltr.stats::path.node_id'
+        - $ref: '#/components/parameters/ltr.stats::path.stat'
+        - $ref: '#/components/parameters/ltr.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.stats@200'
+
+  /_opendistro/_ltr/stats/:
+    get:
+      operationId: ltr.stats.6
+      x-operation-group: ltr.stats
+      x-version-added: '2.19'
+      description: Provides information about the current status of the LTR plugin.
+      parameters:
+        - $ref: '#/components/parameters/ltr.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.stats@200'
+
+  /_opendistro/_ltr/stats/{stat}:
+    get:
+      operationId: ltr.stats.7
+      x-operation-group: ltr.stats
+      x-version-added: '2.19'
+      description: Provides information about the current status of the LTR plugin.
+      parameters:
+        - $ref: '#/components/parameters/ltr.stats::path.stat'
+        - $ref: '#/components/parameters/ltr.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.stats@200'
+
+  /_opendistro/_ltr/{node_id}/stats/:
+    get:
+      operationId: ltr.stats.8
+      x-operation-group: ltr.stats
+      x-version-added: '2.19'
+      description: Provides information about the current status of the LTR plugin.
+      parameters:
+        - $ref: '#/components/parameters/ltr.stats::path.node_id'
+        - $ref: '#/components/parameters/ltr.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.stats@200'
+
+  /_opendistro/_ltr/{node_id}/stats/{stat}:
+    get:
+      operationId: ltr.stats.9
       x-operation-group: ltr.stats
       x-version-added: '2.19'
       description: Provides information about the current status of the LTR plugin.
@@ -253,6 +350,19 @@ paths:
         '404':
           $ref: '#/components/responses/ltr.get_feature@404'
 
+    head:
+      operationId: ltr.feature_exists.0
+      x-operation-group: ltr.feature_exists
+      x-version-added: 2.17.1
+      description: Checks whether the requested LTR resource exists.
+      parameters:
+        - $ref: '#/components/parameters/ltr.feature_exists::path.id'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.feature_exists@200'
+        '404':
+          $ref: '#/components/responses/ltr.feature_exists@404'
+
     post:
       operationId: ltr.update_feature.0
       x-operation-group: ltr.update_feature
@@ -316,6 +426,20 @@ paths:
           $ref: '#/components/responses/ltr.get_feature@200'
         '404':
           $ref: '#/components/responses/ltr.get_feature@404'
+
+    head:
+      operationId: ltr.feature_exists.1
+      x-operation-group: ltr.feature_exists
+      x-version-added: 2.17.1
+      description: Checks whether the requested LTR resource exists.
+      parameters:
+        - $ref: '#/components/parameters/ltr.feature_exists::path.id'
+        - $ref: '#/components/parameters/ltr.feature_exists::path.store'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.feature_exists@200'
+        '404':
+          $ref: '#/components/responses/ltr.feature_exists@404'
 
     post:
       operationId: ltr.update_feature.1
@@ -383,6 +507,19 @@ paths:
         '404':
           $ref: '#/components/responses/ltr.get_featureset@404'
 
+    head:
+      operationId: ltr.featureset_exists.0
+      x-operation-group: ltr.featureset_exists
+      x-version-added: 2.17.1
+      description: Checks whether the requested LTR resource exists.
+      parameters:
+        - $ref: '#/components/parameters/ltr.featureset_exists::path.id'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.featureset_exists@200'
+        '404':
+          $ref: '#/components/responses/ltr.featureset_exists@404'
+
     post:
       operationId: ltr.update_featureset.0
       x-operation-group: ltr.update_featureset
@@ -446,6 +583,20 @@ paths:
           $ref: '#/components/responses/ltr.get_featureset@200'
         '404':
           $ref: '#/components/responses/ltr.get_featureset@404'
+
+    head:
+      operationId: ltr.featureset_exists.1
+      x-operation-group: ltr.featureset_exists
+      x-version-added: 2.17.1
+      description: Checks whether the requested LTR resource exists.
+      parameters:
+        - $ref: '#/components/parameters/ltr.featureset_exists::path.id'
+        - $ref: '#/components/parameters/ltr.featureset_exists::path.store'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.featureset_exists@200'
+        '404':
+          $ref: '#/components/responses/ltr.featureset_exists@404'
 
     post:
       operationId: ltr.update_featureset.1
@@ -514,6 +665,33 @@ paths:
           $ref: '#/components/responses/ltr.get_model@404'
 
 
+    head:
+      operationId: ltr.model_exists.0
+      x-operation-group: ltr.model_exists
+      x-version-added: 2.17.1
+      description: Checks whether the requested LTR resource exists.
+      parameters:
+        - $ref: '#/components/parameters/ltr.model_exists::path.id'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.model_exists@200'
+        '404':
+          $ref: '#/components/responses/ltr.model_exists@404'
+
+    post:
+      operationId: ltr.update_model.0
+      x-operation-group: ltr.update_model
+      x-version-added: 2.17.1
+      description: Updates a model in a feature store.
+      parameters:
+        - $ref: '#/components/parameters/ltr.update_model::path.id'
+        - $ref: '#/components/parameters/ltr.update_model::query.routing'
+      requestBody:
+        $ref: '#/components/requestBodies/ltr.update_model'
+      responses:
+        '405':
+          $ref: '#/components/responses/ltr.update_model@405'
+
     put:
       operationId: ltr.create_model.0
       x-operation-group: ltr.create_model
@@ -560,6 +738,35 @@ paths:
         '404':
           $ref: '#/components/responses/ltr.get_model@404'
 
+
+    head:
+      operationId: ltr.model_exists.1
+      x-operation-group: ltr.model_exists
+      x-version-added: 2.17.1
+      description: Checks whether the requested LTR resource exists.
+      parameters:
+        - $ref: '#/components/parameters/ltr.model_exists::path.id'
+        - $ref: '#/components/parameters/ltr.model_exists::path.store'
+      responses:
+        '200':
+          $ref: '#/components/responses/ltr.model_exists@200'
+        '404':
+          $ref: '#/components/responses/ltr.model_exists@404'
+
+    post:
+      operationId: ltr.update_model.1
+      x-operation-group: ltr.update_model
+      x-version-added: 2.17.1
+      description: Updates a model in a feature store.
+      parameters:
+        - $ref: '#/components/parameters/ltr.update_model::path.id'
+        - $ref: '#/components/parameters/ltr.update_model::path.store'
+        - $ref: '#/components/parameters/ltr.update_model::query.routing'
+      requestBody:
+        $ref: '#/components/requestBodies/ltr.update_model'
+      responses:
+        '405':
+          $ref: '#/components/responses/ltr.update_model@405'
 
     put:
       operationId: ltr.create_model.1
@@ -757,6 +964,13 @@ components:
       schema:
         type: string
       required: true
+    ltr.update_store::path.store:
+      name: store
+      in: path
+      description: The name of the feature store.
+      schema:
+        type: string
+      required: true
     ltr.stats::query.timeout:
       name: timeout
       in: query
@@ -898,6 +1112,20 @@ components:
       schema:
         type: string
       required: true
+    ltr.feature_exists::path.id:
+      name: id
+      in: path
+      description: The name of the feature.
+      schema:
+        type: string
+      required: true
+    ltr.feature_exists::path.store:
+      name: store
+      in: path
+      description: The name of the feature store.
+      schema:
+        type: string
+      required: true
     ltr.create_feature::path.id:
       name: id
       in: path
@@ -940,6 +1168,20 @@ components:
       schema:
         type: string
       required: true
+    ltr.featureset_exists::path.id:
+      name: id
+      in: path
+      description: The name of the feature set.
+      schema:
+        type: string
+      required: true
+    ltr.featureset_exists::path.store:
+      name: store
+      in: path
+      description: The name of the feature store.
+      schema:
+        type: string
+      required: true
     ltr.create_featureset::path.id:
       name: id
       in: path
@@ -976,6 +1218,34 @@ components:
         type: string
       required: true
     ltr.get_model::path.store:
+      name: store
+      in: path
+      description: The name of the feature store.
+      schema:
+        type: string
+      required: true
+    ltr.model_exists::path.id:
+      name: id
+      in: path
+      description: The name of the model.
+      schema:
+        type: string
+      required: true
+    ltr.model_exists::path.store:
+      name: store
+      in: path
+      description: The name of the feature store.
+      schema:
+        type: string
+      required: true
+    ltr.update_model::path.id:
+      name: id
+      in: path
+      description: The name of the model.
+      schema:
+        type: string
+      required: true
+    ltr.update_model::path.store:
       name: store
       in: path
       description: The name of the feature store.
@@ -1116,6 +1386,13 @@ components:
       schema:
         type: string
       required: false
+    ltr.update_model::query.routing:
+      name: routing
+      in: query
+      description: Specific routing value.
+      schema:
+        type: string
+      required: false
     ltr.create_model::query.routing:
       name: routing
       in: query
@@ -1225,6 +1502,20 @@ components:
           schema:
             $ref: '../schemas/ltr._common.yaml#/components/schemas/AcknowledgedResponse'
 
+    ltr.update_default_store@400:
+      description: Feature store updates are not supported.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+
+    ltr.update_store@400:
+      description: Feature store updates are not supported.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+
     ltr.stats@200:
       description: Provides information about the current status of the LTR plugin.
       content:
@@ -1290,6 +1581,16 @@ components:
           schema:
             $ref: '../schemas/ltr._common.yaml#/components/schemas/NotFoundResponse'
 
+    ltr.feature_exists@200:
+      description: The feature exists.
+      content:
+        application/json: {}
+
+    ltr.feature_exists@404:
+      description: The feature does not exist.
+      content:
+        application/json: {}
+
     ltr.create_feature@200:
       description: Successfully updated the feature.
       content:
@@ -1340,6 +1641,16 @@ components:
           schema:
             $ref: '../schemas/ltr._common.yaml#/components/schemas/NotFoundResponse'
 
+    ltr.featureset_exists@200:
+      description: The feature set exists.
+      content:
+        application/json: {}
+
+    ltr.featureset_exists@404:
+      description: The feature set does not exist.
+      content:
+        application/json: {}
+
     ltr.create_featureset@200:
       description: Successfully updated the feature set.
       content:
@@ -1389,6 +1700,23 @@ components:
         application/json:
           schema:
             $ref: '../schemas/ltr._common.yaml#/components/schemas/NotFoundResponse'
+
+    ltr.model_exists@200:
+      description: The model exists.
+      content:
+        application/json: {}
+
+    ltr.model_exists@404:
+      description: The model does not exist.
+      content:
+        application/json: {}
+
+    ltr.update_model@405:
+      description: Models cannot be updated. Create a new model instead.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
 
     ltr.create_model@200:
       description: Successfully updated the model.
@@ -1571,6 +1899,15 @@ components:
 
     ltr.create_featureset:
       description: The feature set definition.
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties: true
+      required: true
+
+    ltr.update_model:
+      description: The model definition.
       content:
         application/json:
           schema:

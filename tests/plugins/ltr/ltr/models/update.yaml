@@ -1,0 +1,73 @@
+$schema: ../../../../../json_schemas/test_story.schema.yaml
+
+description: Tests POST model routes, which reject updates because LTR models are immutable.
+version: '>= 2.17.1'
+
+prologues:
+  - path: /_ltr
+    method: PUT
+    response:
+      status: 200
+  - path: /_ltr/custom_store
+    method: PUT
+    response:
+      status: 200
+
+epilogues:
+  - path: /_ltr/custom_store
+    method: DELETE
+    response:
+      status: [200, 404]
+  - path: /_ltr
+    method: DELETE
+    response:
+      status: [200, 404]
+
+chapters:
+  - synopsis: Reject a model update in the default feature store.
+    path: /_ltr/_model/{id}
+    method: POST
+    parameters:
+      id: immutable_model
+    request:
+      payload:
+        model:
+          feature_set:
+            name: model_features
+            features:
+              - name: feature1
+                params:
+                  - query_string
+                template:
+                  match:
+                    title: '{{query_string}}'
+          model:
+            type: model/linear
+            definition:
+              feature1: 1
+    response:
+      status: 405
+  - synopsis: Reject a model update in a named feature store.
+    path: /_ltr/{store}/_model/{id}
+    method: POST
+    parameters:
+      store: custom_store
+      id: immutable_model
+    request:
+      payload:
+        model:
+          feature_set:
+            name: model_features
+            features:
+              - name: feature1
+                params:
+                  - query_string
+                template:
+                  match:
+                    title: '{{query_string}}'
+          model:
+            type: model/linear
+            definition:
+              feature1: 1
+    response:
+      status: 405

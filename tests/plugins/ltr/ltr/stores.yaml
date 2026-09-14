@@ -1,0 +1,18 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Tests the POST aliases for creating LTR feature stores.
+version: '>= 2.17.1'
+
+chapters:
+  - synopsis: Create the default feature store using POST.
+    path: /_ltr
+    method: POST
+    response:
+      status: 400
+  - synopsis: Create a named feature store using POST.
+    path: /_ltr/{store}
+    method: POST
+    parameters:
+      store: custom_store
+    response:
+      status: 400

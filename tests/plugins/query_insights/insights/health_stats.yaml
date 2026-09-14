@@ -1,0 +1,10 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test Query Insights health statistics API.
+version: '>= 3.8'
+chapters:
+  - synopsis: Get Query Insights health statistics.
+    path: /_insights/health_stats
+    method: GET
+    response:
+      status: 200

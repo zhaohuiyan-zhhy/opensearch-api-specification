@@ -1,0 +1,15 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test Query Insights live queries API.
+version: '>= 3.8'
+chapters:
+  - synopsis: Get live and recently finished queries.
+    path: /_insights/live_queries
+    method: GET
+    parameters:
+      use_finished_cache: true
+    response:
+      status: 200
+      payload:
+        live_queries: []
+        finished_queries: []

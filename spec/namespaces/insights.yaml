@@ -1,33 +1,251 @@
 openapi: 3.1.0
 info:
   title: Query Insights API
-  description: API to retrieve top queries based on latency, CPU, or memory usage.
+  description: APIs for retrieving query insights, live queries, health statistics, and settings.
   version: 1.0.0
 paths:
   /_insights/top_queries:
     get:
       operationId: insights.top_queries.0
       x-operation-group: insights.top_queries
-      x-version-added: '1.0'
-      description: Retrieves the top queries based on the given metric type (latency, CPU, or memory).
+      x-version-added: '2.15'
+      description: Retrieves the top queries based on latency, CPU, or memory usage.
       parameters:
+        - $ref: '#/components/parameters/insights.top_queries::query.from'
+        - $ref: '#/components/parameters/insights.top_queries::query.id'
+        - $ref: '#/components/parameters/insights.top_queries::query.recommendations'
+        - $ref: '#/components/parameters/insights.top_queries::query.timeout'
+        - $ref: '#/components/parameters/insights.top_queries::query.to'
         - $ref: '#/components/parameters/insights.top_queries::query.type'
+        - $ref: '#/components/parameters/insights.top_queries::query.verbose'
       responses:
         '200':
           $ref: '#/components/responses/insights.top_queries@200'
-          
+  /_insights/live_queries:
+    get:
+      operationId: insights.live_queries.0
+      x-operation-group: insights.live_queries
+      x-version-added: '3.1'
+      description: Retrieves currently running queries.
+      parameters:
+        - $ref: '#/components/parameters/insights.live_queries::query.nodeId'
+        - $ref: '#/components/parameters/insights.live_queries::query.size'
+        - $ref: '#/components/parameters/insights.live_queries::query.sort'
+        - $ref: '#/components/parameters/insights.live_queries::query.use_finished_cache'
+        - $ref: '#/components/parameters/insights.live_queries::query.verbose'
+        - $ref: '#/components/parameters/insights.live_queries::query.wlmGroupId'
+      responses:
+        '200':
+          $ref: '#/components/responses/insights.live_queries@200'
+  /_insights/health_stats:
+    get:
+      operationId: insights.health_stats.0
+      x-operation-group: insights.health_stats
+      x-version-added: '3.0'
+      description: Retrieves operational health statistics for the Query Insights plugin.
+      parameters:
+        - $ref: '#/components/parameters/insights.health_stats::query.nodeId'
+        - $ref: '#/components/parameters/insights.health_stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/insights.health_stats@200'
+  /_insights/settings:
+    get:
+      operationId: insights.get_settings.0
+      x-operation-group: insights.get_settings
+      x-version-added: '3.5'
+      description: Retrieves Query Insights settings.
+      responses:
+        '200':
+          $ref: '#/components/responses/insights.get_settings@200'
+    put:
+      operationId: insights.update_settings.0
+      x-operation-group: insights.update_settings
+      x-version-added: '3.5'
+      description: Updates Query Insights settings.
+      requestBody:
+        $ref: '#/components/requestBodies/insights.update_settings'
+      responses:
+        '200':
+          $ref: '#/components/responses/insights.update_settings@200'
+  /_insights/settings/{metric_type}:
+    get:
+      operationId: insights.get_settings.1
+      x-operation-group: insights.get_settings
+      x-version-added: '3.5'
+      description: Retrieves Query Insights settings.
+      parameters:
+        - $ref: '#/components/parameters/insights.get_settings::path.metric_type'
+      responses:
+        '200':
+          $ref: '#/components/responses/insights.get_settings@200'
+  /_insights/top_queries/{node_id}:
+    get:
+      operationId: insights.top_queries.1
+      x-operation-group: insights.top_queries
+      x-version-added: '2.15'
+      description: Retrieves the top queries based on latency, CPU, or memory usage.
+      parameters:
+        - $ref: '#/components/parameters/insights.top_queries::path.node_id'
+        - $ref: '#/components/parameters/insights.top_queries::query.from'
+        - $ref: '#/components/parameters/insights.top_queries::query.id'
+        - $ref: '#/components/parameters/insights.top_queries::query.recommendations'
+        - $ref: '#/components/parameters/insights.top_queries::query.timeout'
+        - $ref: '#/components/parameters/insights.top_queries::query.to'
+        - $ref: '#/components/parameters/insights.top_queries::query.type'
+        - $ref: '#/components/parameters/insights.top_queries::query.verbose'
+      responses:
+        '200':
+          $ref: '#/components/responses/insights.top_queries@200'
 components:
   parameters:
     insights.top_queries::query.type:
       name: type
       in: query
-      required: true
-      description: Get top n queries by a specific metric.
+      required: false
+      description: The metric used to rank queries.
       schema:
-        $ref: '../schemas/insights._common.yaml#/components/schemas/MetricType'
+        $ref: ../schemas/insights._common.yaml#/components/schemas/MetricType
+        default: latency
+    insights.top_queries::query.from:
+      name: from
+      in: query
+      description: The start of the time range in ISO 8601 format. Must be used with `to`.
+      schema:
+        type: string
+        format: date-time
+    insights.top_queries::query.to:
+      name: to
+      in: query
+      description: The end of the time range in ISO 8601 format. Must be used with `from`.
+      schema:
+        type: string
+        format: date-time
+    insights.top_queries::query.id:
+      name: id
+      in: query
+      description: A query record ID to retrieve.
+      schema:
+        type: string
+    insights.top_queries::query.verbose:
+      name: verbose
+      in: query
+      description: Whether to include verbose query details.
+      schema:
+        type: boolean
+        default: true
+    insights.top_queries::query.recommendations:
+      name: recommendations
+      in: query
+      description: Whether to include recommendations.
+      schema:
+        type: boolean
+        default: false
+    insights.top_queries::query.timeout:
+      name: timeout
+      in: query
+      description: The timeout for node responses.
+      schema:
+        $ref: ../schemas/_common.yaml#/components/schemas/Duration
+    insights.live_queries::query.nodeId:
+      name: nodeId
+      in: query
+      description: A comma-separated list of node IDs.
+      schema:
+        type: string
+    insights.live_queries::query.verbose:
+      name: verbose
+      in: query
+      description: Whether to include verbose task details.
+      schema:
+        type: boolean
+        default: true
+    insights.live_queries::query.sort:
+      name: sort
+      in: query
+      description: The metric used to sort live queries.
+      schema:
+        $ref: ../schemas/insights._common.yaml#/components/schemas/MetricType
+        default: latency
+    insights.live_queries::query.size:
+      name: size
+      in: query
+      description: The maximum number of live queries to return.
+      schema:
+        type: integer
+        minimum: 1
+        default: 100
+    insights.live_queries::query.wlmGroupId:
+      name: wlmGroupId
+      in: query
+      description: Filters live queries by workload group ID.
+      x-version-added: '3.3'
+      schema:
+        type: string
+    insights.live_queries::query.use_finished_cache:
+      name: use_finished_cache
+      in: query
+      description: Whether to include recently finished queries from the cache.
+      x-version-added: '3.6'
+      schema:
+        type: boolean
+        default: false
+    insights.health_stats::query.nodeId:
+      name: nodeId
+      in: query
+      description: A comma-separated list of node IDs.
+      schema:
+        type: string
+    insights.health_stats::query.timeout:
+      name: timeout
+      in: query
+      description: The timeout for node responses.
+      schema:
+        $ref: ../schemas/_common.yaml#/components/schemas/Duration
+    insights.get_settings::path.metric_type:
+      name: metric_type
+      in: path
+      required: true
+      description: The metric type whose settings should be returned.
+      schema:
+        $ref: ../schemas/insights._common.yaml#/components/schemas/MetricType
+    insights.top_queries::path.node_id:
+      name: node_id
+      in: path
+      required: true
+      description: A comma-separated list of node IDs or node selectors.
+      schema:
+        type: string
+  requestBodies:
+    insights.update_settings:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/insights._common.yaml#/components/schemas/QueryInsightsSettings
   responses:
     insights.top_queries@200:
       content:
         application/json:
           schema:
-            $ref: '../schemas/insights._common.yaml#/components/schemas/TopQueriesResponse'
+            $ref: ../schemas/insights._common.yaml#/components/schemas/TopQueriesResponse
+    insights.live_queries@200:
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/insights._common.yaml#/components/schemas/LiveQueriesResponse
+    insights.health_stats@200:
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/insights._common.yaml#/components/schemas/HealthStatsResponse
+    insights.get_settings@200:
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/insights._common.yaml#/components/schemas/GetQueryInsightsSettingsResponse
+    insights.update_settings@200:
+      content:
+        application/json:
+          schema:
+            $ref: ../schemas/_common.yaml#/components/schemas/AcknowledgedResponseBase

@@ -1,0 +1,30 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test Query Insights settings APIs.
+version: '>= 3.8'
+chapters:
+  - synopsis: Update Query Insights settings.
+    path: /_insights/settings
+    method: PUT
+    request:
+      payload:
+        latency:
+          enabled: true
+          top_n_size: 10
+          window_size: 1m
+    response:
+      status: 200
+      payload:
+        acknowledged: true
+  - synopsis: Get all Query Insights settings.
+    path: /_insights/settings
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get Query Insights settings for one metric.
+    path: /_insights/settings/{metric_type}
+    method: GET
+    parameters:
+      metric_type: latency
+    response:
+      status: 200

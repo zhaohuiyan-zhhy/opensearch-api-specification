@@ -105,7 +105,21 @@ chapters:
       content_type: application/json
       payload:
         top_queries: []
-        
+  - synopsis: Retrieve top queries for the local node.
+    path: /_insights/top_queries/{node_id}
+    retry:
+      count: 2
+      wait: 5000
+    parameters:
+      node_id: _local
+      type: latency
+    method: GET
+    response:
+      status: 200
+      content_type: application/json
+      payload:
+        top_queries: []
+
 epilogues:
   - path: /movies
     method: DELETE

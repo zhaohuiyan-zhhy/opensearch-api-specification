@@ -6,6 +6,223 @@ info:
 paths: {}
 components:
   schemas:
+    LiveQueriesResponse:
+      type: object
+      properties:
+        live_queries:
+          type: array
+          items:
+            $ref: '#/components/schemas/LiveQueryRecord'
+        finished_queries:
+          type: array
+          x-version-added: '3.6'
+          items:
+            $ref: '#/components/schemas/FinishedQueryRecord'
+      required:
+        - live_queries
+    LiveQueryRecord:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+        start_time:
+          type: integer
+          format: int64
+        wlm_group_id:
+          type: string
+        total_latency_millis:
+          type: integer
+          format: int64
+        total_cpu_nanos:
+          type: integer
+          format: int64
+        total_memory_bytes:
+          type: integer
+          format: int64
+        coordinator_task:
+          $ref: '#/components/schemas/LiveQueryTaskDetails'
+        shard_tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/LiveQueryTaskDetails'
+        username:
+          type: string
+          x-version-added: '3.8'
+        user_roles:
+          type: array
+          x-version-added: '3.8'
+          items:
+            type: string
+        backend_roles:
+          type: array
+          x-version-added: '3.8'
+          items:
+            type: string
+      required:
+        - id
+        - shard_tasks
+        - start_time
+        - status
+        - total_cpu_nanos
+        - total_latency_millis
+        - total_memory_bytes
+    LiveQueryTaskDetails:
+      type: object
+      properties:
+        task_id:
+          type: string
+        node_id:
+          type: string
+        action:
+          type: string
+        status:
+          type: string
+        description:
+          type: string
+        start_time:
+          type: integer
+          format: int64
+        running_time_nanos:
+          type: integer
+          format: int64
+        cpu_nanos:
+          type: integer
+          format: int64
+        memory_bytes:
+          type: integer
+          format: int64
+      required:
+        - action
+        - cpu_nanos
+        - memory_bytes
+        - node_id
+        - running_time_nanos
+        - start_time
+        - status
+        - task_id
+    FinishedQueryRecord:
+      type: object
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+        timestamp:
+          type: integer
+          format: int64
+        top_n_id:
+          type: string
+        status:
+          type: string
+        measurements:
+          $ref: '#/components/schemas/Measurements'
+      required:
+        - id
+        - measurements
+        - status
+        - timestamp
+    HealthStatsResponse:
+      type: object
+      additionalProperties:
+        $ref: '#/components/schemas/QueryInsightsNodeHealthStats'
+    QueryInsightsNodeHealthStats:
+      type: object
+      properties:
+        ThreadPoolInfo:
+          type: object
+          additionalProperties: true
+        QueryRecordsQueueSize:
+          type: integer
+        TopQueriesHealthStats:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/TopQueriesMetricHealthStats'
+        FieldTypeCacheStats:
+          $ref: '#/components/schemas/FieldTypeCacheStats'
+      required:
+        - FieldTypeCacheStats
+        - QueryRecordsQueueSize
+        - ThreadPoolInfo
+        - TopQueriesHealthStats
+    TopQueriesMetricHealthStats:
+      type: object
+      properties:
+        TopQueriesHeapSize:
+          type: integer
+        QueryGroupCount_Total:
+          type: integer
+        QueryGroupCount_MaxHeap:
+          type: integer
+      required:
+        - QueryGroupCount_MaxHeap
+        - QueryGroupCount_Total
+        - TopQueriesHeapSize
+    FieldTypeCacheStats:
+      type: object
+      properties:
+        size_in_bytes:
+          type: integer
+          format: int64
+        entry_count:
+          type: integer
+          format: int64
+        evictions:
+          type: integer
+          format: int64
+        hit_count:
+          type: integer
+          format: int64
+        miss_count:
+          type: integer
+          format: int64
+      required:
+        - entry_count
+        - evictions
+        - hit_count
+        - miss_count
+        - size_in_bytes
+    QueryInsightsMetricSettings:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+        top_n_size:
+          type: integer
+        window_size:
+          type: string
+    QueryInsightsGroupingSettings:
+      type: object
+      properties:
+        group_by:
+          $ref: '#/components/schemas/GroupingType'
+    QueryInsightsExporterSettings:
+      type: object
+      properties:
+        type:
+          type: string
+        delete_after_days:
+          type: integer
+    QueryInsightsSettings:
+      type: object
+      properties:
+        latency:
+          $ref: '#/components/schemas/QueryInsightsMetricSettings'
+        cpu:
+          $ref: '#/components/schemas/QueryInsightsMetricSettings'
+        memory:
+          $ref: '#/components/schemas/QueryInsightsMetricSettings'
+        grouping:
+          $ref: '#/components/schemas/QueryInsightsGroupingSettings'
+        exporter:
+          $ref: '#/components/schemas/QueryInsightsExporterSettings'
+    GetQueryInsightsSettingsResponse:
+      type: object
+      properties:
+        persistent:
+          $ref: '#/components/schemas/QueryInsightsSettings'
+      required:
+        - persistent
     MetricType:
       type: string
       enum:
@@ -31,6 +248,7 @@ components:
           $ref: '#/components/schemas/GroupingType'
         timestamp:
           type: integer
+          format: int64
           description: The timestamp of the query execution.
         total_shards:
           type: integer
@@ -38,21 +256,26 @@ components:
         task_resource_usages:
           type: array
           items:
-            type: object
             $ref: '#/components/schemas/TaskResourceUsages'
-         
-        query_hashcode:
+        query_group_hashcode:
           type: string
-          description: The hash code of the query.
+          x-version-added: '2.19'
+          description: The hash code of the query group.
         labels:
           type: object
           description: Additional labels for the query.
+          additionalProperties:
+            type: string
         search_type:
           type: string
           description: The search query type (for example, `query_then_fetch`).
         source:
-          type: object
-          $ref: '#/components/schemas/Source'
+          type: string
+          description: The search request body serialized as a JSON string.
+        source_truncated:
+          type: boolean
+          x-version-added: '3.5'
+          description: Whether the serialized source was truncated.
         node_id:
           type: string
           description: The node ID associated with the query.
@@ -63,9 +286,120 @@ components:
           description: The indexes involved in the query.
         phase_latency_map:
           type: object
+          additionalProperties:
+            type: integer
+            format: int64
         measurements:
-          type: object
           $ref: '#/components/schemas/Measurements'
+        description:
+          type: string
+          x-version-added: '3.0'
+          description: A description of the query task.
+        is_cancelled:
+          type: boolean
+          x-version-added: '3.1'
+          description: Whether the query was cancelled.
+        wlm_group_id:
+          type: string
+          x-version-added: '3.3'
+          description: The workload management group ID associated with the query.
+        username:
+          type: string
+          x-version-added: '3.5'
+          description: The username that initiated the query.
+        user_roles:
+          type: array
+          x-version-added: '3.5'
+          items:
+            type: string
+          description: The roles of the user that initiated the query.
+        backend_roles:
+          type: array
+          x-version-added: '3.6'
+          items:
+            type: string
+          description: The backend roles of the user that initiated the query.
+        failed:
+          type: boolean
+          x-version-added: '3.6'
+          description: Whether the query failed during execution.
+        recommendations:
+          type: array
+          x-version-added: '3.8'
+          items:
+            $ref: '#/components/schemas/QueryRecommendation'
+    QueryRecommendation:
+      type: object
+      properties:
+        id:
+          type: string
+        rule_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        type:
+          $ref: '#/components/schemas/RecommendationType'
+        action:
+          $ref: '#/components/schemas/RecommendationAction'
+        impact:
+          $ref: '#/components/schemas/RecommendationImpactVector'
+        confidence:
+          type: number
+        metadata:
+          type: object
+          additionalProperties: true
+      required:
+        - confidence
+        - description
+        - rule_id
+        - title
+        - type
+    RecommendationType:
+      type: string
+      enum:
+        - correctness
+        - feature_enable
+        - index_config
+        - query_rewrite
+    RecommendationAction:
+      type: object
+      properties:
+        name:
+          type: string
+        hint:
+          type: string
+        documentation_url:
+          type: string
+        suggested_query:
+          type: string
+    RecommendationImpactVector:
+      type: object
+      properties:
+        latency:
+          $ref: '#/components/schemas/RecommendationImpact'
+        cpu:
+          $ref: '#/components/schemas/RecommendationImpact'
+        memory:
+          $ref: '#/components/schemas/RecommendationImpact'
+        correctness:
+          $ref: '#/components/schemas/RecommendationImpact'
+        estimated_improvement:
+          type: string
+    RecommendationImpact:
+      type: object
+      properties:
+        direction:
+          $ref: '#/components/schemas/RecommendationImpactDirection'
+        value:
+          type: number
+    RecommendationImpactDirection:
+      type: string
+      enum:
+        - negative
+        - neutral
+        - positive
     GroupingType:
       type: string
       enum:
@@ -100,128 +434,6 @@ components:
         memory_in_bytes:
           type: integer
           description: The memory usage in bytes.
-    Source:
-      type: object
-      properties:
-        aggregations:
-          description: Defines the aggregations that are run as part of the search request.
-          type: object
-        collapse:
-          $ref: '_core.search.yaml#/components/schemas/FieldCollapse'
-        explain:
-          description: If `true`, returns detailed information about score computation as part of a hit.
-          type: boolean
-        ext:
-          description: Configuration of search extensions defined by OpenSearch plugins.
-          type: object
-          additionalProperties:
-            type: object
-        from:
-          description: |-
-            Starting document offset.
-            Needs to be non-negative.
-            By default, you cannot page through more than 10,000 hits using the `from` and `size` parameters.
-            To page through more hits, use the `search_after` parameter.
-          type: number
-        highlight:
-          $ref: '_core.search.yaml#/components/schemas/Highlight'
-        track_total_hits:
-          $ref: '_core.search.yaml#/components/schemas/TrackHits'
-        indices_boost:
-          description: Boosts the `_score` of documents from specified indexes.
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              type: number
-        docvalue_fields:
-          description: |-
-            Array of wildcard (`*`) patterns.
-            The request returns doc values for field names matching these patterns in the `hits.fields` property of the response.
-          type: array
-          items:
-            $ref: '_common.query_dsl.yaml#/components/schemas/FieldAndFormat'
-        min_score:
-          description: |-
-            Minimum `_score` for matching documents.
-            Documents with a lower `_score` are not included in the search results.
-          type: number
-        post_filter:
-          $ref: '_common.query_dsl.yaml#/components/schemas/QueryContainer'
-        profile:
-          description: |-
-            Set to `true` to return detailed timing information about the execution of individual components in a search request.
-            NOTE: This is a debugging tool and adds significant overhead to search execution.
-          type: boolean
-        query:
-          $ref: '_common.query_dsl.yaml#/components/schemas/QueryContainer'
-        script_fields:
-          description: Retrieve a script evaluation (based on different fields) for each hit.
-          type: object
-          additionalProperties:
-            $ref: '_common.yaml#/components/schemas/ScriptField'
-        search_after:
-          $ref: '_common.yaml#/components/schemas/SortResults'
-        size:
-          description: |-
-            The number of hits to return.
-            By default, you cannot page through more than 10,000 hits using the `from` and `size` parameters.
-            To page through more hits, use the `search_after` parameter.
-          type: number
-        slice:
-          $ref: '_common.yaml#/components/schemas/SlicedScroll'
-        sort:
-          $ref: '_common.yaml#/components/schemas/Sort'
-        _source:
-          $ref: '_core.search.yaml#/components/schemas/SourceConfig'
-        fields:
-          description: |-
-            Array of wildcard (`*`) patterns.
-            The request returns values for field names matching these patterns in the `hits.fields` property of the response.
-          type: array
-          items:
-            $ref: '_common.query_dsl.yaml#/components/schemas/FieldAndFormat'
-        suggest:
-          $ref: '_core.search.yaml#/components/schemas/Suggester'
-        terminate_after:
-          description: |-
-            Maximum number of documents to collect for each shard.
-            If a query reaches this limit, OpenSearch terminates the query early.
-            OpenSearch collects documents before sorting.
-            Use with caution.
-            OpenSearch applies this parameter to each shard handling the request.
-            When possible, let OpenSearch perform early termination automatically.
-            Avoid specifying this parameter for requests that target data streams with backing indexes across multiple data tiers.
-            If set to `0` (default), the query does not terminate early.
-          type: integer
-          format: int32
-        timeout:
-          description: |-
-            Specifies the period of time to wait for a response from each shard.
-            If no response is received before the timeout expires, the request fails and returns an error.
-            Defaults to no timeout.
-          type: string
-        track_scores:
-          description: If `true`, calculate and return document scores, even if the scores are not used for sorting.
-          type: boolean
-        version:
-          description: If `true`, returns document version as part of a hit.
-          type: boolean
-        seq_no_primary_term:
-          description: If `true`, returns sequence number and primary term of the last modification of each hit.
-          type: boolean
-        stored_fields:
-          $ref: '_common.yaml#/components/schemas/Fields'
-        pit:
-          $ref: '_core.search.yaml#/components/schemas/PointInTimeReference'
-        stats:
-          description: |-
-            Stats groups to associate with the search.
-            Each group maintains a statistics aggregation for its associated searches.
-            You can retrieve these stats using the indexes stats API.
-          type: array
-          items:
-            type: string
     Measurement:
       type: object
       properties:

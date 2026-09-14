@@ -68,8 +68,73 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/neural.stats@200'
+  /_plugins/_neural/stats/:
+    get:
+      operationId: neural.stats.4
+      x-operation-group: neural.stats
+      x-version-added: '3.0'
+      description: Provides information about the current status of the neural-search plugin.
+      parameters:
+        - $ref: '#/components/parameters/neural.stats::query.flat_stat_paths'
+        - $ref: '#/components/parameters/neural.stats::query.include_all_nodes'
+        - $ref: '#/components/parameters/neural.stats::query.include_individual_nodes'
+        - $ref: '#/components/parameters/neural.stats::query.include_info'
+        - $ref: '#/components/parameters/neural.stats::query.include_metadata'
+      responses:
+        '200':
+          $ref: '#/components/responses/neural.stats@200'
+  /_plugins/_neural/{node_id}/stats/:
+    get:
+      operationId: neural.stats.5
+      x-operation-group: neural.stats
+      x-version-added: '3.0'
+      description: Provides information about the current status of the neural-search plugin.
+      parameters:
+        - $ref: '#/components/parameters/neural.stats::path.node_id'
+        - $ref: '#/components/parameters/neural.stats::query.flat_stat_paths'
+        - $ref: '#/components/parameters/neural.stats::query.include_all_nodes'
+        - $ref: '#/components/parameters/neural.stats::query.include_individual_nodes'
+        - $ref: '#/components/parameters/neural.stats::query.include_info'
+        - $ref: '#/components/parameters/neural.stats::query.include_metadata'
+      responses:
+        '200':
+          $ref: '#/components/responses/neural.stats@200'
+  /_plugins/_neural/clear_cache/{index}:
+    post:
+      operationId: neural.clear_cache.0
+      x-operation-group: neural.clear_cache
+      x-version-added: '3.3'
+      description: Evicts neural sparse index data from the cache.
+      parameters:
+        - $ref: '#/components/parameters/neural.clear_cache::path.index'
+      responses:
+        '200':
+          $ref: '#/components/responses/neural.clear_cache@200'
+  /_plugins/_neural/warmup/{index}:
+    post:
+      operationId: neural.warmup.0
+      x-operation-group: neural.warmup
+      x-version-added: '3.3'
+      description: Loads neural sparse index data into the cache.
+      parameters:
+        - $ref: '#/components/parameters/neural.warmup::path.index'
+      responses:
+        '200':
+          $ref: '#/components/responses/neural.warmup@200'
 components:
   responses:
+    neural.clear_cache@200:
+      description: Successful response containing shard results.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ShardsOperationResponseBase'
+    neural.warmup@200:
+      description: Successful response containing shard results.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ShardsOperationResponseBase'
     neural.stats@200:
       description: Successful response containing neural stats
       content:
@@ -77,6 +142,26 @@ components:
           schema:
             $ref: '../schemas/neural._common.yaml#/components/schemas/NeuralStats'
   parameters:
+    neural.clear_cache::path.index:
+      name: index
+      in: path
+      description: A comma-separated list of indexes.
+      required: true
+      style: simple
+      schema:
+        type: array
+        items:
+          type: string
+    neural.warmup::path.index:
+      name: index
+      in: path
+      description: A comma-separated list of indexes.
+      required: true
+      style: simple
+      schema:
+        type: array
+        items:
+          type: string
     neural.stats::path.node_id:
       name: node_id
       in: path

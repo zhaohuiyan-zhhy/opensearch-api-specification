@@ -1,0 +1,53 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Tests neural search stats routes.
+version: '>= 3.0'
+
+prologues:
+  - path: /_cluster/settings
+    method: PUT
+    request:
+      payload:
+        transient:
+          plugins.neural_search.stats_enabled: true
+    response:
+      status: 200
+
+epilogues:
+  - path: /_cluster/settings
+    method: PUT
+    request:
+      payload:
+        transient:
+          plugins.neural_search.stats_enabled: false
+    status: [200]
+
+chapters:
+  - synopsis: Get neural stats.
+    path: /_plugins/_neural/stats
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get neural stats using the registered trailing-slash route.
+    path: /_plugins/_neural/stats/
+    method: GET
+    warnings:
+      multiple-paths-detected: false
+    response:
+      status: 200
+  - synopsis: Get neural stats for all nodes.
+    path: /_plugins/_neural/{node_id}/stats
+    method: GET
+    parameters:
+      node_id: _all
+    response:
+      status: 200
+  - synopsis: Get neural stats for all nodes using the registered trailing-slash route.
+    path: /_plugins/_neural/{node_id}/stats/
+    method: GET
+    parameters:
+      node_id: _all
+    warnings:
+      multiple-paths-detected: false
+    response:
+      status: 200

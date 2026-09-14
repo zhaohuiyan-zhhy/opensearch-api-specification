@@ -156,6 +156,10 @@ $schema: ./json_schemas/_superseded_operations.schema.yaml
   superseded_by: /_plugins/_asynchronous_search
   operations:
     - POST
+/{index}/_opendistro/_asynchronous_search:
+  superseded_by: /{index}/_plugins/_asynchronous_search
+  operations:
+    - POST
 /_opendistro/_asynchronous_search/_nodes/{nodeId}/stats:
   superseded_by: /_plugins/_asynchronous_search/_nodes/{nodeId}/stats
   operations:

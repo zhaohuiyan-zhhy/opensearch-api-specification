@@ -1,0 +1,111 @@
+openapi: 3.1.0
+info:
+  title: Schemas for OpenSearch Direct Query API
+  description: Schemas for OpenSearch Direct Query API.
+  version: 3.6.0
+paths: {}
+components:
+  schemas:
+    ExecuteDirectQueryRequest:
+      type: object
+      properties:
+        datasource:
+          type: string
+        query:
+          type: string
+        sessionId:
+          type: string
+        language:
+          $ref: '#/components/schemas/DirectQueryLanguage'
+        sourceVersion:
+          type: string
+        maxResults:
+          type: integer
+        timeout:
+          type: integer
+        options:
+          $ref: '#/components/schemas/PrometheusOptions'
+      required:
+        - query
+        - language
+
+    DirectQueryLanguage:
+      type: string
+      enum:
+        - sql
+        - ppl
+        - promql
+
+    PrometheusOptions:
+      type: object
+      properties:
+        queryType:
+          $ref: '#/components/schemas/PrometheusQueryType'
+        step:
+          type: string
+        time:
+          type: string
+        start:
+          type: string
+        end:
+          type: string
+
+    PrometheusQueryType:
+      type: string
+      enum:
+        - instant
+        - range
+
+    ExecuteDirectQueryResponse:
+      type: object
+      properties:
+        queryId:
+          type: string
+        results:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/PrometheusResult'
+        sessionId:
+          type: string
+      required:
+        - queryId
+        - results
+        - sessionId
+
+    PrometheusResult:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/DataSourceType'
+        resultType:
+          type: string
+        result:
+          type: array
+          items:
+            $ref: '#/components/schemas/PrometheusResultItem'
+
+    DataSourceType:
+      type: string
+      enum:
+        - prometheus
+
+    PrometheusResultItem:
+      type: object
+      properties:
+        metric:
+          type: object
+          additionalProperties:
+            type: string
+        values:
+          type: array
+          items:
+            type: array
+        value:
+          type: array
+
+    DirectQueryResourceResponse:
+      type: object
+      properties:
+        data: {}
+      required:
+        - data

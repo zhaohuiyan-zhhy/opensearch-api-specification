@@ -47,6 +47,34 @@ components:
         - resultIndex
         - status
 
+    DataSourcePatch:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the data source.
+        description:
+          type: string
+          description: The description of the data source.
+        allowedRoles:
+          type: array
+          items:
+            type: string
+            description: The roles allowed to access this data source.
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          description: The configuration properties for the data source.
+        resultIndex:
+          type: string
+          description: The index where query results are stored.
+        status:
+          type: string
+          description: The current status of the data source.
+      required:
+        - name
+
     DataSourceConfiguration:
       type: object
       properties:

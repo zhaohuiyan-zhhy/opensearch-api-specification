@@ -1,0 +1,10 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Tests retrieval of the PPL grammar bundle.
+version: '>= 3.6'
+chapters:
+  - synopsis: Retrieve the PPL grammar bundle.
+    path: /_plugins/_ppl/_grammar
+    method: GET
+    response:
+      status: 200

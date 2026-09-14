@@ -1,0 +1,39 @@
+$schema: ../../../../../../../../../json_schemas/test_story.schema.yaml
+
+description: Tests retrieval of Alertmanager alert groups.
+version: '>= 3.6'
+prologues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_groups_spec_test
+    status: [204, 404]
+  - path: /_plugins/_query/_datasources
+    method: POST
+    request:
+      payload:
+        name: direct_groups_spec_test
+        description: ''
+        connector: PROMETHEUS
+        allowedRoles: []
+        properties:
+          prometheus.uri: http://host.docker.internal:9090
+        resultIndex: query_execution_result_direct_groups_spec_test
+        status: ACTIVE
+    response:
+      status: 201
+chapters:
+  - synopsis: Return a provider error when Alertmanager alert groups are unavailable.
+    path: /_plugins/_directquery/_resources/{data_source}/alertmanager/api/v2/alerts/groups
+    method: GET
+    parameters:
+      data_source: direct_groups_spec_test
+    response:
+      status: 400
+      content_type: text/plain
+epilogues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_groups_spec_test
+    status: [204, 404]

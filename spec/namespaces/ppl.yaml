@@ -36,6 +36,15 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ppl.explain@200'
+  /_plugins/_ppl/_grammar:
+    get:
+      operationId: ppl.get_grammar.0
+      x-operation-group: ppl.get_grammar
+      x-version-added: '3.6'
+      description: Retrieves the PPL grammar bundle used by the plugin.
+      responses:
+        '200':
+          $ref: '#/components/responses/ppl.get_grammar@200'
   /_plugins/_ppl/stats:
     get:
       operationId: ppl.get_stats.0
@@ -148,6 +157,12 @@ components:
         application/json:
           schema:
             $ref: '../schemas/sql._common.yaml#/components/schemas/QueryResponse'
+    ppl.get_grammar@200:
+      description: Returns the PPL grammar bundle.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ppl._common.yaml#/components/schemas/GrammarBundle'
     ppl.explain@200:
       description: Returns the query execution plan.
       content:

@@ -1,0 +1,73 @@
+openapi: 3.1.0
+info:
+  title: Schemas for OpenSearch Async Query API
+  description: Schemas for OpenSearch Async Query API.
+  version: 3.0.0
+paths: {}
+components:
+  schemas:
+    CreateAsyncQueryRequest:
+      type: object
+      properties:
+        query:
+          type: string
+        datasource:
+          type: string
+        lang:
+          $ref: '#/components/schemas/LangType'
+        sessionId:
+          type: string
+      required:
+        - query
+        - datasource
+        - lang
+
+    LangType:
+      type: string
+      enum:
+        - sql
+        - ppl
+        - promql
+
+    CreateAsyncQueryResponse:
+      type: object
+      properties:
+        queryId:
+          type: string
+        sessionId:
+          type: string
+      required:
+        - queryId
+
+    AsyncQueryResultResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/Column'
+        datarows:
+          type: array
+          items:
+            type: array
+        total:
+          type: integer
+        size:
+          type: integer
+        error:
+          type: string
+      required:
+        - status
+
+    Column:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+      required:
+        - name
+        - type

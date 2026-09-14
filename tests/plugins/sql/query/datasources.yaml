@@ -1,0 +1,45 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Tests partial updates of query data sources.
+version: '>= 3.0'
+distributions:
+  excluded:
+    - amazon-managed
+    - amazon-serverless
+prologues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: patch_spec_test
+    status: [204, 404]
+  - path: /_plugins/_query/_datasources
+    method: POST
+    request:
+      payload:
+        name: patch_spec_test
+        description: ''
+        connector: PROMETHEUS
+        allowedRoles: []
+        properties:
+          prometheus.uri: http://host.docker.internal:9090
+        resultIndex: query_execution_result_patch_spec_test
+        status: ACTIVE
+    response:
+      status: 201
+chapters:
+  - synopsis: Partially update a query data source.
+    path: /_plugins/_query/_datasources
+    method: PATCH
+    request:
+      payload:
+        name: patch_spec_test
+        description: Patched description
+    response:
+      status: 200
+      payload: Updated DataSource with name patch_spec_test
+epilogues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: patch_spec_test
+    status: [204, 404]

@@ -1,0 +1,49 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Tests execution of a direct Prometheus query.
+version: '>= 3.6'
+distributions:
+  excluded:
+    - amazon-managed
+    - amazon-serverless
+prologues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_query_spec_test
+    status: [204, 404]
+  - path: /_plugins/_query/_datasources
+    method: POST
+    request:
+      payload:
+        name: direct_query_spec_test
+        description: ''
+        connector: PROMETHEUS
+        allowedRoles: []
+        properties:
+          prometheus.uri: http://host.docker.internal:9090
+        resultIndex: query_execution_result_direct_query_spec_test
+        status: ACTIVE
+    response:
+      status: 201
+chapters:
+  - synopsis: Execute a direct Prometheus query.
+    path: /_plugins/_directquery/_query/{data_sources}
+    method: POST
+    parameters:
+      data_sources: direct_query_spec_test
+    request:
+      payload:
+        query: up
+        language: promql
+        options:
+          queryType: instant
+          time: '1609459200'
+    response:
+      status: 200
+epilogues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_query_spec_test
+    status: [204, 404]

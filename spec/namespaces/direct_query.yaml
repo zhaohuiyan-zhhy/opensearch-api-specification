@@ -1,0 +1,439 @@
+openapi: 3.1.0
+info:
+  title: OpenSearch Direct Query API
+  description: OpenSearch Direct Query API.
+  version: 3.6.0
+paths:
+  /_plugins/_directquery/_query/{data_sources}:
+    post:
+      operationId: direct_query.execute.0
+      x-operation-group: direct_query.execute
+      x-version-added: '3.6'
+      description: Executes a query against a direct query data source.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.execute::path.data_sources'
+      requestBody:
+        $ref: '#/components/requestBodies/direct_query.execute'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.execute@200'
+  /_plugins/_directquery/_resources/{data_source}/api/v1/rules/{namespace}:
+    get:
+      operationId: direct_query.rules_get.0
+      x-operation-group: direct_query.rules_get
+      x-version-added: '3.6'
+      description: Retrieves rule groups from a namespace.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.rules_get::path.data_source'
+        - $ref: '#/components/parameters/direct_query.rules_get::path.namespace'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.rules_get@200'
+        '400':
+          $ref: '#/components/responses/direct_query.rules_get@400'
+    post:
+      operationId: direct_query.rules_write.0
+      x-operation-group: direct_query.rules_write
+      x-version-added: '3.6'
+      description: Creates or updates rule groups in a namespace.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.rules_write::path.data_source'
+        - $ref: '#/components/parameters/direct_query.rules_write::path.namespace'
+      requestBody:
+        $ref: '#/components/requestBodies/direct_query.rules_write'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.rules_write@200'
+        '400':
+          $ref: '#/components/responses/direct_query.rules_write@400'
+    delete:
+      operationId: direct_query.rules_delete.0
+      x-operation-group: direct_query.rules_delete
+      x-version-added: '3.6'
+      description: Deletes rule groups from a namespace.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.rules_delete::path.data_source'
+        - $ref: '#/components/parameters/direct_query.rules_delete::path.namespace'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.rules_delete@200'
+        '400':
+          $ref: '#/components/responses/direct_query.rules_delete@400'
+  /_plugins/_directquery/_resources/{data_source}/api/v1/rules/{namespace}/{group_name}:
+    delete:
+      operationId: direct_query.rule_group_delete.0
+      x-operation-group: direct_query.rule_group_delete
+      x-version-added: '3.6'
+      description: Deletes a rule group from a namespace.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.rule_group_delete::path.data_source'
+        - $ref: '#/components/parameters/direct_query.rule_group_delete::path.group_name'
+        - $ref: '#/components/parameters/direct_query.rule_group_delete::path.namespace'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.rule_group_delete@200'
+        '400':
+          $ref: '#/components/responses/direct_query.rule_group_delete@400'
+  /_plugins/_directquery/_resources/{data_source}/api/v1/{resource_type}:
+    get:
+      operationId: direct_query.resources_get.0
+      x-operation-group: direct_query.resources_get
+      x-version-added: '3.6'
+      description: Retrieves resources from a direct query data source.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.resources_get::path.data_source'
+        - $ref: '#/components/parameters/direct_query.resources_get::path.resource_type'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.resources_get@200'
+        '400':
+          $ref: '#/components/responses/direct_query.resources_get@400'
+  /_plugins/_directquery/_resources/{data_source}/api/v1/{resource_type}/{resource_name}/values:
+    get:
+      operationId: direct_query.resource_values_get.0
+      x-operation-group: direct_query.resource_values_get
+      x-version-added: '3.6'
+      description: Retrieves values for a named resource.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.resource_values_get::path.data_source'
+        - $ref: '#/components/parameters/direct_query.resource_values_get::path.resource_name'
+        - $ref: '#/components/parameters/direct_query.resource_values_get::path.resource_type'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.resource_values_get@200'
+        '400':
+          $ref: '#/components/responses/direct_query.resource_values_get@400'
+  /_plugins/_directquery/_resources/{data_source}/alertmanager/api/v2/alerts/groups:
+    get:
+      operationId: direct_query.alert_groups_get.0
+      x-operation-group: direct_query.alert_groups_get
+      x-version-added: '3.6'
+      description: Retrieves Alertmanager alert groups.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.alert_groups_get::path.data_source'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.alert_groups_get@200'
+        '400':
+          $ref: '#/components/responses/direct_query.alert_groups_get@400'
+  /_plugins/_directquery/_resources/{data_source}/alertmanager/api/v2/{resource_type}:
+    get:
+      operationId: direct_query.alert_resources_get.0
+      x-operation-group: direct_query.alert_resources_get
+      x-version-added: '3.6'
+      description: Retrieves Alertmanager resources.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.alert_resources_get::path.data_source'
+        - $ref: '#/components/parameters/direct_query.alert_resources_get::path.resource_type'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.alert_resources_get@200'
+        '400':
+          $ref: '#/components/responses/direct_query.alert_resources_get@400'
+    post:
+      operationId: direct_query.alert_resources_write.0
+      x-operation-group: direct_query.alert_resources_write
+      x-version-added: '3.6'
+      description: Creates or updates Alertmanager resources.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.alert_resources_write::path.data_source'
+        - $ref: '#/components/parameters/direct_query.alert_resources_write::path.resource_type'
+      requestBody:
+        $ref: '#/components/requestBodies/direct_query.alert_resources_write'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.alert_resources_write@200'
+        '400':
+          $ref: '#/components/responses/direct_query.alert_resources_write@400'
+  /_plugins/_directquery/_resources/{data_source}/alertmanager/api/v2/silence/{silence_id}:
+    delete:
+      operationId: direct_query.silence_delete.0
+      x-operation-group: direct_query.silence_delete
+      x-version-added: '3.6'
+      description: Expires an Alertmanager silence.
+      parameters:
+        - $ref: '#/components/parameters/direct_query.silence_delete::path.data_source'
+        - $ref: '#/components/parameters/direct_query.silence_delete::path.silence_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/direct_query.silence_delete@200'
+        '400':
+          $ref: '#/components/responses/direct_query.silence_delete@400'
+components:
+  parameters:
+    direct_query.execute::path.data_sources:
+      name: data_sources
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.rules_get::path.data_source:
+      name: data_source
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.rules_get::path.namespace:
+      name: namespace
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.rules_write::path.data_source:
+      name: data_source
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.rules_write::path.namespace:
+      name: namespace
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.rules_delete::path.data_source:
+      name: data_source
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.rules_delete::path.namespace:
+      name: namespace
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.rule_group_delete::path.data_source:
+      name: data_source
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.rule_group_delete::path.namespace:
+      name: namespace
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.rule_group_delete::path.group_name:
+      name: group_name
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.resources_get::path.data_source:
+      name: data_source
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.resources_get::path.resource_type:
+      name: resource_type
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.resource_values_get::path.data_source:
+      name: data_source
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.resource_values_get::path.resource_type:
+      name: resource_type
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.resource_values_get::path.resource_name:
+      name: resource_name
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.alert_groups_get::path.data_source:
+      name: data_source
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.alert_resources_get::path.data_source:
+      name: data_source
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.alert_resources_get::path.resource_type:
+      name: resource_type
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.alert_resources_write::path.data_source:
+      name: data_source
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.alert_resources_write::path.resource_type:
+      name: resource_type
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.silence_delete::path.data_source:
+      name: data_source
+      in: path
+      required: true
+      schema:
+        type: string
+    direct_query.silence_delete::path.silence_id:
+      name: silence_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBodies:
+    direct_query.execute:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/ExecuteDirectQueryRequest'
+      required: true
+    direct_query.rules_write:
+      content:
+        application/json:
+          schema: {}
+      required: true
+    direct_query.alert_resources_write:
+      content:
+        application/json:
+          schema: {}
+      required: true
+  responses:
+    direct_query.execute@200:
+      description: Returns the query identifier, data source results, and session identifier.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/ExecuteDirectQueryResponse'
+    direct_query.rules_get@200:
+      description: Returns the response from the direct query data source.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/DirectQueryResourceResponse'
+    direct_query.rules_get@400:
+      description: Indicates that the direct query data source request was invalid.
+      content:
+        text/plain:
+          schema:
+            type: string
+    direct_query.rules_write@200:
+      description: Returns the response from the direct query data source.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/DirectQueryResourceResponse'
+    direct_query.rules_write@400:
+      description: Indicates that the direct query data source request was invalid.
+      content:
+        text/plain:
+          schema:
+            type: string
+    direct_query.rules_delete@200:
+      description: Returns the response from the direct query data source.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/DirectQueryResourceResponse'
+    direct_query.rules_delete@400:
+      description: Indicates that the direct query data source request was invalid.
+      content:
+        text/plain:
+          schema:
+            type: string
+    direct_query.rule_group_delete@200:
+      description: Returns the response from the direct query data source.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/DirectQueryResourceResponse'
+    direct_query.rule_group_delete@400:
+      description: Indicates that the direct query data source request was invalid.
+      content:
+        text/plain:
+          schema:
+            type: string
+    direct_query.resources_get@200:
+      description: Returns the response from the direct query data source.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/DirectQueryResourceResponse'
+    direct_query.resources_get@400:
+      description: Indicates that the direct query data source request was invalid.
+      content:
+        text/plain:
+          schema:
+            type: string
+    direct_query.resource_values_get@200:
+      description: Returns the response from the direct query data source.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/DirectQueryResourceResponse'
+    direct_query.resource_values_get@400:
+      description: Indicates that the direct query data source request was invalid.
+      content:
+        text/plain:
+          schema:
+            type: string
+    direct_query.alert_groups_get@200:
+      description: Returns the response from the direct query data source.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/DirectQueryResourceResponse'
+    direct_query.alert_groups_get@400:
+      description: Indicates that the direct query data source request was invalid.
+      content:
+        text/plain:
+          schema:
+            type: string
+    direct_query.alert_resources_get@200:
+      description: Returns the response from the direct query data source.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/DirectQueryResourceResponse'
+    direct_query.alert_resources_get@400:
+      description: Indicates that the direct query data source request was invalid.
+      content:
+        text/plain:
+          schema:
+            type: string
+    direct_query.alert_resources_write@200:
+      description: Returns the response from the direct query data source.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/DirectQueryResourceResponse'
+    direct_query.alert_resources_write@400:
+      description: Indicates that the direct query data source request was invalid.
+      content:
+        text/plain:
+          schema:
+            type: string
+    direct_query.silence_delete@200:
+      description: Returns the response from the direct query data source.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/direct_query._common.yaml#/components/schemas/DirectQueryResourceResponse'
+    direct_query.silence_delete@400:
+      description: Indicates that the direct query data source request was invalid.
+      content:
+        text/plain:
+          schema:
+            type: string

@@ -1,0 +1,56 @@
+$schema: ../../../../../../../json_schemas/test_story.schema.yaml
+
+description: Tests Alertmanager resource proxy operations.
+version: '>= 3.6'
+prologues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_alert_spec_test
+    status: [204, 404]
+  - path: /_plugins/_query/_datasources
+    method: POST
+    request:
+      payload:
+        name: direct_alert_spec_test
+        description: ''
+        connector: PROMETHEUS
+        allowedRoles: []
+        properties:
+          prometheus.uri: http://host.docker.internal:9090
+        resultIndex: query_execution_result_direct_alert_spec_test
+        status: ACTIVE
+    response:
+      status: 201
+chapters:
+  - synopsis: Return a provider error when Alertmanager resources are unavailable.
+    path: /_plugins/_directquery/_resources/{data_source}/alertmanager/api/v2/{resource_type}
+    method: GET
+    parameters:
+      data_source: direct_alert_spec_test
+      resource_type: silences
+    response:
+      status: 400
+      content_type: text/plain
+  - synopsis: Return a provider error when writing Alertmanager resources.
+    path: /_plugins/_directquery/_resources/{data_source}/alertmanager/api/v2/{resource_type}
+    method: POST
+    parameters:
+      data_source: direct_alert_spec_test
+      resource_type: silences
+    request:
+      payload:
+        comment: spec test
+        createdBy: spec
+        startsAt: '2026-09-14T00:00:00Z'
+        endsAt: '2026-09-14T00:01:00Z'
+        matchers: []
+    response:
+      status: 400
+      content_type: text/plain
+epilogues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_alert_spec_test
+    status: [204, 404]

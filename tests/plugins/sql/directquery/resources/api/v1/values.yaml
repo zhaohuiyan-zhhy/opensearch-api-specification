@@ -1,0 +1,41 @@
+$schema: ../../../../../../../json_schemas/test_story.schema.yaml
+
+description: Tests retrieval of named direct query resource values.
+version: '>= 3.6'
+prologues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_values_spec_test
+    status: [204, 404]
+  - path: /_plugins/_query/_datasources
+    method: POST
+    request:
+      payload:
+        name: direct_values_spec_test
+        description: ''
+        connector: PROMETHEUS
+        allowedRoles: []
+        properties:
+          prometheus.uri: http://host.docker.internal:9090
+        resultIndex: query_execution_result_direct_values_spec_test
+        status: ACTIVE
+    response:
+      status: 201
+chapters:
+  - synopsis: Return a provider error when named resource values are unavailable.
+    path: /_plugins/_directquery/_resources/{data_source}/api/v1/{resource_type}/{resource_name}/values
+    method: GET
+    parameters:
+      data_source: direct_values_spec_test
+      resource_type: label
+      resource_name: job
+    response:
+      status: 400
+      content_type: text/plain
+epilogues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_values_spec_test
+    status: [204, 404]

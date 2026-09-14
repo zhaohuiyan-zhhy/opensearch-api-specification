@@ -1,0 +1,72 @@
+$schema: ../../../../../../../json_schemas/test_story.schema.yaml
+
+description: Tests direct query rule resource operations.
+version: '>= 3.6'
+prologues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_rules_spec_test
+    status: [204, 404]
+  - path: /_plugins/_query/_datasources
+    method: POST
+    request:
+      payload:
+        name: direct_rules_spec_test
+        description: ''
+        connector: PROMETHEUS
+        allowedRoles: []
+        properties:
+          prometheus.uri: http://host.docker.internal:9090
+        resultIndex: query_execution_result_direct_rules_spec_test
+        status: ACTIVE
+    response:
+      status: 201
+chapters:
+  - synopsis: Return a provider error when rule groups are unavailable.
+    path: /_plugins/_directquery/_resources/{data_source}/api/v1/rules/{namespace}
+    method: GET
+    parameters:
+      data_source: direct_rules_spec_test
+      namespace: spec
+    response:
+      status: 400
+      content_type: text/plain
+  - synopsis: Return a provider error when writing rule groups.
+    path: /_plugins/_directquery/_resources/{data_source}/api/v1/rules/{namespace}
+    method: POST
+    parameters:
+      data_source: direct_rules_spec_test
+      namespace: spec
+    request:
+      payload:
+        name: group
+        rules: []
+    response:
+      status: 400
+      content_type: text/plain
+  - synopsis: Return a provider error when deleting namespace rule groups.
+    path: /_plugins/_directquery/_resources/{data_source}/api/v1/rules/{namespace}
+    method: DELETE
+    parameters:
+      data_source: direct_rules_spec_test
+      namespace: spec
+    response:
+      status: 400
+      content_type: text/plain
+  - synopsis: Return a provider error when deleting a named rule group.
+    path: /_plugins/_directquery/_resources/{data_source}/api/v1/rules/{namespace}/{group_name}
+    method: DELETE
+    parameters:
+      data_source: direct_rules_spec_test
+      namespace: spec
+      group_name: group
+    response:
+      status: 400
+      content_type: text/plain
+epilogues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_rules_spec_test
+    status: [204, 404]

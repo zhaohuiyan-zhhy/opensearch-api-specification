@@ -1,0 +1,98 @@
+openapi: 3.1.0
+info:
+  title: OpenSearch Async Query API
+  description: OpenSearch Async Query API.
+  version: 3.0.0
+paths:
+  /_plugins/_async_query:
+    post:
+      operationId: async_query.create.0
+      x-operation-group: async_query.create
+      x-version-added: '3.0'
+      description: Creates an asynchronous query.
+      requestBody:
+        $ref: '#/components/requestBodies/async_query.create'
+      responses:
+        '201':
+          $ref: '#/components/responses/async_query.create@201'
+        '500':
+          $ref: '#/components/responses/async_query.create@500'
+  /_plugins/_async_query/{query_id}:
+    get:
+      operationId: async_query.get.0
+      x-operation-group: async_query.get
+      x-version-added: '3.0'
+      description: Retrieves the result of an asynchronous query.
+      parameters:
+        - $ref: '#/components/parameters/async_query.get::path.query_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/async_query.get@200'
+        '400':
+          $ref: '#/components/responses/async_query.get@400'
+    delete:
+      operationId: async_query.delete.0
+      x-operation-group: async_query.delete
+      x-version-added: '3.0'
+      description: Cancels an asynchronous query.
+      parameters:
+        - $ref: '#/components/parameters/async_query.delete::path.query_id'
+      responses:
+        '204':
+          $ref: '#/components/responses/async_query.delete@204'
+        '400':
+          $ref: '#/components/responses/async_query.delete@400'
+components:
+  parameters:
+    async_query.get::path.query_id:
+      name: query_id
+      in: path
+      required: true
+      schema:
+        type: string
+    async_query.delete::path.query_id:
+      name: query_id
+      in: path
+      required: true
+      schema:
+        type: string
+  requestBodies:
+    async_query.create:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/async_query._common.yaml#/components/schemas/CreateAsyncQueryRequest'
+      required: true
+  responses:
+    async_query.create@201:
+      description: Returns the identifiers of the created asynchronous query and optional session.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/async_query._common.yaml#/components/schemas/CreateAsyncQueryResponse'
+    async_query.create@500:
+      description: Indicates that the asynchronous query could not be created.
+      content:
+        text/plain:
+          schema:
+            type: string
+    async_query.get@200:
+      description: Returns the asynchronous query status and available result data.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/async_query._common.yaml#/components/schemas/AsyncQueryResultResponse'
+    async_query.get@400:
+      description: Indicates that the asynchronous query identifier is invalid or was not found.
+      content:
+        text/plain:
+          schema:
+            type: string
+    async_query.delete@204:
+      description: Confirms that the asynchronous query was cancelled.
+    async_query.delete@400:
+      description: Indicates that the asynchronous query identifier is invalid or was not found.
+      content:
+        text/plain:
+          schema:
+            type: string

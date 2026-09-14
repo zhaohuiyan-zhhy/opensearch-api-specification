@@ -35,6 +35,18 @@ paths:
           $ref: '#/components/responses/query.datasources_update@200'
         '404':
           $ref: '#/components/responses/query.datasources_update@404'
+    patch:
+      operationId: query.datasources_patch.0
+      x-operation-group: query.datasources_patch
+      x-version-added: '3.0'
+      description: Updates selected fields of an existing query data source.
+      requestBody:
+        $ref: '#/components/requestBodies/query.datasources_patch'
+      responses:
+        '200':
+          $ref: '#/components/responses/query.datasources_patch@200'
+        '404':
+          $ref: '#/components/responses/query.datasources_patch@404'
   /_plugins/_query/_datasources/{datasource_name}:
     get:
       operationId: query.datasource_retrieve.0
@@ -75,6 +87,12 @@ components:
         application/json:
           schema:
             $ref: '../schemas/query._common.yaml#/components/schemas/DataSource'
+    query.datasources_patch:
+      description: The data source fields to update.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/query._common.yaml#/components/schemas/DataSourcePatch'
   responses:
     query.datasources_list@200:
       description: Returns all available data sources.
@@ -100,6 +118,18 @@ components:
         application/json:
           schema:
             $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    query.datasources_patch@200:
+      description: Confirms successful data source update.
+      content:
+        application/json:
+          schema:
+            type: string
+    query.datasources_patch@404:
+      description: Indicates the data source was not found.
+      content:
+        text/plain:
+          schema:
+            type: string
     query.datasource_retrieve@200:
       description: Returns the requested data source.
       content:

@@ -1,0 +1,40 @@
+$schema: ../../../../../../../../json_schemas/test_story.schema.yaml
+
+description: Tests expiration of an Alertmanager silence.
+version: '>= 3.6'
+prologues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_silence_spec_test
+    status: [204, 404]
+  - path: /_plugins/_query/_datasources
+    method: POST
+    request:
+      payload:
+        name: direct_silence_spec_test
+        description: ''
+        connector: PROMETHEUS
+        allowedRoles: []
+        properties:
+          prometheus.uri: http://host.docker.internal:9090
+        resultIndex: query_execution_result_direct_silence_spec_test
+        status: ACTIVE
+    response:
+      status: 201
+chapters:
+  - synopsis: Return a provider error when expiring an Alertmanager silence.
+    path: /_plugins/_directquery/_resources/{data_source}/alertmanager/api/v2/silence/{silence_id}
+    method: DELETE
+    parameters:
+      data_source: direct_silence_spec_test
+      silence_id: missing
+    response:
+      status: 400
+      content_type: text/plain
+epilogues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: direct_silence_spec_test
+    status: [204, 404]

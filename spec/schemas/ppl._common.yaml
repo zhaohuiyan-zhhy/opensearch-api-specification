@@ -23,3 +23,77 @@ components:
         - standard
         - viz
         - yaml
+
+    GrammarBundle:
+      type: object
+      properties:
+        bundleVersion:
+          type: string
+        antlrVersion:
+          type: string
+        grammarHash:
+          type: string
+        startRuleIndex:
+          type: integer
+        lexerSerializedATN:
+          type: array
+          items:
+            type: integer
+        lexerRuleNames:
+          type: array
+          items:
+            type: string
+        channelNames:
+          type: array
+          items:
+            type: string
+        modeNames:
+          type: array
+          items:
+            type: string
+        parserSerializedATN:
+          type: array
+          items:
+            type: integer
+        parserRuleNames:
+          type: array
+          items:
+            type: string
+        literalNames:
+          type: array
+          items:
+            type: string
+            nullable: true
+        symbolicNames:
+          type: array
+          items:
+            type: string
+            nullable: true
+        tokenDictionary:
+          type: object
+          additionalProperties:
+            type: integer
+        ignoredTokens:
+          type: array
+          items:
+            type: integer
+        rulesToVisit:
+          type: array
+          items:
+            type: integer
+      required:
+        - bundleVersion
+        - antlrVersion
+        - grammarHash
+        - startRuleIndex
+        - lexerSerializedATN
+        - lexerRuleNames
+        - channelNames
+        - modeNames
+        - parserSerializedATN
+        - parserRuleNames
+        - literalNames
+        - symbolicNames
+        - tokenDictionary
+        - ignoredTokens
+        - rulesToVisit

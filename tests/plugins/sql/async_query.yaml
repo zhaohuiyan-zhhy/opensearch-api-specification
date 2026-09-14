@@ -1,0 +1,62 @@
+$schema: ../../../json_schemas/test_story.schema.yaml
+
+description: Tests asynchronous query management error responses.
+version: '>= 3.0'
+distributions:
+  excluded:
+    - amazon-managed
+    - amazon-serverless
+prologues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: async_spec_test
+    status: [204, 404]
+  - path: /_plugins/_query/_datasources
+    method: POST
+    request:
+      payload:
+        name: async_spec_test
+        description: ''
+        connector: PROMETHEUS
+        allowedRoles: []
+        properties:
+          prometheus.uri: http://host.docker.internal:9090
+        resultIndex: query_execution_result_async_spec_test
+        status: ACTIVE
+    response:
+      status: 201
+chapters:
+  - synopsis: Reject an unsupported asynchronous Prometheus query.
+    path: /_plugins/_async_query
+    method: POST
+    request:
+      payload:
+        datasource: async_spec_test
+        lang: sql
+        query: select 1
+    response:
+      status: 500
+      content_type: text/plain
+  - synopsis: Reject retrieval of an invalid asynchronous query identifier.
+    path: /_plugins/_async_query/{query_id}
+    method: GET
+    parameters:
+      query_id: not-a-query-id
+    response:
+      status: 400
+      content_type: text/plain
+  - synopsis: Reject cancellation of an invalid asynchronous query identifier.
+    path: /_plugins/_async_query/{query_id}
+    method: DELETE
+    parameters:
+      query_id: not-a-query-id
+    response:
+      status: 400
+      content_type: text/plain
+epilogues:
+  - path: /_plugins/_query/_datasources/{datasource_name}
+    method: DELETE
+    parameters:
+      datasource_name: async_spec_test
+    status: [204, 404]

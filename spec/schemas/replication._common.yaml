@@ -6,6 +6,131 @@ info:
 paths: {}
 components:
   schemas:
+    BulkReplicationFilters:
+      type: object
+      properties:
+        exclude_index:
+          type: array
+          items:
+            type: string
+    BulkReplicationRequest:
+      type: object
+      properties:
+        pattern:
+          type: string
+        leader_alias:
+          type: string
+        use_roles:
+          $ref: '#/components/schemas/UseRoles'
+        filters:
+          $ref: '#/components/schemas/BulkReplicationFilters'
+      required:
+        - pattern
+    BulkStartReplicationRequest:
+      type: object
+      properties:
+        pattern:
+          type: string
+        leader_alias:
+          type: string
+        use_roles:
+          $ref: '#/components/schemas/UseRoles'
+        filters:
+          $ref: '#/components/schemas/BulkReplicationFilters'
+      required:
+        - leader_alias
+        - pattern
+    BulkReplicationResponse:
+      type: object
+      properties:
+        acknowledged:
+          type: boolean
+        task_id:
+          type: string
+      required:
+        - acknowledged
+        - task_id
+    BulkReplicationFailedIndex:
+      type: object
+      properties:
+        index:
+          type: string
+        failure_reason:
+          type: string
+      required:
+        - failure_reason
+        - index
+    BulkReplicationTaskStatus:
+      type: object
+      properties:
+        operation_type:
+          type: string
+        pattern:
+          type: string
+        start_time:
+          type: integer
+          format: int64
+        num_success:
+          type: integer
+          format: int32
+        num_failed:
+          type: integer
+          format: int32
+        num_pending:
+          type: integer
+          format: int32
+        num_cancelled:
+          type: integer
+          format: int32
+        failed_indices:
+          type: array
+          items:
+            $ref: '#/components/schemas/BulkReplicationFailedIndex'
+      required:
+        - failed_indices
+        - num_cancelled
+        - num_failed
+        - num_pending
+        - num_success
+        - operation_type
+        - pattern
+        - start_time
+    BulkReplicationStatusResponse:
+      type: object
+      properties:
+        indices:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Status'
+      required:
+        - indices
+    RestoreDetails:
+      type: object
+      properties:
+        bytes_total:
+          type: integer
+          format: int64
+        bytes_recovered:
+          type: integer
+          format: int64
+        bytes_percent:
+          type: number
+          format: float
+        files_total:
+          type: integer
+          format: int32
+        files_recovered:
+          type: integer
+          format: int32
+        files_percent:
+          type: number
+          format: float
+        start_time:
+          type: integer
+          format: int64
+        running_time:
+          type: integer
+          format: int64
     Replication:
       type: object
       properties:
@@ -49,6 +174,8 @@ components:
           $ref: '_common.yaml#/components/schemas/IndexName'
         syncing_details:
           $ref: '#/components/schemas/SyncingDetails'
+        bootstrap_details:
+          $ref: '#/components/schemas/RestoreDetails'
     SyncingDetails:
       type: object
       properties:
@@ -217,6 +344,10 @@ components:
         pattern:
           type: string
           description: The pattern used for auto-following indices.
+        leader_alias:
+          $ref: '_common.yaml#/components/schemas/IndexAlias'
+          description: The alias of the leader cluster for this auto-follow pattern.
+          x-version-added: '3.6'
         num_success_start_replication:
           type: number
           description: The number of successful replication starts for this pattern.

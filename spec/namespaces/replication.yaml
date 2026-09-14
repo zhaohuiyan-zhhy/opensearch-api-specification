@@ -150,6 +150,95 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/replication.delete_replication_rule@200'
+  /_plugins/_replication/_bulk_start:
+    post:
+      operationId: replication.bulk_start.0
+      x-operation-group: replication.bulk_start
+      x-version-added: '3.8'
+      description: Starts replication for indexes matching a pattern.
+      requestBody:
+        $ref: '#/components/requestBodies/replication.bulk_start'
+      responses:
+        '200':
+          $ref: '#/components/responses/replication.bulk_start@200'
+        '404':
+          $ref: '#/components/responses/replication.bulk_start@404'
+  /_plugins/_replication/_bulk_stop:
+    post:
+      operationId: replication.bulk_stop.0
+      x-operation-group: replication.bulk_stop
+      x-version-added: '3.8'
+      description: Stops replication for indexes matching a pattern.
+      requestBody:
+        $ref: '#/components/requestBodies/replication.bulk_stop'
+      responses:
+        '200':
+          $ref: '#/components/responses/replication.bulk_stop@200'
+        '404':
+          $ref: '#/components/responses/replication.bulk_stop@404'
+  /_plugins/_replication/_bulk_pause:
+    post:
+      operationId: replication.bulk_pause.0
+      x-operation-group: replication.bulk_pause
+      x-version-added: '3.8'
+      description: Pauses replication for indexes matching a pattern.
+      requestBody:
+        $ref: '#/components/requestBodies/replication.bulk_pause'
+      responses:
+        '200':
+          $ref: '#/components/responses/replication.bulk_pause@200'
+        '404':
+          $ref: '#/components/responses/replication.bulk_pause@404'
+  /_plugins/_replication/_bulk_resume:
+    post:
+      operationId: replication.bulk_resume.0
+      x-operation-group: replication.bulk_resume
+      x-version-added: '3.8'
+      description: Resumes replication for indexes matching a pattern.
+      requestBody:
+        $ref: '#/components/requestBodies/replication.bulk_resume'
+      responses:
+        '200':
+          $ref: '#/components/responses/replication.bulk_resume@200'
+        '404':
+          $ref: '#/components/responses/replication.bulk_resume@404'
+  /_plugins/_replication/_bulk_status:
+    get:
+      operationId: replication.bulk_status.0
+      x-operation-group: replication.bulk_status
+      x-version-added: '3.8'
+      description: Returns replication status for indexes matching a pattern.
+      parameters:
+        - $ref: '#/components/parameters/replication.bulk_status::query.pattern'
+      responses:
+        '200':
+          $ref: '#/components/responses/replication.bulk_status@200'
+  /_plugins/_replication/_task_status/{task_id}:
+    get:
+      operationId: replication.bulk_task_status.0
+      x-operation-group: replication.bulk_task_status
+      x-version-added: '3.8'
+      description: Returns the status of a bulk replication task.
+      parameters:
+        - $ref: '#/components/parameters/replication.bulk_task_status::path.task_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/replication.bulk_task_status@200'
+        '404':
+          $ref: '#/components/responses/replication.bulk_task_status@404'
+  /_plugins/_replication/_task_cancel/{task_id}:
+    post:
+      operationId: replication.bulk_task_cancel.0
+      x-operation-group: replication.bulk_task_cancel
+      x-version-added: '3.8'
+      description: Cancels a running bulk replication task.
+      parameters:
+        - $ref: '#/components/parameters/replication.bulk_task_cancel::path.task_id'
+      responses:
+        '200':
+          $ref: '#/components/responses/replication.bulk_task_cancel@200'
+        '404':
+          $ref: '#/components/responses/replication.bulk_task_cancel@404'
 components:
   parameters:
     replication.start::path.index:
@@ -200,6 +289,27 @@ components:
       schema:
         $ref: '../schemas/_common.yaml#/components/schemas/IndexName'
       style: simple
+    replication.bulk_status::query.pattern:
+      in: query
+      name: pattern
+      required: true
+      description: The index pattern used to select replication indexes.
+      schema:
+        type: string
+    replication.bulk_task_status::path.task_id:
+      in: path
+      name: task_id
+      required: true
+      description: The bulk replication task ID.
+      schema:
+        type: string
+    replication.bulk_task_cancel::path.task_id:
+      in: path
+      name: task_id
+      required: true
+      description: The bulk replication task ID.
+      schema:
+        type: string
   requestBodies:
     replication.start:
       content:
@@ -243,7 +353,96 @@ components:
           schema:
             $ref: '../schemas/replication._common.yaml#/components/schemas/DeleteReplicationRule'
       required: true
+    replication.bulk_start:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replication._common.yaml#/components/schemas/BulkStartReplicationRequest'
+    replication.bulk_stop:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replication._common.yaml#/components/schemas/BulkReplicationRequest'
+    replication.bulk_pause:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replication._common.yaml#/components/schemas/BulkReplicationRequest'
+    replication.bulk_resume:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replication._common.yaml#/components/schemas/BulkReplicationRequest'
   responses:
+    replication.bulk_start@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    replication.bulk_stop@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    replication.bulk_pause@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    replication.bulk_resume@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    replication.bulk_task_status@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    replication.bulk_task_cancel@404:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    replication.bulk_start@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replication._common.yaml#/components/schemas/BulkReplicationResponse'
+    replication.bulk_stop@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replication._common.yaml#/components/schemas/BulkReplicationResponse'
+    replication.bulk_pause@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replication._common.yaml#/components/schemas/BulkReplicationResponse'
+    replication.bulk_resume@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replication._common.yaml#/components/schemas/BulkReplicationResponse'
+    replication.bulk_status@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replication._common.yaml#/components/schemas/BulkReplicationStatusResponse'
+    replication.bulk_task_status@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/replication._common.yaml#/components/schemas/BulkReplicationTaskStatus'
+    replication.bulk_task_cancel@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/AcknowledgedResponseBase'
     replication.start@200:
       content:
         application/json:

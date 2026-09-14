@@ -1,0 +1,80 @@
+$schema: ../../../json_schemas/test_story.schema.yaml
+
+description: Test bulk replication and task APIs.
+version: '>= 3.8'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+prologues:
+  - path: /_cluster/settings
+    method: PUT
+    request:
+      payload:
+        persistent:
+          cluster:
+            remote:
+              leader-cluster:
+                seeds: ['172.22.0.3:9300']
+chapters:
+  - id: bulk_start
+    synopsis: Start replication for indexes matching a pattern.
+    path: /_plugins/_replication/_bulk_start
+    method: POST
+    request:
+      payload:
+        pattern: bulk-replication-source-*
+        leader_alias: leader-cluster
+        filters:
+          exclude_index: []
+    response:
+      status: 404
+  - synopsis: Return not found for an unknown bulk task.
+    path: /_plugins/_replication/_task_status/{task_id}
+    method: GET
+    parameters:
+      task_id: missing-node:1
+    response:
+      status: 404
+  - synopsis: Get bulk replication status.
+    path: /_plugins/_replication/_bulk_status
+    method: GET
+    parameters:
+      pattern: bulk-replication-source-*
+    response:
+      status: 200
+      payload:
+        indices: {}
+  - id: bulk_pause
+    synopsis: Pause replication for indexes matching a pattern.
+    path: /_plugins/_replication/_bulk_pause
+    method: POST
+    request:
+      payload:
+        pattern: bulk-replication-source-*
+    response:
+      status: 404
+  - id: bulk_resume
+    synopsis: Resume replication for indexes matching a pattern.
+    path: /_plugins/_replication/_bulk_resume
+    method: POST
+    request:
+      payload:
+        pattern: bulk-replication-source-*
+    response:
+      status: 404
+  - id: bulk_stop
+    synopsis: Stop replication for indexes matching a pattern.
+    path: /_plugins/_replication/_bulk_stop
+    method: POST
+    request:
+      payload:
+        pattern: bulk-replication-source-*
+    response:
+      status: 404
+  - synopsis: Return not found when cancelling an unknown bulk task.
+    path: /_plugins/_replication/_task_cancel/{task_id}
+    method: POST
+    parameters:
+      task_id: missing-node:1
+    response:
+      status: 404

@@ -184,6 +184,19 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/knn.stats@200'
+  /_plugins/_knn/stats/:
+    get:
+      operationId: knn.stats.4
+      x-operation-group: knn.stats
+      x-version-added: '1.0'
+      description: Provides information about the current status of the k-NN plugin.
+      externalDocs:
+        url: https://docs.opensearch.org/latest/vector-search/api/knn/#stats
+      parameters:
+        - $ref: '#/components/parameters/knn.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/knn.stats@200'
   /_plugins/_knn/stats/{stat}:
     get:
       operationId: knn.stats.1
@@ -198,6 +211,17 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/knn.stats@200'
+  /_plugins/_knn/clear_cache/{index}:
+    post:
+      operationId: knn.clear_cache.0
+      x-operation-group: knn.clear_cache
+      x-version-added: '2.14'
+      description: Evicts native library indexes from the k-NN cache.
+      parameters:
+        - $ref: '#/components/parameters/knn.clear_cache::path.index'
+      responses:
+        '200':
+          $ref: '#/components/responses/knn.clear_cache@200'
   /_plugins/_knn/warmup/{index}:
     get:
       operationId: knn.warmup.0
@@ -214,6 +238,20 @@ paths:
   /_plugins/_knn/{node_id}/stats:
     get:
       operationId: knn.stats.2
+      x-operation-group: knn.stats
+      x-version-added: '1.0'
+      description: Provides information about the current status of the k-NN plugin.
+      externalDocs:
+        url: https://docs.opensearch.org/latest/vector-search/api/knn/#stats
+      parameters:
+        - $ref: '#/components/parameters/knn.stats::path.node_id'
+        - $ref: '#/components/parameters/knn.stats::query.timeout'
+      responses:
+        '200':
+          $ref: '#/components/responses/knn.stats@200'
+  /_plugins/_knn/{node_id}/stats/:
+    get:
+      operationId: knn.stats.5
       x-operation-group: knn.stats
       x-version-added: '1.0'
       description: Provides information about the current status of the k-NN plugin.
@@ -286,6 +324,12 @@ components:
                 type: string
             required:
               - model_id
+    knn.clear_cache@200:
+      description: The k-NN cache was cleared.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ShardsOperationResponseBase'
     knn.warmup@200:
       content:
         application/json:
@@ -686,6 +730,16 @@ components:
       schema:
         type: string
         description: Preferred node to execute training.
+    knn.clear_cache::path.index:
+      name: index
+      in: path
+      description: A comma-separated list of k-NN indexes.
+      schema:
+        type: array
+        items:
+          type: string
+      required: true
+      style: simple
     knn.warmup::path.index:
       name: index
       in: path

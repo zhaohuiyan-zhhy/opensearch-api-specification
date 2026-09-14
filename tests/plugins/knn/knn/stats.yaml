@@ -7,6 +7,11 @@ chapters:
     path: /_plugins/_knn/stats
     response:
       status: 200
+  - synopsis: Get k-NN stats using the registered trailing slash.
+    method: GET
+    path: /_plugins/_knn/stats/
+    response:
+      status: 200
   - synopsis: Get k-NN stat.
     method: GET
     path: /_plugins/_knn/stats/{stat}
@@ -18,6 +23,14 @@ chapters:
   - synopsis: Get all k-NN stat for all nodes.
     method: GET
     path: /_plugins/_knn/{node_id}/stats
+    parameters:
+      node_id:
+        - _all
+    response:
+      status: 200
+  - synopsis: Get all k-NN stats for all nodes using the registered trailing slash.
+    method: GET
+    path: /_plugins/_knn/{node_id}/stats/
     parameters:
       node_id:
         - _all

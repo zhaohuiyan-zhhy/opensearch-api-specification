@@ -18,11 +18,27 @@ chapters:
     method: GET
     response:
       status: 200
+  - synopsis: Get stats for all nodes using the registered trailing-slash route.
+    path: /_plugins/_search_relevance/stats/
+    method: GET
+    warnings:
+      multiple-paths-detected: false
+    response:
+      status: 200
   - synopsis: Get stats for a node.
     path: /_plugins/_search_relevance/{node_id}/stats
     method: GET
     parameters:
       node_id: _all
+    response:
+      status: 200
+  - synopsis: Get stats for a node using the registered trailing-slash route.
+    path: /_plugins/_search_relevance/{node_id}/stats/
+    method: GET
+    parameters:
+      node_id: _all
+    warnings:
+      multiple-paths-detected: false
     response:
       status: 200
   - synopsis: Get specific stat for all nodes.

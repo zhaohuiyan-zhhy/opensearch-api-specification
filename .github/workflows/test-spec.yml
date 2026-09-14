@@ -67,7 +67,7 @@ jobs:
             tests: plugins/security
             cert: tests/plugins/security/.kirk.pem
             key: tests/plugins/security/.kirk-key.pem
-          - version: 3.1.0
+          - version: 3.8.0
             tests: plugins/search_relevance
             url: http://localhost:9200
           - version: 3.2.0

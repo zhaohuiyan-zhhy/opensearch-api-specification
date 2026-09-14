@@ -6,6 +6,18 @@ info:
 paths: {}
 components:
   schemas:
+    RollupsResponse:
+      type: object
+      properties:
+        total_rollups:
+          type: integer
+        rollups:
+          type: array
+          items:
+            $ref: '#/components/schemas/RollupEntity'
+      required:
+        - rollups
+        - total_rollups
     RollupEntity:
       description: A rollup job entity with metadata.
       type: object

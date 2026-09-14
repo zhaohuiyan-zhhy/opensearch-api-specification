@@ -1,0 +1,80 @@
+openapi: 3.1.0
+info:
+  title: Index Management common schemas
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    LronConfigRequest:
+      type: object
+      properties:
+        lron_config:
+          $ref: '#/components/schemas/LronConfigInput'
+      required:
+        - lron_config
+    LronConfigInput:
+      type: object
+      properties:
+        lron_condition:
+          $ref: '#/components/schemas/LronCondition'
+        task_id:
+          type: string
+        action_name:
+          type: string
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationChannel'
+        priority:
+          type: integer
+    LronConfig:
+      type: object
+      properties:
+        lron_condition:
+          $ref: '#/components/schemas/LronCondition'
+        task_id:
+          type: string
+        action_name:
+          type: string
+        channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationChannel'
+    LronCondition:
+      type: object
+      properties:
+        success:
+          type: boolean
+          default: true
+        failure:
+          type: boolean
+          default: true
+    NotificationChannel:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+        - id
+    LronConfigResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+        lron_config:
+          $ref: '#/components/schemas/LronConfig'
+      required:
+        - _id
+        - lron_config
+    GetLronConfigsResponse:
+      type: object
+      properties:
+        lron_configs:
+          type: array
+          items:
+            $ref: '#/components/schemas/LronConfigResponse'
+        total_number:
+          type: integer
+      required:
+        - lron_configs
+        - total_number

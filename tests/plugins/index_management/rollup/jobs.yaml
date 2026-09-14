@@ -1,0 +1,59 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test rollup collection and existence routes.
+version: '>= 1.0'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+prologues:
+  - path: /_plugins/_ism/policies/rollup-bootstrap
+    method: PUT
+    request:
+      payload:
+        policy:
+          description: Bootstrap the ISM config index.
+          default_state: hot
+          states:
+            - name: hot
+              actions: []
+              transitions: []
+    status: [200, 201]
+epilogues:
+  - path: /_plugins/_ism/policies/rollup-bootstrap
+    method: DELETE
+    status: [200, 404]
+chapters:
+  - synopsis: Get rollup jobs.
+    path: /_plugins/_rollup/jobs
+    method: GET
+    response:
+      status: 200
+  - synopsis: Reject a rollup update without an ID.
+    path: /_plugins/_rollup/jobs
+    method: PUT
+    response:
+      status: 400
+  - synopsis: Check a missing rollup job.
+    path: /_plugins/_rollup/jobs/{id}
+    method: HEAD
+    parameters:
+      id: missing-rollup-job
+    response:
+      status: 404
+  - synopsis: Get rollup jobs using the legacy route.
+    path: /_opendistro/_rollup/jobs
+    method: GET
+    response:
+      status: 200
+  - synopsis: Reject a legacy rollup update without an ID.
+    path: /_opendistro/_rollup/jobs
+    method: PUT
+    response:
+      status: 400
+  - synopsis: Check a missing rollup job using the legacy route.
+    path: /_opendistro/_rollup/jobs/{id}
+    method: HEAD
+    parameters:
+      id: missing-rollup-job
+    response:
+      status: 404

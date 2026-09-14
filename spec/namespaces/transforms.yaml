@@ -21,6 +21,26 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/transforms.search@200'
+    post:
+      operationId: transforms.preview.1
+      x-operation-group: transforms.preview
+      x-version-added: '1.0'
+      description: Returns a preview of what a transformed index would look like.
+      externalDocs:
+        url: https://docs.opensearch.org/latest/im-plugin/index-transforms/transforms-apis/#preview-a-transform-jobs-results
+      requestBody:
+        $ref: '#/components/requestBodies/transforms.preview'
+      responses:
+        '200':
+          $ref: '#/components/responses/transforms.preview@200'
+    put:
+      operationId: transforms.put_without_id.0
+      x-operation-group: transforms.put_without_id
+      x-version-added: '1.0'
+      description: This route requires a transform ID and returns an error when none is provided.
+      responses:
+        '400':
+          $ref: '#/components/responses/transforms.put_without_id@400'
   /_plugins/_transform/{id}:
     get:
       operationId: transforms.get.0
@@ -34,6 +54,18 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/transforms.get@200'
+    head:
+      operationId: transforms.exists.0
+      x-operation-group: transforms.exists
+      x-version-added: '1.0'
+      description: Checks whether a transform job exists.
+      parameters:
+        - $ref: '#/components/parameters/transforms.exists::path.id'
+      responses:
+        '200':
+          $ref: '#/components/responses/transforms.exists@200'
+        '404':
+          $ref: '#/components/responses/transforms.exists@404'
     put:
       operationId: transforms.put.0
       x-operation-group: transforms.put
@@ -129,6 +161,22 @@ components:
           schema:
             $ref: '../schemas/transforms._common.yaml#/components/schemas/TransformRequest'
   responses:
+    transforms.put_without_id@400:
+      description: A transform ID was not provided.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    transforms.exists@200:
+      description: The transform job exists.
+      content:
+        application/json:
+          schema: {}
+    transforms.exists@404:
+      description: The transform job does not exist.
+      content:
+        application/json:
+          schema: {}
     transforms.search@200:
       content:
         application/json:
@@ -175,6 +223,14 @@ components:
           schema:
             $ref: '../schemas/transforms._common.yaml#/components/schemas/Preview'
   parameters:
+    transforms.exists::path.id:
+      name: id
+      in: path
+      description: Transform to check
+      required: true
+      schema:
+        $ref: ../schemas/_common.yaml#/components/schemas/Id
+      style: simple
     transforms.get::path.id:
       name: id
       in: path

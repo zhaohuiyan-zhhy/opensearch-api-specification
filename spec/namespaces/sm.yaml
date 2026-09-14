@@ -5,6 +5,22 @@ info:
   version: 1.0.0
 
 paths:
+  /_plugins/_sm/policies/:
+    get:
+      operationId: sm.get_policies.1
+      x-operation-group: sm.get_policies
+      x-version-added: '2.1'
+      description: Retrieves all snapshot management policies with optional pagination and filtering.
+      parameters:
+        - $ref: '#/components/parameters/sm.get_policies::query.from'
+        - $ref: '#/components/parameters/sm.get_policies::query.queryString'
+        - $ref: '#/components/parameters/sm.get_policies::query.size'
+        - $ref: '#/components/parameters/sm.get_policies::query.sortField'
+        - $ref: '#/components/parameters/sm.get_policies::query.sortOrder'
+      responses:
+        '200':
+          $ref: '#/components/responses/sm.get_policies@200'
+
   /_plugins/_sm/policies:
     get:
       operationId: sm.get_policies.0

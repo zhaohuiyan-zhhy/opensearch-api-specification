@@ -305,6 +305,10 @@ $schema: ./json_schemas/_superseded_operations.schema.yaml
   operations:
     - GET
     - POST
+/_opendistro/_ism/simulate:
+  superseded_by: /_plugins/_ism/simulate
+  operations:
+    - POST
 /_opendistro/_refresh_search_analyzers:
   superseded_by: /_plugins/_refresh_search_analyzers
   operations:

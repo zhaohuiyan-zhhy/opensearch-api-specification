@@ -4,6 +4,29 @@ info:
   description: OpenSearch Index Rollups API.
   version: 1.0.0
 paths:
+  /_plugins/_rollup/jobs:
+    get:
+      operationId: rollups.search.0
+      x-operation-group: rollups.search
+      x-version-added: '1.0'
+      description: Retrieves index rollup job configurations.
+      parameters:
+        - $ref: '#/components/parameters/rollups.search::query.from'
+        - $ref: '#/components/parameters/rollups.search::query.search'
+        - $ref: '#/components/parameters/rollups.search::query.size'
+        - $ref: '#/components/parameters/rollups.search::query.sortDirection'
+        - $ref: '#/components/parameters/rollups.search::query.sortField'
+      responses:
+        '200':
+          $ref: '#/components/responses/rollups.search@200'
+    put:
+      operationId: rollups.put_without_id.0
+      x-operation-group: rollups.put_without_id
+      x-version-added: '1.0'
+      description: This route requires a rollup job ID and returns an error when none is provided.
+      responses:
+        '400':
+          $ref: '#/components/responses/rollups.put_without_id@400'
   /_plugins/_rollup/jobs/{id}:
     get:
       operationId: rollups.get.0
@@ -17,6 +40,18 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/rollups.get@200'
+    head:
+      operationId: rollups.exists.0
+      x-operation-group: rollups.exists
+      x-version-added: '1.0'
+      description: Checks whether an index rollup job configuration exists.
+      parameters:
+        - $ref: '#/components/parameters/rollups.exists::path.id'
+      responses:
+        '200':
+          $ref: '#/components/responses/rollups.exists@200'
+        '404':
+          $ref: '#/components/responses/rollups.exists@404'
     put:
       operationId: rollups.put.0
       x-operation-group: rollups.put
@@ -93,6 +128,28 @@ components:
           schema:
             $ref: '../schemas/rollups._common.yaml#/components/schemas/RollupEntity'
   responses:
+    rollups.search@200:
+      description: Returns the matching rollup job configurations.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/rollups._common.yaml#/components/schemas/RollupsResponse'
+    rollups.put_without_id@400:
+      description: A rollup job ID was not provided.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/ErrorResponseBase'
+    rollups.exists@200:
+      description: The rollup job exists.
+      content:
+        application/json:
+          schema: {}
+    rollups.exists@404:
+      description: The rollup job does not exist.
+      content:
+        application/json:
+          schema: {}
     rollups.get@200:
       description: Returns the requested rollup job configuration.
       content:
@@ -130,6 +187,45 @@ components:
           schema:
             $ref: '../schemas/rollups._common.yaml#/components/schemas/ExplainEntities'
   parameters:
+    rollups.exists::path.id:
+      name: id
+      in: path
+      required: true
+      schema:
+        $ref: ../schemas/_common.yaml#/components/schemas/Id
+      style: simple
+    rollups.search::query.from:
+      name: from
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    rollups.search::query.size:
+      name: size
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 20
+    rollups.search::query.search:
+      name: search
+      in: query
+      schema:
+        type: string
+        default: ''
+    rollups.search::query.sortField:
+      name: sortField
+      in: query
+      schema:
+        type: string
+        default: rollup.rollup_id.keyword
+    rollups.search::query.sortDirection:
+      name: sortDirection
+      in: query
+      schema:
+        type: string
+        default: asc
     rollups.get::path.id:
       name: id
       in: path

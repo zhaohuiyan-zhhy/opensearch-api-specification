@@ -486,6 +486,77 @@ components:
         - state
     RetryIndexResponse:
       $ref: '#/components/schemas/ChangeResponse'
+    SimulatePolicyRequest:
+      type: object
+      description: Exactly one of policy_id or policy must be provided.
+      properties:
+        policy_id:
+          type: string
+          description: The ID of an existing policy to simulate.
+        policy:
+          $ref: '#/components/schemas/Policy'
+        indices:
+          type: array
+          minItems: 1
+          items:
+            type: string
+          description: The indexes against which to simulate the policy.
+      required:
+        - indices
+    SimulatePolicyResponse:
+      type: object
+      properties:
+        simulate_results:
+          type: array
+          items:
+            $ref: '#/components/schemas/IndexSimulateResult'
+      required:
+        - simulate_results
+    IndexSimulateResult:
+      type: object
+      properties:
+        index_name:
+          type: string
+        index_uuid:
+          type: ['null', string]
+        policy_id:
+          type: string
+        is_managed:
+          type: boolean
+        current_state:
+          type: ['null', string]
+        current_action:
+          type: ['null', string]
+        transition_evaluation:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransitionSimulateResult'
+        next_state:
+          type: ['null', string]
+        error:
+          type: string
+      required:
+        - index_name
+        - index_uuid
+        - is_managed
+        - policy_id
+    TransitionSimulateResult:
+      type: object
+      properties:
+        state_name:
+          type: string
+        condition_met:
+          type: boolean
+        condition_type:
+          type: string
+        current_value:
+          type: string
+        required_value:
+          type: string
+      required:
+        - condition_met
+        - condition_type
+        - state_name
     RefreshSearchAnalyzersResponse:
       type: object
       properties:

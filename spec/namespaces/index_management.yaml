@@ -1,0 +1,165 @@
+openapi: 3.1.0
+info:
+  title: OpenSearch Index Management API
+  description: APIs for configuring long-running operation notifications.
+  version: 1.0.0
+paths:
+  /_plugins/_im/lron:
+    get:
+      operationId: index_management.get_lron_configs.0
+      x-operation-group: index_management.get_lron_configs
+      x-version-added: '2.8'
+      description: Retrieves long-running operation notification configurations.
+      parameters:
+        - $ref: '#/components/parameters/index_management.get_lron_configs::query.from'
+        - $ref: '#/components/parameters/index_management.get_lron_configs::query.search'
+        - $ref: '#/components/parameters/index_management.get_lron_configs::query.size'
+        - $ref: '#/components/parameters/index_management.get_lron_configs::query.sortDirection'
+        - $ref: '#/components/parameters/index_management.get_lron_configs::query.sortField'
+      responses:
+        '200':
+          $ref: '#/components/responses/index_management.get_lron_configs@200'
+    post:
+      operationId: index_management.create_lron_config.0
+      x-operation-group: index_management.create_lron_config
+      x-version-added: '2.8'
+      description: Creates a long-running operation notification configuration.
+      parameters:
+        - $ref: '#/components/parameters/index_management.create_lron_config::query.dry_run'
+      requestBody:
+        $ref: '#/components/requestBodies/index_management.create_lron_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/index_management.create_lron_config@200'
+  /_plugins/_im/lron/{id}:
+    get:
+      operationId: index_management.get_lron_config.0
+      x-operation-group: index_management.get_lron_config
+      x-version-added: '2.8'
+      description: Retrieves a long-running operation notification configuration.
+      parameters:
+        - $ref: '#/components/parameters/index_management.get_lron_config::path.id'
+      responses:
+        '200':
+          $ref: '#/components/responses/index_management.get_lron_config@200'
+    put:
+      operationId: index_management.update_lron_config.0
+      x-operation-group: index_management.update_lron_config
+      x-version-added: '2.8'
+      description: Creates or updates a long-running operation notification configuration.
+      parameters:
+        - $ref: '#/components/parameters/index_management.update_lron_config::path.id'
+        - $ref: '#/components/parameters/index_management.update_lron_config::query.dry_run'
+      requestBody:
+        $ref: '#/components/requestBodies/index_management.update_lron_config'
+      responses:
+        '200':
+          $ref: '#/components/responses/index_management.update_lron_config@200'
+    delete:
+      operationId: index_management.delete_lron_config.0
+      x-operation-group: index_management.delete_lron_config
+      x-version-added: '2.8'
+      description: Deletes a long-running operation notification configuration.
+      parameters:
+        - $ref: '#/components/parameters/index_management.delete_lron_config::path.id'
+      responses:
+        '200':
+          $ref: '#/components/responses/index_management.delete_lron_config@200'
+components:
+  requestBodies:
+    index_management.create_lron_config:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/index_management._common.yaml#/components/schemas/LronConfigRequest'
+    index_management.update_lron_config:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/index_management._common.yaml#/components/schemas/LronConfigRequest'
+  responses:
+    index_management.get_lron_configs@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/index_management._common.yaml#/components/schemas/GetLronConfigsResponse'
+    index_management.create_lron_config@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/index_management._common.yaml#/components/schemas/LronConfigResponse'
+    index_management.get_lron_config@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/index_management._common.yaml#/components/schemas/GetLronConfigsResponse'
+    index_management.update_lron_config@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/index_management._common.yaml#/components/schemas/LronConfigResponse'
+    index_management.delete_lron_config@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/_common.yaml#/components/schemas/WriteResponseBase'
+  parameters:
+    index_management.get_lron_config::path.id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    index_management.update_lron_config::path.id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    index_management.delete_lron_config::path.id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    index_management.create_lron_config::query.dry_run:
+      name: dry_run
+      in: query
+      schema:
+        type: boolean
+        default: false
+    index_management.update_lron_config::query.dry_run:
+      name: dry_run
+      in: query
+      schema:
+        type: boolean
+        default: false
+    index_management.get_lron_configs::query.from:
+      name: from
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+    index_management.get_lron_configs::query.size:
+      name: size
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+    index_management.get_lron_configs::query.search:
+      name: search
+      in: query
+      schema:
+        type: string
+    index_management.get_lron_configs::query.sortField:
+      name: sortField
+      in: query
+      schema:
+        type: string
+    index_management.get_lron_configs::query.sortDirection:
+      name: sortDirection
+      in: query
+      schema:
+        type: string

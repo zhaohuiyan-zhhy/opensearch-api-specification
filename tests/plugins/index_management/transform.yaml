@@ -1,0 +1,62 @@
+$schema: ../../../json_schemas/test_story.schema.yaml
+
+description: Test transform root and existence routes.
+version: '>= 1.0'
+warnings:
+  multiple-paths-detected: false
+prologues:
+  - path: /transform-source
+    method: PUT
+    request:
+      payload:
+        mappings:
+          properties:
+            category:
+              type: keyword
+  - path: /transform-source/_doc/1
+    method: PUT
+    parameters:
+      refresh: true
+    request:
+      payload:
+        category: test
+epilogues:
+  - path: /transform-source
+    method: DELETE
+    status: [200, 404]
+chapters:
+  - synopsis: Preview a transform using the root route.
+    path: /_plugins/_transform
+    method: POST
+    request:
+      payload:
+        transform:
+          enabled: false
+          description: Preview transform.
+          source_index: transform-source
+          target_index: transform-target
+          data_selection_query:
+            match_all: {}
+          page_size: 10
+          groups:
+            - terms:
+                source_field: category
+                target_field: category
+          schedule:
+            interval:
+              period: 1
+              unit: Minutes
+    response:
+      status: 200
+  - synopsis: Reject a transform update without an ID.
+    path: /_plugins/_transform
+    method: PUT
+    response:
+      status: 400
+  - synopsis: Check a missing transform.
+    path: /_plugins/_transform/{id}
+    method: HEAD
+    parameters:
+      id: missing-transform
+    response:
+      status: 404

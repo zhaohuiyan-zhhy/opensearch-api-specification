@@ -1,0 +1,67 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test ISM policy simulation routes.
+version: '>= 3.8'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+prologues:
+  - path: /simulation-index
+    method: PUT
+  - path: /_plugins/_ism/policies/simulation-bootstrap
+    method: PUT
+    request:
+      payload:
+        policy:
+          description: Bootstrap the ISM config index.
+          default_state: hot
+          states:
+            - name: hot
+              actions: []
+              transitions: []
+    status: [200, 201]
+epilogues:
+  - path: /_plugins/_ism/policies/simulation-bootstrap
+    method: DELETE
+    status: [200, 404]
+  - path: /simulation-index
+    method: DELETE
+    status: [200, 404]
+chapters:
+  - synopsis: Simulate an inline policy.
+    path: /_plugins/_ism/simulate
+    method: POST
+    request:
+      payload:
+        policy:
+          description: Inline simulation policy.
+          default_state: hot
+          states:
+            - name: hot
+              actions: []
+              transitions: []
+        indices:
+          - simulation-index
+    response:
+      status: 200
+      payload:
+        simulate_results:
+          - index_name: simulation-index
+            is_managed: false
+            current_state: hot
+  - synopsis: Simulate an inline policy using the legacy route.
+    path: /_opendistro/_ism/simulate
+    method: POST
+    request:
+      payload:
+        policy:
+          description: Legacy inline simulation policy.
+          default_state: hot
+          states:
+            - name: hot
+              actions: []
+              transitions: []
+        indices:
+          - simulation-index
+    response:
+      status: 200

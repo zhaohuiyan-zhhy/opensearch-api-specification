@@ -1,0 +1,31 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test root refresh search analyzer routes.
+version: '>= 1.0'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+prologues:
+  - path: /refresh-analyzer-index
+    method: PUT
+epilogues:
+  - path: /refresh-analyzer-index
+    method: DELETE
+    status: [200, 404]
+chapters:
+  - synopsis: Refresh search analyzers using an index query parameter.
+    path: /_plugins/_refresh_search_analyzers
+    method: POST
+    parameters:
+      index: refresh-analyzer-index
+      reload_cached_resources: false
+    response:
+      status: 200
+  - synopsis: Refresh search analyzers using the legacy root route.
+    path: /_opendistro/_refresh_search_analyzers
+    method: POST
+    parameters:
+      index: refresh-analyzer-index
+      reload_cached_resources: false
+    response:
+      status: 200

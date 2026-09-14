@@ -1,0 +1,60 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test long-running operation notification configurations.
+version: '>= 2.8'
+epilogues:
+  - path: /_plugins/_im/lron/{id}
+    method: DELETE
+    parameters:
+      id: LRON%3Aindices%3Adata%2Fwrite%2Freindex
+    status: [200, 404]
+chapters:
+  - synopsis: Create an LRON configuration.
+    path: /_plugins/_im/lron
+    method: POST
+    request:
+      payload:
+        lron_config:
+          lron_condition:
+            success: false
+            failure: false
+          action_name: indices:data/write/reindex
+    response:
+      status: 200
+      payload:
+        _id: LRON:indices:data/write/reindex
+        lron_config:
+          action_name: indices:data/write/reindex
+  - synopsis: Get all LRON configurations.
+    path: /_plugins/_im/lron
+    method: GET
+    response:
+      status: 200
+  - synopsis: Get an LRON configuration.
+    path: /_plugins/_im/lron/{id}
+    method: GET
+    parameters:
+      id: LRON%3Aindices%3Adata%2Fwrite%2Freindex
+    response:
+      status: 200
+  - synopsis: Update an LRON configuration.
+    path: /_plugins/_im/lron/{id}
+    method: PUT
+    parameters:
+      id: LRON%3Aindices%3Adata%2Fwrite%2Freindex
+    request:
+      payload:
+        lron_config:
+          lron_condition:
+            success: false
+            failure: false
+          action_name: indices:data/write/reindex
+    response:
+      status: 200
+  - synopsis: Delete an LRON configuration.
+    path: /_plugins/_im/lron/{id}
+    method: DELETE
+    parameters:
+      id: LRON%3Aindices%3Adata%2Fwrite%2Freindex
+    response:
+      status: 200

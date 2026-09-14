@@ -244,7 +244,18 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/ism.retry_index@200'
-  /_plugins/_refresh_search_analyzers/{index}:
+  /_plugins/_ism/simulate:
+    post:
+      operationId: ism.simulate_policy.0
+      x-operation-group: ism.simulate_policy
+      x-version-added: '3.8'
+      description: Simulates an ISM policy against one or more indexes.
+      requestBody:
+        $ref: '#/components/requestBodies/ism.simulate_policy'
+      responses:
+        '200':
+          $ref: '#/components/responses/ism.simulate_policy@200'
+  /_plugins/_refresh_search_analyzers:
     post:
       operationId: ism.refresh_search_analyzers.0
       x-operation-group: ism.refresh_search_analyzers
@@ -252,12 +263,33 @@ paths:
       externalDocs:
         url: https://docs.opensearch.org/latest/im-plugin/refresh-analyzer/
       parameters:
+        - $ref: '#/components/parameters/ism.refresh_search_analyzers::query.index'
+        - $ref: '#/components/parameters/ism.refresh_search_analyzers::query.reload_cached_resources'
+      responses:
+        '200':
+          $ref: '#/components/responses/ism.refresh_search_analyzers@200'
+  /_plugins/_refresh_search_analyzers/{index}:
+    post:
+      operationId: ism.refresh_search_analyzers.1
+      x-operation-group: ism.refresh_search_analyzers
+      description: Refreshes search analyzers in real time.
+      externalDocs:
+        url: https://docs.opensearch.org/latest/im-plugin/refresh-analyzer/
+      parameters:
         - $ref: '#/components/parameters/ism.refresh_search_analyzers::path.index'
+        - $ref: '#/components/parameters/ism.refresh_search_analyzers::query.index'
+        - $ref: '#/components/parameters/ism.refresh_search_analyzers::query.reload_cached_resources'
       responses:
         '200':
           $ref: '#/components/responses/ism.refresh_search_analyzers@200'
 components:
   requestBodies:
+    ism.simulate_policy:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ism._common.yaml#/components/schemas/SimulatePolicyRequest'
     ism.put_policies:
       content:
         application/json:
@@ -351,6 +383,11 @@ components:
         application/json:
           schema:
             $ref: '../schemas/ism._common.yaml#/components/schemas/RetryIndexResponse'
+    ism.simulate_policy@200:
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/ism._common.yaml#/components/schemas/SimulatePolicyResponse'
     ism.refresh_search_analyzers@200:
       content:
         application/json:
@@ -454,6 +491,18 @@ components:
       schema:
         $ref: '../schemas/_common.yaml#/components/schemas/Indices'
       style: simple
+    ism.refresh_search_analyzers::query.index:
+      name: index
+      in: query
+      required: true
+      schema:
+        $ref: '../schemas/_common.yaml#/components/schemas/Indices'
+    ism.refresh_search_analyzers::query.reload_cached_resources:
+      name: reload_cached_resources
+      in: query
+      schema:
+        type: boolean
+        default: false
     ism.refresh_search_analyzers::path.index:
       name: index
       in: path

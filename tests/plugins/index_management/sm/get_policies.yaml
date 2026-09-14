@@ -1,0 +1,13 @@
+$schema: ../../../../json_schemas/test_story.schema.yaml
+
+description: Test the snapshot management policy list route with a trailing slash.
+version: '>= 2.1'
+warnings:
+  invalid-path-detected: false
+  multiple-paths-detected: false
+chapters:
+  - synopsis: Get snapshot management policies.
+    path: /_plugins/_sm/policies/
+    method: GET
+    response:
+      status: 200
